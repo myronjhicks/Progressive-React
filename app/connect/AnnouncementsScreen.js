@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import {
     Text,
     Body, 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
 import { Button, Text, Footer, FooterTab } from "native-base";
 import { NavigationComponent } from 'react-native-material-bottom-navigation'
@@ -24,7 +24,6 @@ export const HomeNavigator = StackNavigator({
             title: 'Home',
             headerTintColor: 'white',
             headerStyle: {
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight,
                 backgroundColor: '#2e2e2e',
             },
         }

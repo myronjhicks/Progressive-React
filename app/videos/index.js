@@ -13,7 +13,6 @@ export const VideoStack = StackNavigator({
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#2e2e2e',
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             }
         }
     },
@@ -24,7 +23,6 @@ export const VideoStack = StackNavigator({
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#2e2e2e',
-                paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
             } 
         }
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, View, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Dimensions, SafeAreaView } from 'react-native';
 import Image from 'react-native-scalable-image';
 import {
     Container, Header, Title, Left,

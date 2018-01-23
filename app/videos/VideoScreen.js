@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
+import { StatusBar, View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import Image from 'react-native-scalable-image';
 import {
     Icon, 
@@ -85,6 +85,7 @@ export default class VideoScreen extends Component {
     render() {
         return(
             <View style={styles.container}>
+                <StatusBar barStyle='light-content'/>
                 <FlatList
                     automaticallyAdjustContentInsets={false}
                     data={this.state.videos}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ImageBackground, StatusBar, Platform } from 'react-native';
+import { StatusBar, View, ImageBackground, Platform } from 'react-native';
 import Expo from 'expo';
 import Image from 'react-native-scalable-image';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
@@ -7,6 +7,14 @@ import firebase from '../config/firebase';
 
 
 export default class HomeScreen extends Component {
+
+    static navigationOptions = ({ navigation }) => ({
+        title: 'Home',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+      });
 
     constructor(props) {
         super(props);
@@ -54,10 +62,11 @@ export default class HomeScreen extends Component {
 
     render() {
         if(this.state.livestreamID === ''){
-            return (<View></View>);
+            return (<View><StatusBar barStyle='light-content'/></View>);
         }else{
             return (
                 <View style={{flex: 1}}>
+                    <StatusBar barStyle='light-content'/>
                     { this._renderHeader() }
                     <LiveStreamViewer videoID={this.state.livestreamID}></LiveStreamViewer>
                 </View>

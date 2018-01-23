@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, StatusBar } from 'react-native';
 import {
     Container, Header, Title, Left,
     Right, Button, Text, Icon,
@@ -60,14 +60,19 @@ class BibleScreen extends Component {
                 }}>
                     <Button
                         rounded={true}
+                        transparent
                         onPress={this._previousChapter} 
-                        light>
+                        dark>
                         <Icon name='arrow-back' />
                     </Button>
+                    <Button dark transparent rounded
+                            onPress={this._showChapterSelector}>
+                            <Icon name="bookmark" size={24} tintColor={'black'}/>
+                    </Button>
                     <Button
-                        rounded={true}
+                        transparent
                         onPress={this._nextChapter} 
-                        light>
+                        dark>
                         <Icon name='arrow-forward' />
                     </Button>
             </View>
@@ -83,12 +88,16 @@ class BibleScreen extends Component {
         if( hasErrored ) { return <NetworkErrorComponent onRefresh={this._onRefresh} /> }
         if( !chapter.text ) { return <View><Text>Loading...</Text></View>; }
             return(
-                <Container style={{backgroundColor: 'white'}}>
-                <Header style={{backgroundColor: '#2e2e2e'}}>
-                    <Body>
+                <Container style={styles.container}>
+                <StatusBar barStyle='light-content'/>
+                <Header style={styles.header}>
+                    <Body style={styles.headerBody}>
                         <Button full transparent dark
                             onPress={this._showChapterSelector}>
-                            <Text style={{color: 'white', textAlign: 'center'}}>{chapter.parent.book.name} {chapter.chapter}</Text>
+                            <Text>
+                                <Text style={{color: 'white'}}>{chapter.parent.book.name} </Text>
+                                <Text style={{color: 'white'}}>{chapter.chapter}</Text>
+                            </Text>
                         </Button>
                     </Body>
                 </Header>
@@ -103,7 +112,7 @@ class BibleScreen extends Component {
                         <Text style={styles.copyright}>{chapter.copyright}</Text>
                     </View>
                 </Content>
-                <Footer style={{height: 40}}>
+                <Footer style={{height: 40, backgroundColor: 'transparent'}}>
                     { this._footerView() }
                 </Footer>
             </Container>
@@ -140,9 +149,22 @@ class BibleScreen extends Component {
 }
 
 const styles = StyleSheet.create({ 
+    container: {
+        backgroundColor: 'white',
+    },
     div: {
         marginLeft: 12,
         marginRight: 12,
+    },
+    header: {
+        backgroundColor: '#2e2e2e',
+    },
+    headerBody: {
+        ...Platform.select({
+            android: {
+                marginTop: 15
+            }
+        })
     },
     h3: {
         fontWeight: 'bold',

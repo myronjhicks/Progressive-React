@@ -10,6 +10,10 @@ import { maybeOpenURL } from "react-native-app-link";
 
 export default class GiveScreen extends Component {
 
+    componentDidMount() {
+        StatusBar.setBarStyle('light-content', false);
+    }
+
     _openGivelify = () => {
         maybeOpenURL("givelify://church_home/1071226301077886", {
             appName: "givelify",

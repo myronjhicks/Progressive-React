@@ -13,6 +13,7 @@ export default class VideoDetail extends Component {
         const { key, date, title, speaker, tags, id } = this.props.navigation.state.params;
         return(
             <View style={styles.container}>
+                <StatusBar barStyle='light-content'/>
                 <LiveStreamViewer videoID={id}></LiveStreamViewer>
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoHeader}>Sermon</Text>

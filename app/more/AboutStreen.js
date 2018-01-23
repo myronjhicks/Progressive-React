@@ -23,7 +23,8 @@ import {
   CardItem,
   Segment
 } from "native-base";
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { PROVIDER_GOOGLE } from 'react-native-maps';
+import { MapView } from 'expo';
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / 150;
@@ -199,6 +200,7 @@ export default class AboutScreen extends Component {
   render() {
     return (
       <Container>
+          <StatusBar barStyle='light-content'/>
           {this._renderSegment()}
             <Content style={styles.container}>
                 {this._renderContent()}
