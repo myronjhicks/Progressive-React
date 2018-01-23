@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import HomeScreen from './screens/HomeScreen';
 import GiveScreen from './screens/GiveScreen';
 import BibleScreen from './bible/BibleScreen';
+import AnnouncementsScreen from './connect/AnnouncementsScreen';
 
 import { MoreInfoStack } from './more/moreRouter';
 import { ConnectStack } from './connect/index';
@@ -20,14 +21,13 @@ import ChapterSelector from './bible/ChapterSelector';
 export const HomeNavigator = StackNavigator({
     HomeScreen: {
         screen: HomeScreen,
-        navigationOptions: {
-            title: 'Home',
-            headerTintColor: 'white',
-            headerStyle: {
-                backgroundColor: '#2e2e2e',
-            },
-        }
+    },
+    Notifications: {
+        screen: AnnouncementsScreen,
     }
+},{
+    mode: 'modal',
+    headerMode: 'screen'
 });
 
 export const Tabs = TabNavigator({

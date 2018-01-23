@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StatusBar, View, ImageBackground, Platform } from 'react-native';
+import { Button, Icon, Text } from 'native-base';
 import Expo from 'expo';
 import Image from 'react-native-scalable-image';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
@@ -8,13 +9,25 @@ import firebase from '../config/firebase';
 
 export default class HomeScreen extends Component {
 
-    static navigationOptions = ({ navigation }) => ({
-        title: 'Home',
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Home',
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#2e2e2e',
             },
-      });
+            headerRight: (
+                <Button light transparent onPress={params.showNotifications}>
+                    <Icon name="notifications" size={24} />
+                </Button>
+            )
+        }
+      };
+
+    showNotifications = () => {
+        this.props.navigation.navigate('Notifications');
+    }
 
     constructor(props) {
         super(props);
@@ -26,7 +39,8 @@ export default class HomeScreen extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate)
+        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+        this.props.navigation.setParams({showNotifications: this.showNotifications});
     }
 
     componentWillUnmount() {

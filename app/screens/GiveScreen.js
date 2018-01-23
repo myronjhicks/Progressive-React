@@ -55,4 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0)',
         margin: 10
     },
+    giveButton: {
+        backgroundColor: '#c6ac71' //'#660000' //
+    }
 });

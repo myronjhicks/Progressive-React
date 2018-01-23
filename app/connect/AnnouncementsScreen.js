@@ -15,6 +15,19 @@ import { fetchAnnouncements } from '../redux/actions/announcements';
 
 class AnnouncementsScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Notifications',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+            headerBackTitle: null,
+            headerTruncatedBackTitle: 'Dismiss'
+        }
+      };
+
     constructor(props){
         super(props);
     }
