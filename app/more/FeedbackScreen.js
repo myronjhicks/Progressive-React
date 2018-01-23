@@ -64,7 +64,7 @@ export default class FeedbackScreen extends Component {
                             onChangeText={this._onChangeEmailText}
                             ref={input => { this.emailInput = input }}
                         />
-                        <Button full onPress={this._submitFeedback}>
+                        <Button full onPress={this._submitFeedback} style={{backgroundColor: '#c6ac71'}}>
                             <Text>Submit Feedback!</Text>
                         </Button>
                     </View>

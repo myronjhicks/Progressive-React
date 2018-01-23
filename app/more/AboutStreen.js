@@ -23,8 +23,7 @@ import {
   CardItem,
   Segment
 } from "native-base";
-import { PROVIDER_GOOGLE } from 'react-native-maps';
-import { MapView } from 'expo';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / 150;
@@ -221,3 +220,12 @@ const styles = StyleSheet.create({
     marginLeft: 12
   }
 });
+
+/**
+ * <MapView
+            style={{ flex: 1, height: 150}}
+            provider={PROVIDER_GOOGLE}
+            region={this.region}>  
+            <MapView.Marker coordinate={this.region} />
+          </MapView>
+ */
