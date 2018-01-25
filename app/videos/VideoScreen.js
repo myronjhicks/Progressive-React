@@ -9,6 +9,7 @@ import {
     Card, 
     CardItem 
 } from 'native-base';
+import VideoCardComponent from '../components/VideoCardComponent';
 import firebase from '../config/firebase';
 const { width, height } = Dimensions.get('window');
 const equalWidth =  (width / 2 );
@@ -28,7 +29,7 @@ export default class VideoScreen extends Component {
 
     constructor(props){
         super(props);
-        this.ref = firebase.firestore().collection('videos');
+        this.dbRef = firebase.database().ref('videos');
         this.unsubscribe = null;
         this.state = {
             loading: true,
@@ -37,61 +38,41 @@ export default class VideoScreen extends Component {
     }
 
     componentDidMount() {
-       this.unsubscribe = this.ref.orderBy('date', 'desc').onSnapshot(this.onCollectionUpdate);
+        this.unsubscribe = this.dbRef.orderByChild('date').on('value', this.onRefUpdate);
     }
 
     componentWillUnmount() {
         this.unsubscribe();
     }
 
-    onCollectionUpdate = (querySnapshot) => {
+    onRefUpdate = (snapshot) => {
         const videos = [];
-        querySnapshot.forEach( (doc) => {
-            const {date, id, speaker, title} = doc.data();
+        snapshot.forEach( (childSnapshot) => {
+            const data = childSnapshot.val();
             videos.push({
-                key: doc.id,
-                date: date,
-                title: title,
-                speaker: speaker,
-                id: id,
+                key: childSnapshot.key,
+                date: data.date,
+                title: data.title,
+                speaker: data.speaker,
+                id: data.id,
                 tags: []
             });
         });
 
-        this.setState({
-            loading: false,
-            videos
-        });
+        this.setState({loading: false, videos });
     }
 
     _showVideoDetail = (video) => {
         this.props.navigation.navigate('VideoDetail', { ...video });
     }
 
-    _renderItem = ({item}) => {
-        return (
+    _renderCard = ({item}) => {
+        return(
             <TouchableOpacity onPress={_ => this._showVideoDetail(item)}>
-                <View style={{height: 200, width: equalWidth}}>
-                    <Card>
-                        <CardItem cardBody>
-                            <View style={styles.videoCard}>
-                                <Image
-                                    style={{alignSelf:'center'}}
-                                    maxWidth={equalWidth}
-                                    maxHeight={100}
-                                    source={require('../assets/video_image.jpg')} />
-                                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
-                                    <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 4, marginLeft: 4}}>{item.title}</Text>
-                                    <Text style={{marginLeft: 4, fontSize: 14}}>{item.speaker}</Text>
-                                    <Text style={{marginLeft: 4, fontSize: 12, color: 'darkgrey'}}>{item.date}</Text>
-                                </View>
-                            </View>
-                        </CardItem>
-                    </Card>
-                </View>
+                <VideoCardComponent video={item} />
             </TouchableOpacity>
         );
-    };
+    }
 
     render() {
         return(
@@ -101,7 +82,7 @@ export default class VideoScreen extends Component {
                     automaticallyAdjustContentInsets={false}
                     data={this.state.videos}
                     keyExtractor = {item => item.key}
-                    renderItem={this._renderItem}
+                    renderItem={this._renderCard}
                     numColumns={2}
                 />
             </View>

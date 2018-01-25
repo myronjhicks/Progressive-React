@@ -1,7 +1,7 @@
 
 import firebase from "../../config/firebase";
 
-const firestore = firebase.firestore();
+const database = firebase.database();
 
 export function announcementsHasError(bool) {
     return {
@@ -28,18 +28,19 @@ export function announcementsFetchSuccess(announcements) {
 export function fetchAnnouncements() {
     return (dispatch) => {
         dispatch(announcementsIsLoading(true));
-        firestore
-        .collection('announcements')
-        .get()
-        .then(function(querySnapshot){
+
+        database
+        .ref('announcements')
+        .once('value')
+        .then(function(snapshot){
             dispatch(announcementsIsLoading(false));
-            const announcements = [];
-            querySnapshot.forEach( (doc) => {
-                const {text, timestamp } = doc.data();
+            var announcements = [];
+            snapshot.forEach(function(childSnapshot){
+                var data = childSnapshot.val();
                 announcements.push({
-                    key: doc.id,
-                    text: text,
-                    timestamp: timestamp,
+                    key: childSnapshot.key,
+                    text: data.text,
+                    timestamp: data.timestamp,
                 });
             });
             dispatch(announcementsFetchSuccess(announcements));
