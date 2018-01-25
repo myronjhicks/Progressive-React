@@ -192,6 +192,7 @@ export default class AboutScreen extends Component {
     }
   };
 
+
   _renderSegment = () => {
     return (
       <Segment style={{backgroundColor: '#2e2e2e'}}>
@@ -201,14 +202,14 @@ export default class AboutScreen extends Component {
           onPress={_ => this._onSegmentPress(1)}
           active={this.state.selectedSegmentIndex === 1 ? true : false}
         >
-          <Text style={{color: 'black'}}>Who We Are</Text>
+          <Text style={{color: 'black', fontSize: 11}}>Who We Are</Text>
         </Button>
         <Button 
           style={{borderColor: 'black', backgroundColor: 'lightgray'}}
           onPress={_ => this._onSegmentPress(2)}
           active={this.state.selectedSegmentIndex === 2 ? true : false}
         >
-          <Text style={{color: 'black'}}>Our Pastor</Text>
+          <Text style={{color: 'black', fontSize: 11}}>Our Pastor</Text>
         </Button>
         <Button
           style={{borderColor: 'black', backgroundColor: 'lightgray'}}
@@ -216,7 +217,7 @@ export default class AboutScreen extends Component {
           onPress={_ => this._onSegmentPress(3)}
           active={this.state.selectedSegmentIndex === 3 ? true : false}
         >
-          <Text style={{color: 'black'}}>Location</Text>
+          <Text style={{color: 'black', fontSize: 11}}>Location</Text>
         </Button>
       </Segment>
     );
@@ -225,7 +226,6 @@ export default class AboutScreen extends Component {
   render() {
     return (
       <Container>
-          <StatusBar barStyle='light-content'/>
           {this._renderSegment()}
             <Content style={styles.container}>
                 {this._renderContent()}

@@ -32,7 +32,7 @@ export default class FeedbackScreen extends Component {
 
     constructor(props){
         super(props);
-        this.ref = firebase.firestore().collection('feedback');
+        this.dbRef = firebase.database().ref('feedback');
         this.state = {feedback: '', email: ''};
     }
 
@@ -46,20 +46,11 @@ export default class FeedbackScreen extends Component {
 
     _submitFeedback = () => {
         if(this.state.feedback && this.state.email) {
-            var values = {
+            this.dbRef.push({
                 email: this.state.email,
                 content: this.state.feedback,
                 date: new Date()
-            };
-            this.ref
-            .add(values)
-            .then(function(docRef){
-                console.log('Document written with ID:', docRef.id)
             })
-            .catch(function(error){
-                console.error('Error adding document: ', error);
-            })
-
             this.feedbackInput.clear();
             this.emailInput.clear();
         }

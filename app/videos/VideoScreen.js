@@ -59,7 +59,8 @@ export default class VideoScreen extends Component {
             });
         });
 
-        this.setState({loading: false, videos });
+        var reveresed = videos.reverse();
+        this.setState({loading: false, videos:  reveresed});
     }
 
     _showVideoDetail = (video) => {

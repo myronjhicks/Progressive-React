@@ -21,7 +21,7 @@ export default class PrayerWallScreen extends Component {
 
     constructor(props){
         super(props);
-        this.ref = firebase.firestore().collection('prayerwall');
+        this.dbRef = firebase.database().ref('prayerwall');
         this.unsubscribe = null;
         this.state = {
             prayers: [],
@@ -31,28 +31,26 @@ export default class PrayerWallScreen extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = this.ref.orderBy('date', 'desc').onSnapshot(this.onCollectionUpdate);
+        this.unsubscribe = this.dbRef.orderByChild('date').on('value', this.onRefUpdate);
      }
  
      componentWillUnmount() {
          this.unsubscribe();
      }
 
-     onCollectionUpdate = (querySnapshot) => {
+     onRefUpdate = (snapshot) => {
         const prayers = [];
-        querySnapshot.forEach( (doc) => {
-            const {date, name, content} = doc.data();
+        snapshot.forEach( (childSnapshot) => {
+            const data = childSnapshot.val();
             prayers.push({
-                key: doc.id,
-                date: date,
-                name: name,
-                content: content,
+                key: childSnapshot.key,
+                date: data.date,
+                name: data.name,
+                content: data.content,
             });
         });
-
-        this.setState({
-            prayers
-        });
+        var reveresed = prayers.reverse();
+        this.setState({ prayers: reveresed });
     }
 
     _onChangePrayerText = (prayerText) => {
@@ -69,20 +67,11 @@ export default class PrayerWallScreen extends Component {
 
     _onSubmitPrayer = () => {
         if(this.state.prayer){
-            var values = {
+            this.dbRef.push({
                 name: this.state.name,
                 content: this.state.prayer,
                 date: new Date()
-            };
-            this.ref
-            .add(values)
-            .then(function(docRef){
-                console.log('Document written with ID:', docRef.id)
             })
-            .catch(function(error){
-                console.error('Error adding document: ', error);
-            })
-
             this.nameTextInput.clear();
             this.prayerTextInput.clear();
         }
