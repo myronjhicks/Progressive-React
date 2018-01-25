@@ -25,6 +25,30 @@ const urls = [
 
 export default class HistoryScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Our History',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+            headerLeft: (
+              <Button light transparent onPress={params.goBack}>
+                  <Icon name="arrow-back" size={24} />
+              </Button>
+          )
+        }
+      };
+
+      componentDidMount() {
+        this.props.navigation.setParams({goBack: this._handleCancel});
+        }
+    
+     _handleCancel = () => {
+        this.props.navigation.goBack();
+        };
+
     _renderItem = ({item}) => {
         return (
             <View>

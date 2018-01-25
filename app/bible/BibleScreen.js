@@ -14,13 +14,35 @@ import NetworkErrorComponent from '../components/NetworkErrorComponent';
 
 class BibleScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: `${params.headerTitle ? params.headerTitle : ''}`,
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+        }
+      };
+
     constructor(){
         super();
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.fetchBooks();
         this.props.fetchChapter('eng-NASB_Gen.1');
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.chapter.parent){
+            var headerTitle = `${nextProps.chapter.parent.book.name } ${nextProps.chapter.chapter}`
+            setTimeout(() => {
+                this.props.navigation.setParams({
+                    headerTitle: headerTitle,
+                });
+              }, 1000);
+        }
     }
 
     _nextChapter = () => {
@@ -90,17 +112,6 @@ class BibleScreen extends Component {
             return(
                 <Container style={styles.container}>
                 <StatusBar barStyle='light-content'/>
-                <Header style={styles.header}>
-                    <Body style={styles.headerBody}>
-                        <Button full transparent dark
-                            onPress={this._showChapterSelector}>
-                            <Text>
-                                <Text style={{color: 'white'}}>{chapter.parent.book.name} </Text>
-                                <Text style={{color: 'white'}}>{chapter.chapter}</Text>
-                            </Text>
-                        </Button>
-                    </Body>
-                </Header>
                 <Content ref={c => this._content = c}>
                     <HTMLView
                         value={chapter.text}
@@ -198,3 +209,17 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BibleScreen);
+
+/**
+ * <Header style={styles.header}>
+                    <Body style={styles.headerBody}>
+                        <Button full transparent dark
+                            onPress={this._showChapterSelector}>
+                            <Text>
+                                <Text style={{color: 'white'}}>{chapter.parent.book.name} </Text>
+                                <Text style={{color: 'white'}}>{chapter.chapter}</Text>
+                            </Text>
+                        </Button>
+                    </Body>
+                </Header>
+ */

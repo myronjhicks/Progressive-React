@@ -33,6 +33,24 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class AboutScreen extends Component {
+
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state
+    return {
+        title: 'About',
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: '#2e2e2e',
+        },
+        headerLeft: (
+          <Button light transparent onPress={params.goBack}>
+              <Icon name="arrow-back" size={24} />
+          </Button>
+      )
+    }
+  };
+
+
   constructor(props) {
     super(props);
     this.region = {
@@ -43,6 +61,14 @@ export default class AboutScreen extends Component {
     }
     this.state = { selectedSegmentIndex: 1 };
   }
+
+  componentDidMount() {
+    this.props.navigation.setParams({goBack: this._handleCancel});
+  }
+
+  _handleCancel = () => {
+    this.props.navigation.goBack();
+  };
 
   _onSegmentPress = index => {
     var newState = { selectedSegmentIndex: index };

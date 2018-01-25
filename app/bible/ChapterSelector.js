@@ -17,6 +17,22 @@ const equalWidth =  (width / 5 );
 
 class ChapterSelector extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: `${params.title ? params.title : ''}`,
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+            headerLeft: (
+                <Button light transparent onPress={params.goBack}>
+                    <Icon name="arrow-down" size={24} />
+                </Button>
+            )
+        }
+      };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -25,6 +41,10 @@ class ChapterSelector extends Component {
             selectedBook: this.props.books[0]
         };
     };
+
+    componentDidMount() {
+        this.props.navigation.setParams({goBack: this._handleCancel, title: this.state.selectedBook.name});
+    }
 
     _handleCancel = () => {
         this.props.navigation.goBack();
@@ -114,17 +134,7 @@ class ChapterSelector extends Component {
     render() {
         return (
             <Container>
-                <Header style={{backgroundColor: '#2e2e2e'}}>
-                    <Left>
-                        <Button transparent onPress={this._handleCancel}>
-                            <Text style={{color: 'white'}}>Cancel</Text>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Text style={{color: 'white'}}>{this.state.navigationTitle}</Text>
-                    </Body>
-                    <Right />
-                </Header>
+                
                 <Content>
                     <Segment>
                         <Button 
@@ -164,3 +174,17 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChapterSelector);
+
+/**
+ * <Header style={{backgroundColor: '#2e2e2e'}}>
+                    <Left>
+                        <Button transparent onPress={this._handleCancel}>
+                            <Text style={{color: 'white'}}>Cancel</Text>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Text style={{color: 'white'}}>{this.state.navigationTitle}</Text>
+                    </Body>
+                    <Right />
+                </Header>
+ */

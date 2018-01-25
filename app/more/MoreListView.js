@@ -5,6 +5,17 @@ import { List, ListItem } from 'react-native-elements';
 
 export default class MoreListView extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'More',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+        }
+      };
+
     openUrl = (url) => {
         Linking.openUrl(url);
     };

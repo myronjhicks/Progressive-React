@@ -7,16 +7,9 @@ import PrayerWallScreen from './PrayerWallScreen';
 import ConnectScreen from './ConnectScreen';
 
 
-export const ConnectStack = StackNavigator({
+/**export const ConnectStack = StackNavigator({
     ConnectScreen: {
         screen: ConnectScreen,
-        navigationOptions: {
-            title: 'Connect',
-            headerTintColor: 'white',
-            headerStyle: {
-                backgroundColor: '#2e2e2e',
-            } 
-        }
     },
     Announcements : {
         screen: AnnouncementsScreen,
@@ -38,4 +31,4 @@ export const ConnectStack = StackNavigator({
             } 
         }
     },
-});
+});**/

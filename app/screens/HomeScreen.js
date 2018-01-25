@@ -31,15 +31,15 @@ export default class HomeScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.ref = firebase.firestore().collection('livestream').doc('livestream');
+        this.dbRef = firebase.database().ref('livestream');
         this.unsubscribe = null;
         this.state = {
-            livestreamID: '8012994',
+            livestreamID: '',
         };
     }
 
     componentDidMount() {
-        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+        this.unsubscribe = this.dbRef.on('value', this.onRefUpdate);
         this.props.navigation.setParams({showNotifications: this.showNotifications});
     }
 
@@ -47,10 +47,10 @@ export default class HomeScreen extends Component {
         this.unsubscribe();
     }
 
-    onCollectionUpdate = (doc) => {
-        const { event } = doc.data();
+    onRefUpdate = (snapshot) => {
+        const data = snapshot.val();
         this.setState({
-            livestreamID: event,
+            livestreamID: data.event
         });
     }
         

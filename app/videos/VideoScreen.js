@@ -15,6 +15,17 @@ const equalWidth =  (width / 2 );
 
 export default class VideoScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Videos',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+        }
+      };
+
     constructor(props){
         super(props);
         this.ref = firebase.firestore().collection('videos');

@@ -1,35 +1,7 @@
 
 import firebase from "../../config/firebase";
 
-const firestore = firebase.firestore();
-
-const COURSES = [
-    {
-        id: 1,
-        name: "Beta Course Biblical Study",
-        description: "This study is designed to take Christians back to the basics as we re-discover the teachings of the Bible."
-    },
-    {
-        id: 2,
-        name: "Developing a Servant's Heart",
-        description: "This Bible study will equip you to serve the people around you (family, co-workers and neighbors) and those that you interact with every day."
-    },
-    {
-        id: 3,
-        name: "New Members Orientation Series",
-        description: "An exciting series on your Faith, Family, Finances and Future as a member of the Progressive Baptist Church Family that prepares members for service and ministry."
-    },
-    {
-        id: 4,
-        name: "Saving Our Sons (Men's Discipleship)",
-        description: "This study will break down four foundational essentials to engaging young men of color, arguing their validity from scripture and modern day experience."
-    },
-    {
-        id: 5,
-        name: "The Purpose and Power of Prayer",
-        description: "This study provides unique perspective by taking the mystery out of prayer and providing practical answers for difficult questions about communicating with God."
-    }
-];
+const database = firebase.database();
 
 export function coursesHasError(bool) {
     return {
@@ -55,23 +27,23 @@ export function coursesFetchDataSuccess(courses) {
 
 export function fetchDiscipleshipHourCourses() {
     return (dispatch) => {
-        firestore
-        .collection('courses')
-        .get()
-        .then(function(querySnpshot){
+
+        database
+        .ref('courses')
+        .once('value')
+        .then(function(snapshot){
             var courses = [];
-            querySnpshot.forEach(function(doc){
-                var data = doc.data();
+            snapshot.forEach(function(childSnapshot){
+                var data = childSnapshot.val();
                 var course = {
-                    id: doc.id,
+                    id: childSnapshot.key,
                     name: data.name,
                     description: data.description
-                }
+                };
                 courses.push(course);
             });
             dispatch(coursesFetchDataSuccess(courses));
-        }).catch(function(error) {
-            var courses = COURSES;
+        }).catch(function(error){
             dispatch(coursesFetchDataSuccess(courses));
         });
     };

@@ -8,7 +8,6 @@ import {
     Content, Body, Card, CardItem 
 } from 'native-base';
 import { connect } from 'react-redux';
-import { fetchEvents } from '../redux/actions/events';
 import { fetchDiscipleshipHourCourses } from '../redux/actions/courses';
 import firebase from '../config/firebase';
 import moment from 'moment';
@@ -31,9 +30,20 @@ const MONTHS = {
 
 class ConnectScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Connect',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+        }
+      };
+
     constructor(props) {
         super(props);
-        this.ref = firebase.firestore().collection('events');
+        this.dbRef = firebase.database().ref('events');
         this.unsubscribe = null;
         this.state = {
             events: [],
@@ -41,30 +51,29 @@ class ConnectScreen extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchEvents();
         this.props.fetchCourses();
     }
 
     componentWillMount() {
-        this.unsubscribe = this.ref.orderBy('date', 'desc').onSnapshot(this.onEventsCollectionUpdate);
+        this.unsubscribe = this.dbRef.orderByChild('date').on('value', this.onRefUpdate);
     }
 
     componecomponentWillUnmount() {
         this.unsubscribe();
     }
 
-    onEventsCollectionUpdate = (querySnapshot) => {
+    onRefUpdate = (snapshot) => {
         const events = [];
-        querySnapshot.forEach( (doc) => {
-            const {date, title, time, info} = doc.data();
-            var momentDate = new Date(date);
+        snapshot.forEach( (childSnapshot) => {
+            const data = childSnapshot.val();
+            var momentDate = new Date(data.date);
             if(moment(momentDate).isAfter(moment())){
                 events.push({
-                    key: doc.id,
+                    key: childSnapshot.key,
                     date: momentDate,
-                    title: title,
-                    time, time,
-                    info: info,
+                    title: data.title,
+                    time: data.time,
+                    info: data.info,
                 });
             }
         });
@@ -108,7 +117,7 @@ class ConnectScreen extends Component {
                             <View style={{flex: 1, flexDirection: 'row', height: 80}}>
                                 <View style={{minWidth: 80, borderWidth: 2, borderColor: '#c6ac71', marginRight: 4}}>
                                     <Text style={{fontSize: 14, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{MONTHS[moment(item.date).month()]}</Text>
-                                    <Text style={{fontSize: 26, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{moment(item.date).date()}</Text>
+                                    <Text style={{fontSize: 22, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{moment(item.date).date()}</Text>
                                     <Text style={{fontSize: 14, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{WEEKDAYS[moment(item.date).day()]}</Text>
                                 </View>
                                 <View style={{flexGrow: 1}}>
@@ -211,7 +220,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchEvents: () => dispatch(fetchEvents()),
         fetchCourses: () => dispatch(fetchDiscipleshipHourCourses()),
     };
 };

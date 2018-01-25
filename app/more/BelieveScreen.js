@@ -11,6 +11,30 @@ import { List, ListItem } from 'react-native-elements';
 
 export default class BelieveScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'What We Believe',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+            headerLeft: (
+              <Button light transparent onPress={params.goBack}>
+                  <Icon name="arrow-back" size={24} />
+              </Button>
+          )
+        }
+      };
+
+      componentDidMount() {
+        this.props.navigation.setParams({goBack: this._handleCancel});
+        }
+    
+     _handleCancel = () => {
+        this.props.navigation.goBack();
+        };
+
     renderItem = ({item, index}) => {
         return (
             <View style={{flex: 1, margin: 10}}>

@@ -8,6 +8,17 @@ import EmptyPrayerList from './EmptyPrayerList';
 
 export default class PrayerWallScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Connect',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+        }
+      };
+
     constructor(props){
         super(props);
         this.ref = firebase.firestore().collection('prayerwall');

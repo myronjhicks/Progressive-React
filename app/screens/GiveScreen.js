@@ -10,7 +10,28 @@ import { maybeOpenURL } from "react-native-app-link";
 
 export default class GiveScreen extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Give',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+            headerLeft: (
+              <Button light transparent onPress={params.goBack}>
+                  <Icon name="arrow-back" size={24} />
+              </Button>
+          )
+        }
+      };
+    
+     _handleCancel = () => {
+        this.props.navigation.goBack();
+        };
+
     componentDidMount() {
+        this.props.navigation.setParams({goBack: this._handleCancel});
         StatusBar.setBarStyle('light-content', false);
     }
 

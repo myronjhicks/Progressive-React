@@ -1,10 +1,34 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableHighlight, TextInput } from 'react-native';
-import { Button, Text, Input, Item } from 'native-base';
+import { Button, Text, Input, Item, Icon } from 'native-base';
 import firebase from '../config/firebase';
 
 
 export default class FeedbackScreen extends Component {
+
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state
+        return {
+            title: 'Leave Feedback',
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#2e2e2e',
+            },
+            headerLeft: (
+              <Button light transparent onPress={params.goBack}>
+                  <Icon name="arrow-back" size={24} />
+              </Button>
+          )
+        }
+      };
+
+      componentDidMount() {
+        this.props.navigation.setParams({goBack: this._handleCancel});
+        }
+    
+     _handleCancel = () => {
+        this.props.navigation.goBack();
+        };
 
     constructor(props){
         super(props);
