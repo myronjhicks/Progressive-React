@@ -35,7 +35,7 @@ export default class PrayerWallScreen extends Component {
      }
  
      componentWillUnmount() {
-         this.unsubscribe();
+         // this.unsubscribe();
      }
 
      onRefUpdate = (snapshot) => {

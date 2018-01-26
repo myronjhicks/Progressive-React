@@ -84,7 +84,7 @@ class ConnectScreen extends Component {
     }
 
     _showAnnouncements = () => {
-        this.props.navigation.navigate('Announcements');
+        this.props.navigation.navigate('Notifications');
     };
 
     _showPrayerWall = () => {

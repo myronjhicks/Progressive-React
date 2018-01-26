@@ -12,6 +12,7 @@ import {
 import firebase from '../config/firebase';
 import { connect } from 'react-redux';
 import { fetchAnnouncements } from '../redux/actions/announcements';
+import { Permissions, Notifications } from 'expo';
 
 class AnnouncementsScreen extends Component {
 
@@ -33,7 +34,41 @@ class AnnouncementsScreen extends Component {
     }
 
     componentDidMount() {
-       this.props.fetchAnnouncements();
+        this.props.fetchAnnouncements();
+        this.registerForPushNotificationsAsync();
+     }
+
+    registerForPushNotificationsAsync = async () => {
+        const { status: existingStatus } = await Permissions.getAsync(
+            Permissions.NOTIFICATIONS
+          );
+          let finalStatus = existingStatus;
+        
+          // only ask if permissions have not already been determined, because
+          // iOS won't necessarily prompt the user a second time.
+          if (existingStatus !== 'granted') {
+            // Android remote notification permissions are granted during the app
+            // install, so this will only ask on iOS
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+          }
+        
+          // Stop here if the user did not grant permissions
+          if (finalStatus !== 'granted') {
+            return;
+          }
+        
+          // Get the token that uniquely identifies this device
+          let token = await Notifications.getExpoPushTokenAsync();
+          var update = {}
+          update["/expoToken"] = token;
+          var matches = token.match(/\[(.*?)\]/);
+          var deviceID = matches[1];
+
+          firebase.database()
+            .ref('deviceTokens')
+            .child(deviceID)
+            .update(update);
     }
 
     _renderItem = ({item}) => {
