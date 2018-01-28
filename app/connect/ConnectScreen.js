@@ -5,28 +5,11 @@ import { List, ListItem } from 'react-native-elements';
 import {
     Container, Header, Title, Left,
     Right, Icon, Button, Text,
-    Content, Body, Card, CardItem 
+    Content, Body, Card, CardItem
 } from 'native-base';
 import { connect } from 'react-redux';
 import { fetchDiscipleshipHourCourses } from '../redux/actions/courses';
-import firebase from '../config/firebase';
-import moment from 'moment';
-
-const WEEKDAYS = {
-    0: "SUN",
-    1: "MON",
-    2: "TUE",
-    3: "WED",
-    4: "THU",
-    5: "FRI",
-    6: "SAT"
-};
-
-const MONTHS = {
-    0: "JAN", 1: "FEB", 2: "MAR", 3: "APR",
-    4: "MAY", 5: "JUN", 6: "JUL", 7: "AUG",
-    8: "SEP", 9: "OC", 10: "NOV", 11: "DEC"
-}
+import EventCard from '../components/EventCard';
 
 class ConnectScreen extends Component {
 
@@ -43,44 +26,11 @@ class ConnectScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.dbRef = firebase.database().ref('events');
-        this.unsubscribe = null;
-        this.state = {
-            events: [],
-        }
+        this.events = [];
     }
 
     componentDidMount() {
         this.props.fetchCourses();
-    }
-
-    componentWillMount() {
-        this.unsubscribe = this.dbRef.orderByChild('date').on('value', this.onRefUpdate);
-    }
-
-    componecomponentWillUnmount() {
-        this.unsubscribe();
-    }
-
-    onRefUpdate = (snapshot) => {
-        const events = [];
-        snapshot.forEach( (childSnapshot) => {
-            const data = childSnapshot.val();
-            var momentDate = new Date(data.date);
-            if(moment(momentDate).isAfter(moment())){
-                events.push({
-                    key: childSnapshot.key,
-                    date: momentDate,
-                    title: data.title,
-                    time: data.time,
-                    info: data.info,
-                });
-            }
-        });
-
-        this.setState({
-            events: events
-        });
     }
 
     _showAnnouncements = () => {
@@ -91,54 +41,23 @@ class ConnectScreen extends Component {
         this.props.navigation.navigate('PrayerWall');
     };
 
-
     _renderItem = ({item}) => {
         return (
-            <View style={{
-                flex: 1,
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                margin: 8,
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
+            <View style={styles.courseContainer}>
                 <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
                 <Text style={{textAlign: 'center'}}>{item.description}</Text>
             </View>
         );
     };
 
-    _renderEvent = ({item}) => {
-        return (
-            <View>
-                <Card>
-                    <CardItem>
-                        <Body>
-                            <View style={{flex: 1, flexDirection: 'row', height: 80}}>
-                                <View style={{minWidth: 80, borderWidth: 2, borderColor: '#c6ac71', marginRight: 4}}>
-                                    <Text style={{fontSize: 14, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{MONTHS[moment(item.date).month()]}</Text>
-                                    <Text style={{fontSize: 22, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{moment(item.date).date()}</Text>
-                                    <Text style={{fontSize: 14, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{WEEKDAYS[moment(item.date).day()]}</Text>
-                                </View>
-                                <View style={{flexGrow: 1}}>
-                                    <Text style={{fontWeight: 'bold', margin: 2, fontSize: 20}}>{item.title}</Text>
-                                    <Text style={{color: '#404040', marginBottom: 10, marginLeft: 2, fontSize: 14}}>{item.info}</Text>
-                                    <Text style={{marginLeft: 2, fontSize: 14, color: '#404040'}}>{item.time}</Text>
-                                </View>
-                            </View>
-                        </Body>
-                    </CardItem>
-                </Card>
-            </View>
-        );
-    };
-
     render() {
-
+        this.events = this.props.events.sort(function(a,b){
+          return new Date(a.date) - new Date(b.date);
+        });
         return (
             <Container>
                 <Content>
-                <View 
+                <View
                     style={{
                         flex: 1,
                         height: 100,
@@ -198,9 +117,9 @@ class ConnectScreen extends Component {
                         <View>
                             <FlatList
                                 automaticallyAdjustContentInsets={false}
-                                data={this.state.events}
+                                data={this.events}
                                 keyExtractor = {item => item.key}
-                                renderItem={this._renderEvent}
+                                renderItem={({item}) => <EventCard event={item} />}
                             />
                         </View>
                     </View>
@@ -211,10 +130,22 @@ class ConnectScreen extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+  courseContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    margin: 8,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
+
 
 const mapStateToProps = (state) => {
-    return { 
-        courses: state.courses
+    return {
+        courses: state.courses,
+        events: state.events,
     };
 };
 

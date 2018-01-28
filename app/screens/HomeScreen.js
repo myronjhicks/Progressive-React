@@ -4,10 +4,14 @@ import { Button, Icon, Text } from 'native-base';
 import Expo from 'expo';
 import Image from 'react-native-scalable-image';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
+import { connect } from 'react-redux';
+import { listenToEvents } from '../redux/actions/events';
+import { listenToLivestream } from '../redux/actions/livestream';
+import { listenToAnnouncements } from '../redux/actions/announcements';
+import { Permissions, Notifications } from 'expo';
 import firebase from '../config/firebase';
 
-
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state
@@ -31,29 +35,46 @@ export default class HomeScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.dbRef = firebase.database().ref('livestream');
-        this.unsubscribe = null;
-        this.state = {
-            livestreamID: '',
-        };
     }
 
     componentDidMount() {
-        this.unsubscribe = this.dbRef.on('value', this.onRefUpdate);
+        this.registerForPushNotificationsAsync();
+        this.props.subscribeToEvents();
+        this.props.subscribeToLivestream();
+        this.props.subscribeToAnnouncements();
         this.props.navigation.setParams({showNotifications: this.showNotifications});
     }
 
-    componentWillUnmount() {
-        this.unsubscribe();
+    registerForPushNotificationsAsync = async () => {
+        const { status: existingStatus } = await Permissions.getAsync(
+            Permissions.NOTIFICATIONS
+          );
+          let finalStatus = existingStatus;
+
+          // only ask if permissions have not already been determined, because
+          // iOS won't necessarily prompt the user a second time.
+          if (existingStatus !== 'granted') {
+            // Android remote notification permissions are granted during the app
+            // install, so this will only ask on iOS
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+          }
+
+          // Stop here if the user did not grant permissions
+          if (finalStatus !== 'granted') {
+            return;
+          }
+
+          // Get the token that uniquely identifies this device
+          let token = await Notifications.getExpoPushTokenAsync();
+          var update = {}
+          update["/expoToken"] = token;
+          var matches = token.match(/\[(.*?)\]/);
+          var deviceID = matches[1];
+
+          firebase.database().ref('deviceTokens').child(deviceID).update(update);
     }
 
-    onRefUpdate = (snapshot) => {
-        const data = snapshot.val();
-        this.setState({
-            livestreamID: data.event
-        });
-    }
-        
     _renderHeader = () => {
         return (
             <ImageBackground
@@ -75,16 +96,32 @@ export default class HomeScreen extends Component {
     };
 
     render() {
-        if(this.state.livestreamID === ''){
+        if(this.props.livestream === ''){
             return (<View><StatusBar barStyle='light-content'/></View>);
         }else{
             return (
                 <View style={{flex: 1}}>
                     <StatusBar barStyle='light-content'/>
                     { this._renderHeader() }
-                    <LiveStreamViewer videoID={this.state.livestreamID}></LiveStreamViewer>
+                    <LiveStreamViewer videoID={this.props.livestream}></LiveStreamViewer>
                 </View>
             );
         }
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+      livestream: state.livestream
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        subscribeToEvents: () => dispatch(listenToEvents()),
+        subscribeToLivestream: () => dispatch(listenToLivestream()),
+        subscribeToAnnouncements: () => dispatch(listenToAnnouncements())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

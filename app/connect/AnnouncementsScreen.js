@@ -1,18 +1,17 @@
 import * as moment from 'moment';
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
 import {
     Text,
-    Body, 
-    Card, 
+    Body,
+    Card,
     Container,
     Content,
-    CardItem 
+    CardItem
 } from 'native-base';
-import firebase from '../config/firebase';
+import Image from 'react-native-scalable-image';
 import { connect } from 'react-redux';
-import { fetchAnnouncements } from '../redux/actions/announcements';
-import { Permissions, Notifications } from 'expo';
+const { width, height } = Dimensions.get('window');
 
 class AnnouncementsScreen extends Component {
 
@@ -31,44 +30,7 @@ class AnnouncementsScreen extends Component {
 
     constructor(props){
         super(props);
-    }
-
-    componentDidMount() {
-        this.props.fetchAnnouncements();
-        this.registerForPushNotificationsAsync();
-     }
-
-    registerForPushNotificationsAsync = async () => {
-        const { status: existingStatus } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-          );
-          let finalStatus = existingStatus;
-        
-          // only ask if permissions have not already been determined, because
-          // iOS won't necessarily prompt the user a second time.
-          if (existingStatus !== 'granted') {
-            // Android remote notification permissions are granted during the app
-            // install, so this will only ask on iOS
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-          }
-        
-          // Stop here if the user did not grant permissions
-          if (finalStatus !== 'granted') {
-            return;
-          }
-        
-          // Get the token that uniquely identifies this device
-          let token = await Notifications.getExpoPushTokenAsync();
-          var update = {}
-          update["/expoToken"] = token;
-          var matches = token.match(/\[(.*?)\]/);
-          var deviceID = matches[1];
-
-          firebase.database()
-            .ref('deviceTokens')
-            .child(deviceID)
-            .update(update);
+        this.announcements = [];
     }
 
     _renderItem = ({item}) => {
@@ -89,9 +51,20 @@ class AnnouncementsScreen extends Component {
     };
 
     render() {
-        if(this.props.isLoading) {
-            return(<View></View>);
+        if(this.props.announcements.length == 0) {
+            return(
+              <View>
+                  <Image
+                      maxWidth={width}
+                      maxHeight={height}
+                      source={require('../assets/empty_notifications.png')}>
+                  </Image>
+              </View>
+            );
         }else{
+          this.announcements = this.props.announcements.sort(function(a,b){
+            return new Date(b.timestamp) - new Date(a.timestamp);
+          });
             return(
                 <FlatList
                     automaticallyAdjustContentInsets={false}
@@ -104,19 +77,14 @@ class AnnouncementsScreen extends Component {
     }
 }
 
-const styles = StyleSheet.create({ });
-
 const mapStateToProps = (state) => {
-    return { 
+    return {
         announcements: state.announcements,
-        isLoading: state.announcementsIsLoading,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchAnnouncements: () => dispatch(fetchAnnouncements()),
-    };
+    return { };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnnouncementsScreen);

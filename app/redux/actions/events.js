@@ -1,39 +1,28 @@
-
 import firebase from "../../config/firebase";
 
-const firestore = firebase.firestore();
+const database = firebase.database();
 
-export function eventsHasError(bool) {
-    return {
-        type: 'EVENTS_HAS_ERRORED',
-        hasErrored: bool,
-    };
-};
+const EVENT_ADDED = 'EVENT_ADDED';
 
-export function eventsIsLoading(bool) {
-    return {
-        type: 'EVENTS_IS_LOADING',
-        isLoading: bool,
-    };
-};
+function addEvent(event){
+  return {
+    type: EVENT_ADDED,
+    event
+  };
+}
 
-export function eventsFetchDataSuccess(events) {
-    return {
-        type: 'EVENTS_FETCH_DATA_SUCCESS',
-        events
-    };
-};
-
-
-export function fetchEvents() {
+export function listenToEvents() {
     return (dispatch) => {
-        firestore
-        .collection('events')
-        .get()
-        .then(function(querySnpshot){
-            querySnpshot.forEach(function(doc){
-
-            });
+        database.ref('events').on('child_added', function(snap){
+          const { date, time, title } = snap.val();
+          var momentDate = new Date(date);
+          const event = {
+            key: snap.key,
+            date: momentDate,
+            time: time,
+            title: title
+          }
+          dispatch(addEvent(event));
         });
     };
 };

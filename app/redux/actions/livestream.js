@@ -1,25 +1,20 @@
-export function livestreamLoadingError(bool) {
-    return {
-        type: 'LIVESTREAM_HAS_ERRORED',
-        hasErrored: bool,
-    };
-};
+import firebase from "../../config/firebase";
+const database = firebase.database();
 
-export function livestreamIsLoading(bool) {
-    return {
-        type: 'LIVESTREAM_IS_LOADING',
-        isLoading: bool,
-    };
-};
+const LIVESTREAM_UPDATED = 'LIVESTREAM_UPDATED';
 
-export function livestreamLoding() {
-    return (dispatch) => {
-        dispatch(livestreamIsLoading(true));
-    };
-};
+function updateLivestream(id){
+  return {
+    type: LIVESTREAM_UPDATED,
+    id
+  };
+}
 
-export function livestreamFinishedLoading()  {
-    return (dispatch) => {
-        dispatch(livestreamIsLoading(false));
-    };
-};
+export function listenToLivestream() {
+  return (dispatch) => {
+    database.ref('livestream').on('value', function(snap){
+      const { event } = snap.val();
+      dispatch(updateLivestream(event));
+    })
+  }
+}

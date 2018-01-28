@@ -2,8 +2,9 @@ import { combineReducers } from 'redux';
 import { chapter, chapterIsLoading, chapterHasErrored } from './chapter';
 import { books, booksHasErrored, booksIsLoading } from './books';
 import { courses, coursesIsLoading, coursesHasErrored } from './courses';
-import { livestreamLoadingError, livestreamLoading} from './livestream';
-import { announcements, announcementsHasErrored, announcementsIsLoading } from './announcements';
+import { livestream } from './livestream';
+import { announcements } from './announcements';
+import { events } from './events';
 
 export default combineReducers({
     chapter,
@@ -15,9 +16,7 @@ export default combineReducers({
     courses,
     coursesIsLoading,
     coursesHasErrored,
-    livestreamLoadingError,
-    livestreamLoading,
     announcements,
-    announcementsHasErrored,
-    announcementsIsLoading
+    events,
+    livestream
 });

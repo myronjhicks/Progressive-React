@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { chapterFetchData } from '../redux/actions/chapter';
 import { fetchBooks } from '../redux/actions/books';
 import HTMLView from 'react-native-htmlview';
-import firebase from '../config/firebase';
 import NetworkErrorComponent from '../components/NetworkErrorComponent';
 
 class BibleScreen extends Component {
@@ -71,7 +70,7 @@ class BibleScreen extends Component {
 
     _footerView = () => {
         return (
-            <View 
+            <View
                 style={{
                     flex: 1,
                     justifyContent: 'space-between',
@@ -83,7 +82,7 @@ class BibleScreen extends Component {
                     <Button
                         rounded={true}
                         transparent
-                        onPress={this._previousChapter} 
+                        onPress={this._previousChapter}
                         dark>
                         <Icon name='arrow-back' />
                     </Button>
@@ -93,7 +92,7 @@ class BibleScreen extends Component {
                     </Button>
                     <Button
                         transparent
-                        onPress={this._nextChapter} 
+                        onPress={this._nextChapter}
                         dark>
                         <Icon name='arrow-forward' />
                     </Button>
@@ -116,8 +115,8 @@ class BibleScreen extends Component {
                     <HTMLView
                         value={chapter.text}
                         stylesheet={styles}
-                        addLineBreaks={false}   
-                        renderNode={this._renderNode}                 
+                        addLineBreaks={false}
+                        renderNode={this._renderNode}
                     />
                     <View>
                         <Text style={styles.copyright}>{chapter.copyright}</Text>
@@ -159,7 +158,7 @@ class BibleScreen extends Component {
     };
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
     },
@@ -209,17 +208,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BibleScreen);
-
-/**
- * <Header style={styles.header}>
-                    <Body style={styles.headerBody}>
-                        <Button full transparent dark
-                            onPress={this._showChapterSelector}>
-                            <Text>
-                                <Text style={{color: 'white'}}>{chapter.parent.book.name} </Text>
-                                <Text style={{color: 'white'}}>{chapter.chapter}</Text>
-                            </Text>
-                        </Button>
-                    </Body>
-                </Header>
- */

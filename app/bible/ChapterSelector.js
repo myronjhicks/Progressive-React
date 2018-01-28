@@ -8,7 +8,6 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { chapterFetchData } from '../redux/actions/chapter';
-import { fetchBooks } from '../redux/actions/books';
 
 const numColumns = 5;
 const size = Dimensions.get('window').width/numColumns;
@@ -134,17 +133,17 @@ class ChapterSelector extends Component {
     render() {
         return (
             <Container>
-                
+
                 <Content>
                     <Segment>
-                        <Button 
+                        <Button
                             first
                             style={{borderColor: 'black', backgroundColor: 'lightgray'}}
                             onPress={_ => this._onSegmentPress(1)}
                             active={this.state.selectedSegmentIndex === 1 ? true : false}>
                             <Text style={{color: 'black'}}>Book</Text>
                         </Button>
-                        <Button 
+                        <Button
                             style={{borderColor: 'black', backgroundColor: 'lightgray'}}
                             last
                             onPress={_ => this._onSegmentPress(2)}
