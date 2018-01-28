@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { StatusBar, View, ImageBackground, Platform } from 'react-native';
-import { Button, Icon, Text } from 'native-base';
-import Expo from 'expo';
-import Image from 'react-native-scalable-image';
+import { View } from 'react-native';
+import { Button, Icon } from 'native-base';
+import { Permissions, Notifications }  from 'expo';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
+import ProgressiveHeader from '../components/ProgressiveHeader';
 import { connect } from 'react-redux';
 import { listenToEvents } from '../redux/actions/events';
 import { listenToLivestream } from '../redux/actions/livestream';
 import { listenToAnnouncements } from '../redux/actions/announcements';
 import { listenToPrayers } from '../redux/actions/prayers';
-import { Permissions, Notifications } from 'expo';
 import firebase from '../config/firebase';
 
 class HomeScreen extends Component {
@@ -32,10 +31,6 @@ class HomeScreen extends Component {
 
     showNotifications = () => {
         this.props.navigation.navigate('Notifications');
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     componentDidMount() {
@@ -77,38 +72,13 @@ class HomeScreen extends Component {
           firebase.database().ref('deviceTokens').child(deviceID).update(update);
     }
 
-    _renderHeader = () => {
-        return (
-            <ImageBackground
-                style={{
-                    flex: 0.5,
-                    alignItems: 'center',
-                }}
-                source={require('../assets/backdrop.jpg')}>
-                <View>
-                    <Image
-                        style={{marginTop: 20, marginBottom: 20, alignSelf: 'center'}}
-                        maxWidth={250}
-                        maxHeight={100}
-                        source={require('../assets/pbc_logo_trans.png')}>
-                    </Image>
-                </View>
-            </ImageBackground>
-        );
-    };
-
     render() {
-        if(this.props.livestream === ''){
-            return (<View><StatusBar barStyle='light-content'/></View>);
-        }else{
-            return (
-                <View style={{flex: 1}}>
-                    <StatusBar barStyle='light-content'/>
-                    { this._renderHeader() }
-                    <LiveStreamViewer videoID={this.props.livestream}></LiveStreamViewer>
-                </View>
-            );
-        }
+      return (
+        <View style={{flex: 1}}>
+          <ProgressiveHeader />
+          <LiveStreamViewer videoID={this.props.livestream}></LiveStreamViewer>
+        </View>
+      );
     }
 }
 
