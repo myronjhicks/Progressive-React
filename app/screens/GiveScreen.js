@@ -4,7 +4,7 @@ import Image from 'react-native-scalable-image';
 import {
     Container, Header, Title, Left,
     Right, Icon, Button, Text,
-    Content, Body, Card, CardItem 
+    Content, Body, Card, CardItem
 } from 'native-base';
 import { maybeOpenURL } from "react-native-app-link";
 
@@ -25,14 +25,13 @@ export default class GiveScreen extends Component {
           )
         }
       };
-    
+
      _handleCancel = () => {
         this.props.navigation.goBack();
         };
 
     componentDidMount() {
         this.props.navigation.setParams({goBack: this._handleCancel});
-        StatusBar.setBarStyle('light-content', false);
     }
 
     _openGivelify = () => {
@@ -50,7 +49,7 @@ export default class GiveScreen extends Component {
                 source={require('../assets/give.jpg')}>
                 <View style={styles.container}>
                     <Text style={styles.tagline}>See what God can do through your generosity!</Text>
-                    <Button full 
+                    <Button full
                         style={styles.giveButton}
                         onPress={_ => this._openGivelify()}><Text>Give Now</Text></Button>
                 </View>
