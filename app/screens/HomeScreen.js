@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { listenToEvents } from '../redux/actions/events';
 import { listenToLivestream } from '../redux/actions/livestream';
 import { listenToAnnouncements } from '../redux/actions/announcements';
+import { listenToPrayers } from '../redux/actions/prayers';
 import { Permissions, Notifications } from 'expo';
 import firebase from '../config/firebase';
 
@@ -42,6 +43,7 @@ class HomeScreen extends Component {
         this.props.subscribeToEvents();
         this.props.subscribeToLivestream();
         this.props.subscribeToAnnouncements();
+        this.props.subscribeToPrayers();
         this.props.navigation.setParams({showNotifications: this.showNotifications});
     }
 
@@ -120,7 +122,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         subscribeToEvents: () => dispatch(listenToEvents()),
         subscribeToLivestream: () => dispatch(listenToLivestream()),
-        subscribeToAnnouncements: () => dispatch(listenToAnnouncements())
+        subscribeToAnnouncements: () => dispatch(listenToAnnouncements()),
+        subscribeToPrayers: () => dispatch(listenToPrayers())
+
     };
 };
 

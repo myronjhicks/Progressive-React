@@ -5,6 +5,7 @@ import { courses, coursesIsLoading, coursesHasErrored } from './courses';
 import { livestream } from './livestream';
 import { announcements } from './announcements';
 import { events } from './events';
+import { prayers } from './prayers';
 
 export default combineReducers({
     chapter,
@@ -18,5 +19,6 @@ export default combineReducers({
     coursesHasErrored,
     announcements,
     events,
-    livestream
+    livestream,
+    prayers,
 });

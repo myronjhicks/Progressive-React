@@ -1,8 +1,9 @@
 import firebase from "../../config/firebase";
 
-const database = firebase.database();
+const ref = firebase.database().ref('events');
 
 const EVENT_ADDED = 'EVENT_ADDED';
+const EVENT_REMOVED = 'EVENT_REMOVED';
 
 function addEvent(event){
   return {
@@ -11,9 +12,16 @@ function addEvent(event){
   };
 }
 
+function removeEvent(id){
+  return {
+    type: EVENT_REMOVED,
+    id
+  }
+}
+
 export function listenToEvents() {
     return (dispatch) => {
-        database.ref('events').on('child_added', function(snap){
+        ref.on('child_added', function(snap){
           const { date, time, title } = snap.val();
           var momentDate = new Date(date);
           const event = {
@@ -24,5 +32,8 @@ export function listenToEvents() {
           }
           dispatch(addEvent(event));
         });
+        ref.on('child_removed', function(snap){
+          dispatch(removeEvent(snap.key));
+        })
     };
 };
