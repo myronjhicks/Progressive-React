@@ -58,6 +58,10 @@ export function listenToPrayers() {
     };
 };
 
+export function updateClaps(key, numClaps){
+  ref.child(key).update({claps: numClaps});
+};
+
 export function submitPrayer(data) {
   const { name, content, date }  = data;
   ref.push({

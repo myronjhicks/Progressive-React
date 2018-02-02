@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { updateClaps } from '../redux/actions/prayers';
 
 export default class ClapButton extends Component {
 
@@ -24,6 +25,7 @@ export default class ClapButton extends Component {
       let count = this.state.count;
       let claps = this.state.claps;
       count++;
+      updateClaps(this.props.postKey, count);
       claps.push(count);
       this.setState({count, claps});
   }
@@ -52,10 +54,6 @@ export default class ClapButton extends Component {
         <Image style={styles.clapIcon}  source={require('../assets/prayed.png')} />
       );
     }
-  }
-
-  componentWillUnmount() {
-    this.props.updateClaps(this.props.postKey, this.state.count);
   }
 
   render() {

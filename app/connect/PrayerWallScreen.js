@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, FlatList, TextInput} from 'react-native';
 import { Left, Right, Container, Content, Body, Item, Input, Text, Button, Card, CardItem} from 'native-base';
-import firebase from '../config/firebase';
 import moment from 'moment';
 import Image from 'react-native-scalable-image';
 import EmptyPrayerList from './EmptyPrayerList';
@@ -29,7 +28,6 @@ class PrayerWallScreen extends Component {
             name: '',
         }
         this.prayers = [];
-        this.updateClaps = this.updateClaps.bind(this);
     }
 
     _onChangePrayerText = (prayerText) => {
@@ -90,11 +88,6 @@ class PrayerWallScreen extends Component {
         );
     };
 
-    updateClaps(key, numPraying) {
-      let ref = firebase.database().ref('prayerwall').child(key);
-      ref.update({ claps: numPraying});
-    }
-
     _renderItem = ({item}) => {
         return (
             <Card>
@@ -111,7 +104,7 @@ class PrayerWallScreen extends Component {
                         <Body><Text style={{textAlign: 'right'}}>{item.claps}</Text></Body>
                       </Right>
                   </CardItem>
-                  <ClapButton count={item.claps ? item.claps : 0} updateClaps={this.updateClaps} postKey={item.key}/>
+                  <ClapButton count={item.claps ? item.claps : 0} postKey={item.key}/>
                 </View>
             </Card>
         );
