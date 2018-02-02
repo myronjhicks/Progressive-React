@@ -7,6 +7,7 @@ import Image from 'react-native-scalable-image';
 import EmptyPrayerList from './EmptyPrayerList';
 import { connect } from 'react-redux';
 import { submitPrayer } from '../redux/actions/prayers';
+import ClapButton from '../components/ClapButton';
 
 class PrayerWallScreen extends Component {
 
@@ -28,6 +29,7 @@ class PrayerWallScreen extends Component {
             name: '',
         }
         this.prayers = [];
+        this.updateClaps = this.updateClaps.bind(this);
     }
 
     _onChangePrayerText = (prayerText) => {
@@ -80,7 +82,7 @@ class PrayerWallScreen extends Component {
                         onChangeText={this._onChangeNameText}
                         ref={input => { this.nameTextInput = input }}
                     />
-                    <Button full onPress={this._onSubmitPrayer}>
+                    <Button style={styles.submitButton} full onPress={this._onSubmitPrayer}>
                         <Text>Post to Wall!</Text>
                     </Button>
                 </View>
@@ -88,21 +90,29 @@ class PrayerWallScreen extends Component {
         );
     };
 
-
+    updateClaps(key, numPraying) {
+      let ref = firebase.database().ref('prayerwall').child(key);
+      ref.update({ claps: numPraying});
+    }
 
     _renderItem = ({item}) => {
         return (
             <Card>
-                <CardItem>
-                    <Body>
-                        <Text>{item.content}</Text>
-                    </Body>
-                </CardItem>
-                <CardItem footer>
-                    <Left><Text>{item.name}</Text></Left>
-                    <Body />
-                    <Right><Text>{moment(item.date).format('ll')}</Text></Right>
-                </CardItem>
+                <View>
+                  <CardItem>
+                      <Body>
+                          <Text>{item.content}</Text>
+                      </Body>
+                  </CardItem>
+                  <CardItem footer>
+                      <Left><Text>{item.name}</Text></Left>
+                      <Body><Text>{moment(item.date).format('ll')}</Text></Body>
+                      <Right>
+                        <Body><Text style={{textAlign: 'right'}}>{item.claps}</Text></Body>
+                      </Right>
+                  </CardItem>
+                  <ClapButton count={item.claps ? item.claps : 0} updateClaps={this.updateClaps} postKey={item.key}/>
+                </View>
             </Card>
         );
     }
@@ -165,6 +175,9 @@ const styles = StyleSheet.create({
     },
     prayerContainer: {
         height: 150
+    },
+    submitButton: {
+        backgroundColor: '#c6ac71'
     }
 });
 

@@ -52,7 +52,7 @@ export const Tabs = TabNavigator({
         screen: MoreInfoStack,
         navigationOptions: {
             tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => 
+            tabBarIcon: ({tintColor}) =>
                 <Icon name="dots-three-horizontal" size={24} color={tintColor} />
         }
     }
