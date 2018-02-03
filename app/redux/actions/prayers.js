@@ -1,29 +1,25 @@
 import firebase from "../../config/firebase";
-
+import * as types from '../config/types';
 const ref = firebase.database().ref('prayerwall');
-
-const PRAYER_ADDED = 'PRAYER_ADDED';
-const PRAYER_REMOVED = 'PRAYER_REMOVED';
-const PRAYER_UPDATED = 'PRAYER_UPDATED';
 
 
 function addPrayer(prayer){
   return {
-    type: PRAYER_ADDED,
+    type: types.PRAYER_ADDED,
     prayer
   };
 }
 
 function removePrayer(id){
   return {
-    type: PRAYER_REMOVED,
+    type: types.PRAYER_REMOVED,
     id
   }
 }
 
 function updatePrayer(prayer) {
   return {
-    type: PRAYER_UPDATED,
+    type: types.PRAYER_UPDATED,
     prayer
   };
 }

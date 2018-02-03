@@ -1,21 +1,26 @@
 import firebase from "../../config/firebase";
 const database = firebase.database();
-
-const ANNOUNCEMENT_ADDED = 'ANNOUNCEMENT_ADDED';
-const ANNOUNCEMENT_REMOVED = 'ANNOUNCEMENT_REMOVED';
+import * as types from '../config/types';
 
 function addAnnouncement(announcement){
   return {
-    type: ANNOUNCEMENT_ADDED,
+    type: types.ANNOUNCEMENT_ADDED,
     announcement
   };
 }
 
 function removeAnnouncement(id) {
   return {
-    type: ANNOUNCEMENT_REMOVED,
+    type: types.ANNOUNCEMENT_REMOVED,
     id
   }
+}
+
+function updateAnnouncement(announcement) {
+  return {
+    type: types.ANNOUNCEMENT_UPDATED,
+    announcement
+  };
 }
 
 export function listenToAnnouncements() {
@@ -30,8 +35,16 @@ export function listenToAnnouncements() {
       dispatch(addAnnouncement(announcement));
     });
     database.ref('announcements').on('child_removed', function(snap){
-      console.log(snap.key);
       dispatch(removeAnnouncement(snap.key))
+    });
+    database.ref('announcements').on('child_changed', function(snap){
+      const { text, timestamp } = snap.val();
+      const announcement = {
+        key: snap.key,
+        text: text,
+        timestamp: timestamp
+      };
+      dispatch(updateAnnouncement(announcement));
     });
   };
 }

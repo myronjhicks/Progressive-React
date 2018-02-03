@@ -1,22 +1,22 @@
-const BIBLE_API = 'https://storage.googleapis.com/progressivechicago-94ed9.appspot.com/NASB/CHAPTERS';
+import * as types from '../config/types';
 
 export function chapterHasError(bool) {
     return {
-        type: 'CHAPTER_HAS_ERRORED',
+        type: types.CHAPTER_HAS_ERRORED,
         hasErrored: bool,
     };
 };
 
 export function chapterIsLoading(bool) {
     return {
-        type: 'CHAPTER_IS_LOADING',
+        type: types.CHAPTER_IS_LOADING,
         isLoading: bool,
     };
 };
 
 export function chapterFetchDataSuccess(chapter) {
     return {
-        type: 'CHAPTER_FETCH_DATA_SUCCESS',
+        type: types.CHAPTER_FETCH_DATA_SUCCESS,
         chapter
     };
 };
@@ -25,7 +25,7 @@ export function chapterFetchData(chapterId) {
     return (dispatch) => {
         dispatch(chapterIsLoading(true));
         var formattedChapterId = chapterId.replace(":", "_");
-        var url = `${BIBLE_API}/${formattedChapterId}.json`;
+        var url = `${types.BIBLE_API}/${formattedChapterId}.json`;
         fetch(url)
             .then(response => {
                 if(!response.ok) {

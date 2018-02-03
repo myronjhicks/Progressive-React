@@ -1,20 +1,18 @@
+import * as types from '../config/types';
 import firebase from "../../config/firebase";
 
 const ref = firebase.database().ref('events');
 
-const EVENT_ADDED = 'EVENT_ADDED';
-const EVENT_REMOVED = 'EVENT_REMOVED';
-
 function addEvent(event){
   return {
-    type: EVENT_ADDED,
+    type: types.EVENT_ADDED,
     event
   };
 }
 
 function removeEvent(id){
   return {
-    type: EVENT_REMOVED,
+    type: types.EVENT_REMOVED,
     id
   }
 }

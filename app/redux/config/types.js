@@ -1,0 +1,31 @@
+export const ANNOUNCEMENT_ADDED = 'ANNOUNCEMENT_ADDED';
+export const ANNOUNCEMENT_REMOVED = 'ANNOUNCEMENT_REMOVED';
+export const ANNOUNCEMENT_UPDATED = 'ANNOUNCEMENT_UPDATED';
+
+export const BIBLE_API = 'https://storage.googleapis.com/progressivechicago-94ed9.appspot.com/NASB/CHAPTERS';
+export const BOOKS_URL = 'https://storage.googleapis.com/progressivechicago-94ed9.appspot.com/NASB/nasb-books.json';
+
+export const BOOKS_HAS_ERRORED = 'BOOKS_HAS_ERRORED';
+export const BOOKS_IS_LOADING = 'BOOKS_IS_LOADING';
+export const BOOKS_FETCH_DATA_SUCCESS = 'BOOKS_FETCH_DATA_SUCCESS';
+
+export const CHAPTER_HAS_ERRORED = 'CHAPTER_HAS_ERRORED';
+export const CHAPTER_IS_LOADING = 'CHAPTER_IS_LOADING';
+export const CHAPTER_FETCH_DATA_SUCCESS = 'CHAPTER_FETCH_DATA_SUCCESS';
+
+export const COURSES_HAS_ERRORED = 'COURSES_HAS_ERRORED';
+export const COURSES_IS_LOADING = 'COURSES_IS_LOADING';
+export const COURSES_FETCH_DATA_SUCCESS = 'COURSES_FETCH_DATA_SUCCESS';
+
+export const EVENT_ADDED = 'EVENT_ADDED';
+export const EVENT_REMOVED = 'EVENT_REMOVED';
+
+export const LIVESTREAM_UPDATED = 'LIVESTREAM_UPDATED';
+
+export const PRAYER_ADDED = 'PRAYER_ADDED';
+export const PRAYER_REMOVED = 'PRAYER_REMOVED';
+export const PRAYER_UPDATED = 'PRAYER_UPDATED';
+
+export const VIDEO_ADDED = 'VIDEO_ADDED';
+export const VIDEO_REMOVED = 'VIDEO_REMOVED';
+export const VIDEO_UPDATED = 'VIDEO_UPDATED';

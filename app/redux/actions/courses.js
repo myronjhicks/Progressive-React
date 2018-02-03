@@ -1,25 +1,25 @@
-
+import * as types from '../config/types';
 import firebase from "../../config/firebase";
 
 const database = firebase.database();
 
 export function coursesHasError(bool) {
     return {
-        type: 'COURSES_HAS_ERRORED',
+        type: types.COURSES_HAS_ERRORED,
         hasErrored: bool,
     };
 };
 
 export function coursesIsLoading(bool) {
     return {
-        type: 'COURSES_IS_LOADING',
+        type: types.COURSES_IS_LOADING,
         isLoading: bool,
     };
 };
 
 export function coursesFetchDataSuccess(courses) {
     return {
-        type: 'COURSES_FETCH_DATA_SUCCESS',
+        type: types.COURSES_FETCH_DATA_SUCCESS,
         courses
     };
 };

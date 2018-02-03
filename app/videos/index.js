@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Expo from 'expo';
-import { Platform } from 'react-native';
 import { StackNavigator } from "react-navigation";
 import VideoScreen from './VideoScreen';
 import VideoDetail from './VideoDetail';
@@ -23,7 +21,7 @@ export const VideoStack = StackNavigator({
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#2e2e2e',
-            } 
+            }
         }
     }
 });

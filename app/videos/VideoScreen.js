@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { StatusBar, View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import Image from 'react-native-scalable-image';
 import {
-    Icon, 
-    Button, 
+    Icon,
+    Button,
     Text,
-    Body, 
-    Card, 
-    CardItem 
+    Body,
+    Card,
+    CardItem
 } from 'native-base';
 import VideoCardComponent from '../components/VideoCardComponent';
-import firebase from '../config/firebase';
+import { connect } from 'react-redux';
 const { width, height } = Dimensions.get('window');
 const equalWidth =  (width / 2 );
 
-export default class VideoScreen extends Component {
+class VideoScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state
@@ -29,38 +29,6 @@ export default class VideoScreen extends Component {
 
     constructor(props){
         super(props);
-        this.dbRef = firebase.database().ref('videos');
-        this.unsubscribe = null;
-        this.state = {
-            loading: true,
-            videos: [],
-        }
-    }
-
-    componentDidMount() {
-        this.unsubscribe = this.dbRef.orderByChild('date').on('value', this.onRefUpdate);
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
-    onRefUpdate = (snapshot) => {
-        const videos = [];
-        snapshot.forEach( (childSnapshot) => {
-            const data = childSnapshot.val();
-            videos.push({
-                key: childSnapshot.key,
-                date: data.date,
-                title: data.title,
-                speaker: data.speaker,
-                id: data.id,
-                tags: []
-            });
-        });
-
-        var reveresed = videos.reverse();
-        this.setState({loading: false, videos:  reveresed});
     }
 
     _showVideoDetail = (video) => {
@@ -76,12 +44,13 @@ export default class VideoScreen extends Component {
     }
 
     render() {
+        const videos = this.props.videos.reverse();
         return(
             <View style={styles.container}>
                 <StatusBar barStyle='light-content'/>
                 <FlatList
                     automaticallyAdjustContentInsets={false}
-                    data={this.state.videos}
+                    data={videos}
                     keyExtractor = {item => item.key}
                     renderItem={this._renderCard}
                     numColumns={2}
@@ -89,11 +58,19 @@ export default class VideoScreen extends Component {
             </View>
         );
     }
-} 
+}
+
+const mapStateToProps = (state) => {
+    return {
+        videos: state.videos,
+    };
+};
+
+export default connect(mapStateToProps)(VideoScreen);
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
+        flex: 1,
         flexDirection: 'column',
     },
     videoCard: {

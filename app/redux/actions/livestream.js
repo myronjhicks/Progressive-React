@@ -1,11 +1,12 @@
 import firebase from "../../config/firebase";
+import * as types from '../config/types';
+
 const database = firebase.database();
 
-const LIVESTREAM_UPDATED = 'LIVESTREAM_UPDATED';
 
 function updateLivestream(id){
   return {
-    type: LIVESTREAM_UPDATED,
+    type: types.LIVESTREAM_UPDATED,
     id
   };
 }
