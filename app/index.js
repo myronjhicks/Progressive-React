@@ -15,6 +15,8 @@ import PrayerWallScreen from './connect/PrayerWallScreen';
 import VideoScreen from './videos/VideoScreen';
 import VideoDetail from './videos/VideoDetail';
 
+import BlogScreen from './screens/BlogScreen';
+
 import { MoreInfoStack } from './more/moreRouter';
 
 import ChapterSelector from './bible/ChapterSelector';
@@ -83,6 +85,9 @@ export const Root = StackNavigator({
     },
     VideoDetail: {
         screen: VideoDetail,
+    },
+    Blog: {
+      screen: BlogScreen,
     }
 }, {
     mode: 'modal',

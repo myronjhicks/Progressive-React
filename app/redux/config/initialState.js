@@ -1,6 +1,7 @@
 export default {
   announcements: [],
   books: [],
+  blogPosts: [],
   chapter: {},
   courses: [],
   events: [],

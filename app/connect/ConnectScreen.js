@@ -34,7 +34,7 @@ class ConnectScreen extends Component {
     }
 
     _showAnnouncements = () => {
-        this.props.navigation.navigate('Notifications');
+        this.props.navigation.navigate('Blog');
     };
 
     _showPrayerWall = () => {
@@ -76,7 +76,7 @@ class ConnectScreen extends Component {
                             <TouchableOpacity onPress={_ => this._showAnnouncements()}>
                                 <CardItem>
                                     <Body>
-                                        <Text>Announcements</Text>
+                                        <Text>{"Pastor's Desk"}</Text>
                                     </Body>
                                 </CardItem>
                             </TouchableOpacity>

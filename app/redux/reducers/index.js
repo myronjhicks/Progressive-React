@@ -7,6 +7,7 @@ import { announcements } from './announcements';
 import { events } from './events';
 import { prayers } from './prayers';
 import { videos } from './videos';
+import { blogPosts } from './blogPosts';
 
 export default combineReducers({
     chapter,
@@ -22,5 +23,6 @@ export default combineReducers({
     events,
     livestream,
     prayers,
-    videos
+    videos,
+    blogPosts,
 });

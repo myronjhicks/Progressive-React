@@ -173,17 +173,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChapterSelector);
-
-/**
- * <Header style={{backgroundColor: '#2e2e2e'}}>
-                    <Left>
-                        <Button transparent onPress={this._handleCancel}>
-                            <Text style={{color: 'white'}}>Cancel</Text>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Text style={{color: 'white'}}>{this.state.navigationTitle}</Text>
-                    </Body>
-                    <Right />
-                </Header>
- */
