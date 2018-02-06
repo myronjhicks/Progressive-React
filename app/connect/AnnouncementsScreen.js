@@ -13,6 +13,35 @@ import Image from 'react-native-scalable-image';
 import { connect } from 'react-redux';
 const { width, height } = Dimensions.get('window');
 
+const Announcement = ({announcement}) => {
+  return (
+    <View>
+        <Card>
+            <CardItem>
+                <Body>
+                    <Text style={{fontSize: 16,}}>{announcement.text}</Text>
+                </Body>
+            </CardItem>
+            <CardItem footer>
+                <Text>{moment.unix(announcement.timestamp).fromNow()}</Text>
+            </CardItem>
+        </Card>
+    </View>
+  );
+}
+
+const EmptyAnnouncement = () => {
+  return (
+    <View>
+        <Image
+            maxWidth={width}
+            maxHeight={height}
+            source={require('../assets/empty_notifications.png')}>
+        </Image>
+    </View>
+  );
+}
+
 class AnnouncementsScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -33,47 +62,32 @@ class AnnouncementsScreen extends Component {
         this.announcements = [];
     }
 
-    _renderItem = ({item}) => {
-        return (
-            <View>
-                <Card>
-                    <CardItem>
-                        <Body>
-                            <Text style={{fontSize: 16,}}>{item.text}</Text>
-                        </Body>
-                    </CardItem>
-                    <CardItem footer>
-                        <Text>{moment.unix(item.timestamp).fromNow()}</Text>
-                    </CardItem>
-                </Card>
-            </View>
-        );
-    };
+    _renderHeader = () => {
+      return (
+        <NotificationForm />
+      );
+    }
 
     render() {
         if(this.props.announcements.length == 0) {
             return(
-              <View>
-                  <Image
-                      maxWidth={width}
-                      maxHeight={height}
-                      source={require('../assets/empty_notifications.png')}>
-                  </Image>
-              </View>
-            );
-        }else{
-          this.announcements = this.props.announcements.sort(function(a,b){
-            return new Date(b.timestamp) - new Date(a.timestamp);
-          });
-            return(
-                <FlatList
-                    automaticallyAdjustContentInsets={false}
-                    data={this.props.announcements}
-                    keyExtractor = {item => item.key}
-                    renderItem={this._renderItem}
-                />
+              <EmptyAnnouncement />
             );
         }
+
+        this.announcements = this.props.announcements.sort(function(a,b){
+          return new Date(b.timestamp) - new Date(a.timestamp);
+        });
+
+        return(
+          <FlatList
+            automaticallyAdjustContentInsets={false}
+            data={this.props.announcements}
+            keyExtractor = {item => item.key}
+            renderItem={({item}) => <Announcement announcement={item} /> }
+          />
+        );
+
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Button, Icon } from 'native-base';
 import { Permissions, Notifications }  from 'expo';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
@@ -70,9 +70,9 @@ class HomeScreen extends Component {
           let token = await Notifications.getExpoPushTokenAsync();
           var update = {}
           update["/expoToken"] = token;
+          update["/platform"] = Platform.OS;
           var matches = token.match(/\[(.*?)\]/);
           var deviceID = matches[1];
-
           firebase.database().ref('deviceTokens').child(deviceID).update(update);
     }
 

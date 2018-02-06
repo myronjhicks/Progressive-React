@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Linking } from 'react-native';
-import { Container, Header, Title, Body, Left, Right, Text, Content } from 'native-base';
+import { Container, Header, Title, Body, Left, Right, Text, Content, Button, Icon } from 'native-base';
 import { List, ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { loginUser, logout } from '../redux/actions/authentication';
 
-export default class MoreListView extends Component {
+class MoreListView extends Component {
 
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state
@@ -13,8 +15,29 @@ export default class MoreListView extends Component {
             headerStyle: {
                 backgroundColor: '#2e2e2e',
             },
+            headerRight: ( params.loggedIn &&
+                <Button transparent light >
+                    <Icon name="log-in" size={24} onPress={params.login}/>
+                </Button>
+            ),
         }
       };
+
+    constructor(props){
+      super(props);
+    }
+
+    componentDidMount() {
+      this.props.navigation.setParams({login: this.login, logout: this.logout});
+    }
+
+    login = () => {
+      this.props.navigation.navigate('Login');
+    }
+
+    logout = () => {
+      this.props.logout();
+    }
 
     openUrl = (url) => {
         Linking.openUrl(url);
@@ -44,6 +67,22 @@ export default class MoreListView extends Component {
             {id: 7, title: "Leave Feedback", route: 'Feedback', icon: 'thumb-up'},
         ];
 
+        if(this.props.auth.loggedIn){
+          routes.push({
+            id: 8,
+            title: "Admin",
+            route: "Admin",
+            icon: "settings"
+          });
+        }else{
+            routes.push({
+                id: 8,
+                title: "Admin",
+                route: "Login",
+                icon: "settings"
+              });
+        }
+
         return(
             <Container>
                 <Content style={{backgroundColor: '#f6f8fa'}}>
@@ -65,3 +104,17 @@ export default class MoreListView extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+      auth: state.auth
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logout: () => dispatch(logout())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoreListView);

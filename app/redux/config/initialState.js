@@ -1,4 +1,7 @@
 export default {
+  auth: {
+    loggedIn: false
+  },
   announcements: [],
   books: [],
   blogPosts: [],

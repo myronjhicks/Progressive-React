@@ -8,8 +8,10 @@ import { events } from './events';
 import { prayers } from './prayers';
 import { videos } from './videos';
 import { blogPosts } from './blogPosts';
+import { auth } from './auth';
 
 export default combineReducers({
+    auth,
     chapter,
     chapterIsLoading,
     chapterHasErrored,

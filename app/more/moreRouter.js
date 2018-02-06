@@ -9,6 +9,8 @@ import AboutScreen from "./AboutStreen";
 import BelieveScreen from './BelieveScreen';
 import GiveScreen from '../screens/GiveScreen';
 import FeedbackScreen from './FeedbackScreen';
+import LoginScreen from '../screens/LoginScreen';
+import AdminScreen from './AdminScreen';
 
 export const MoreInfoStack = StackNavigator({
     MoreList: {
@@ -32,6 +34,12 @@ export const MoreInfoStack = StackNavigator({
     Feedback: {
         screen: FeedbackScreen,
     },
+    Login: {
+      screen: LoginScreen
+    },
+    Admin: {
+      screen: AdminScreen
+    }
 }, {
     mode: 'card',
     headerMode: 'none',

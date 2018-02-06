@@ -4,8 +4,10 @@ import { Provider } from 'react-redux';
 import { Expo, AppLoading, Font } from "expo";
 import { Root } from './app/index.js';
 import configureStore from './app/redux/store/configureStore';
+import { subscribeToAuthState } from './app/redux/actions/authentication';
 
 const store = configureStore();
+store.dispatch(subscribeToAuthState());
 
 export default class App extends Component {
 
