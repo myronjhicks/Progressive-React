@@ -7,13 +7,23 @@ export default class NotificationForm extends Component {
     super(props);
   }
 
+  submit = () => {
+    this.props.onSubmit();
+  }
+
   render() {
     return (
       <View padding-12 bg-white flex-1 style={{height: 250}}>
         <Text centerH center black text50 marginB-10>Send Notification</Text>
-        <TextInput text50  placeholder="title" dark10 />
-        <TextArea  text50  placeholder="body" dark10 />
-        <Button fullWidth text70 white background-yellow label="Send Now" />
+        <TextInput text50 dark10 
+          placeholder="Notification Title" 
+          onChangeText={this.props.onChangeTitle}
+          ref={element => (this.titleTextInput = element)}/>
+        <TextArea  text50 dark10
+          placeholder="Notification Body" 
+          onChangeText={this.props.onChangeBody}
+          ref={element => (this.bodyTextInput = element)}/>
+        <Button onPress={this.submit} fullWidth text70 white background-yellow label="Send Now" />
       </View>
     );
   }

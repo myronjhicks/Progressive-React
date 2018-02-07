@@ -9,8 +9,9 @@ import AboutScreen from "./AboutStreen";
 import BelieveScreen from './BelieveScreen';
 import GiveScreen from '../screens/GiveScreen';
 import FeedbackScreen from './FeedbackScreen';
-import LoginScreen from '../screens/LoginScreen';
-import AdminScreen from './AdminScreen';
+import LoginScreen from '../admin/LoginScreen';
+import AdminScreen from '../admin/AdminScreen';
+import WorshipGuideComponent from '../components/WorshipGuideComponent';
 
 export const MoreInfoStack = StackNavigator({
     MoreList: {
@@ -39,6 +40,9 @@ export const MoreInfoStack = StackNavigator({
     },
     Admin: {
       screen: AdminScreen
+    },
+    Guide: {
+        screen: WorshipGuideComponent
     }
 }, {
     mode: 'card',

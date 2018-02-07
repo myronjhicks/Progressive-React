@@ -2,22 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, TextInput, Text, Colors, Toast, Card, Button } from 'react-native-ui-lib';
 import { logout } from '../redux/actions/authentication';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, Alert } from 'react-native';
 import firebase from '../config/firebase';
 import { Icon } from 'native-base';
+import LiveStreamForm from './LiveStreamForm';
 import NotificationForm from '../components/NotificationForm';
 
 const backIcon = require('../assets/icons/chevron_back.png');
-
-const LiveStreamInput = () => {
-  return (
-    <View padding-12 bg-white flex-1 style={{height: 180}}>
-      <Text centerH center black text50 marginB-10>Update LiveStream</Text>
-      <TextInput text50  placeholder="Event ID" dark10 />
-      <Button fullWidth text70 white background-yellow label="Update" />
-    </View>
-  );
-}
 
 class AdminScreen extends Component {
 
@@ -25,7 +16,17 @@ class AdminScreen extends Component {
     super(props);
     this.state = {
       devices: 0,
+      livestreamID: '',
+      notificationTitle: '',
+      notificationBody: '',
+      showToast: false,
+      toastMessage: '',
     }
+    this.updateLivestream = this.updateLivestream.bind(this);
+    this.onChangeLivestreamText = this.onChangeLivestreamText.bind(this);
+    this.sendNotification = this.sendNotification.bind(this);
+    this.onChangeNotificationBody = this.onChangeNotificationBody.bind(this);
+    this.onChangeNotificationTitle = this.onChangeNotificationTitle.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +36,56 @@ class AdminScreen extends Component {
       .then(function(snapshot){
         return snapshot.numChildren();
       }).then(devices => this.setState({devices}));
+  }
+
+  sendNotification = () => {
+    if(this.state.notificationBody == '' || this.state.notificationTitle == '') {
+      this.setState({
+        showToast: true,
+        toastMessage: "Notifications must have a Title and Body"
+      });
+    }else{
+      Alert.alert('Are you sure?', 'This cannot be undone.', [
+        {text: 'Send', onPress: () => {
+          console.log('Sending: ' + this.state.notificationBody);
+        }},
+        {text: 'Cancel', onPress: () => console.log('Cancelling')}
+      ],
+      { cancelable: false }
+      );
+    }
+  }
+
+  updateLivestream = () => {
+    var update = {};
+    if(this.state.livestreamID != ''){
+      update["/event"] = this.state.livestreamID;
+      firebase.database().ref('livestream').update(update).then(() => {
+        this.setState({
+          showToast: true,
+          toastMessage: 'Livestream update successfull'
+        });
+      }).catch((error) => {
+        this.setState({
+          showToast: true,
+          toastMessage: 'Something went wrong. Try again later.'
+        });
+      });
+    }
+  }
+
+  onChangeLivestreamText = (eventId) => {
+    this.setState({
+      livestreamID: eventId
+    });
+  }
+
+  onChangeNotificationTitle = (title) => {
+    this.setState({notificationTitle: title});
+  }
+
+  onChangeNotificationBody = (body) => {
+    this.setState({notificationBody: body});
   }
 
   _handleCancel = () => {
@@ -65,6 +116,11 @@ class AdminScreen extends Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
+          <Toast
+            message={this.state.toastMessage}
+            allowDismiss
+            onDismiss={() => this.setState({showToast: false, toastMessage: ''})}
+            visible={this.state.showToast} />
           <ScrollView
             horizontal
             height={100}
@@ -79,11 +135,17 @@ class AdminScreen extends Component {
               </View>
             </Card>
           </ScrollView>
-          <Card containerStyle={{marginBottom: 20}}>
-            <LiveStreamInput />
-          </Card>
+
+          <LiveStreamForm 
+            containerStyle={{marginBottom: 20}} 
+            onChangeText={this.onChangeLivestreamText}
+            onSubmit={this.updateLivestream}/>
+
           <Card>
-            <NotificationForm />
+            <NotificationForm 
+              onChangeTitle={this.onChangeNotificationTitle}
+              onChangeBody={this.onChangeNotificationBody}
+              onSubmit={this.sendNotification} />
           </Card>
         </ScrollView>
     );
