@@ -46,7 +46,7 @@ export default class EventCard extends Component {
                           </View>
                           <View style={{flexGrow: 1}}>
                               <Text style={{fontWeight: 'bold', margin: 2, fontSize: 20}}>{event.title}</Text>
-                              <Text style={{color: '#404040', marginBottom: 10, marginLeft: 2, fontSize: 14}}>{event.info}</Text>
+                              <Text style={{color: '#404040', marginBottom: 10, marginLeft: 2, fontSize: 14}}>{event.location}</Text>
                               <Text style={{marginLeft: 2, fontSize: 14, color: '#404040'}}>{event.time}</Text>
                           </View>
                       </View>

@@ -2,13 +2,44 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, TextInput, Text, Colors, Toast, Card, Button } from 'react-native-ui-lib';
 import { logout } from '../redux/actions/authentication';
-import { ScrollView, StyleSheet, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Alert, FlatList, Dimensions, Image } from 'react-native';
 import firebase from '../config/firebase';
 import { Icon } from 'native-base';
-import LiveStreamForm from './LiveStreamForm';
-import NotificationForm from '../components/NotificationForm';
+import { NavigationActions } from 'react-navigation';
+import BackButton from '../components/BackButton';
+
+const { height, width } = Dimensions.get('window');
+const itemWidth = (width - 60) / 2;
+const itemHeight = (height) / 6;
 
 const backIcon = require('../assets/icons/chevron_back.png');
+
+const actions = [
+  {
+    key: 1,
+    name: 'Notification',
+    image: require('../assets/icons/send_notification.png'),
+    path: 'NotificationScreen',
+  },
+  {
+    key: 2,
+    name: 'Calendar',
+    image: require('../assets/icons/calendar.png'),
+    path: 'CalendarScreen',
+  },
+  {
+    key: 3,
+    name: 'Videos',
+    image: require('../assets/icons/videos.png'),
+    path: 'Videos',
+  },
+  {
+    key: 4,
+    name: 'Corporate',
+    image: require('../assets/icons/corporate.png'),
+    path: 'Corporate',
+  }
+];
 
 class AdminScreen extends Component {
 
@@ -16,44 +47,53 @@ class AdminScreen extends Component {
     super(props);
     this.state = {
       devices: 0,
+      iosCount: 0,
+      androidCount: 0,
       livestreamID: '',
-      notificationTitle: '',
-      notificationBody: '',
       showToast: false,
       toastMessage: '',
+      actions: [],
     }
     this.updateLivestream = this.updateLivestream.bind(this);
     this.onChangeLivestreamText = this.onChangeLivestreamText.bind(this);
-    this.sendNotification = this.sendNotification.bind(this);
-    this.onChangeNotificationBody = this.onChangeNotificationBody.bind(this);
-    this.onChangeNotificationTitle = this.onChangeNotificationTitle.bind(this);
+    this.routeTo = this.routeTo.bind(this);
   }
+
 
   componentDidMount() {
     this.props.navigation.setParams({loggedIn: this.props.auth.loggedIn, logoutAdmin: this.logout, goBack: this._handleCancel});
     firebase.database().ref('deviceTokens')
       .once('value')
       .then(function(snapshot){
-        return snapshot.numChildren();
-      }).then(devices => this.setState({devices}));
+        let stats = {};
+        var ios = 0;
+        var android = 0;
+        stats.devices = snapshot.numChildren();
+        snapshot.forEach(function(snap){
+          var data = snap.val();
+          if(data.platform){
+            if(data.platform == 'ios'){
+              ios++;
+            }else{
+              android++;
+            }
+          }
+        });
+        stats.ios = ios;
+        stats.android = android;
+        return stats;
+      }).then((stats) => {
+        this.setState({
+          devices: stats.devices,
+          iosCount: stats.ios,
+          androidCount: stats.android,
+          actions: actions
+        });
+      }).catch(error => console.log(error));
   }
 
-  sendNotification = () => {
-    if(this.state.notificationBody == '' || this.state.notificationTitle == '') {
-      this.setState({
-        showToast: true,
-        toastMessage: "Notifications must have a Title and Body"
-      });
-    }else{
-      Alert.alert('Are you sure?', 'This cannot be undone.', [
-        {text: 'Send', onPress: () => {
-          console.log('Sending: ' + this.state.notificationBody);
-        }},
-        {text: 'Cancel', onPress: () => console.log('Cancelling')}
-      ],
-      { cancelable: false }
-      );
-    }
+  routeTo = ({item}) => {
+    this.props.navigation.navigate(item.path);
   }
 
   updateLivestream = () => {
@@ -80,16 +120,8 @@ class AdminScreen extends Component {
     });
   }
 
-  onChangeNotificationTitle = (title) => {
-    this.setState({notificationTitle: title});
-  }
-
-  onChangeNotificationBody = (body) => {
-    this.setState({notificationBody: body});
-  }
-
   _handleCancel = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.dispatch(NavigationActions.back())
   };
 
   logout = () => {
@@ -105,7 +137,7 @@ class AdminScreen extends Component {
         backgroundColor: '#2e2e2e',
       },
       headerLeft: (
-        <Button onPress={params.goBack} link linkColor={Colors.white} iconStyle={{marginLeft: 8, width: 20, height: 20}} iconSource={backIcon} />
+        <BackButton onPress={params.goBack} />
       ),
       headerRight: (
         <Button onPress={params.logoutAdmin} link linkColor={Colors.white} label="Logout" labelStyle={{marginRight: 8}} />
@@ -113,18 +145,12 @@ class AdminScreen extends Component {
     }
   };
 
-  render() {
+  renderStats = () => {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-          <Toast
-            message={this.state.toastMessage}
-            allowDismiss
-            onDismiss={() => this.setState({showToast: false, toastMessage: ''})}
-            visible={this.state.showToast} />
-          <ScrollView
+      <ScrollView
             horizontal
             height={100}
-            style={{marginBottom: 20, padding: 10}}
+            style={{marginLeft: 5, marginBottom: 20, padding: 10, marginTop: 5}}
             showsHorizontalScrollIndicator={false}>
             <Card shadowType="white10" key={0} width={100} containerStyle={{marginRight: 20}}>
               <View padding-15>
@@ -134,27 +160,63 @@ class AdminScreen extends Component {
                 <Text center text80 dark30>Installs</Text>
               </View>
             </Card>
+            <Card shadowType="white10" key={1} width={100} containerStyle={{marginRight: 20}}>
+              <View padding-15>
+                <Text center text50 dark30>
+                  {this.state.iosCount}
+                </Text>
+                <Text center text80 dark30>iOS</Text>
+              </View>
+            </Card>
+            <Card shadowType="white10" key={2} width={100} containerStyle={{marginRight: 20}}>
+              <View padding-15>
+                <Text center text50 dark30>
+                  {this.state.androidCount}
+                </Text>
+                <Text center text80 dark30>Android</Text>
+              </View>
+            </Card>
           </ScrollView>
+    );
+  }
 
-          <LiveStreamForm 
-            containerStyle={{marginBottom: 20}} 
-            onChangeText={this.onChangeLivestreamText}
-            onSubmit={this.updateLivestream}/>
+  renderFooter = () => {
+    return (
+      <View padding-15>
+        <Text center text50 dark30>
+          
+        </Text>
+      </View>
+    )
+  }
 
-          <Card>
-            <NotificationForm 
-              onChangeTitle={this.onChangeNotificationTitle}
-              onChangeBody={this.onChangeNotificationBody}
-              onSubmit={this.sendNotification} />
-          </Card>
-        </ScrollView>
+  render() {
+    return (
+      <ScrollView contentContainerStyle={styles.container}>
+        <FlatList 
+          data={this.state.actions}
+          numColumns={2}
+          ListHeaderComponent={this.renderStats}
+          ListFooterComponent={this.renderFooter}
+          renderItem={({item}) => (
+            <Card shadowType="white10" key={item.key} width={itemWidth} 
+              height={itemHeight} containerStyle={{margin: 15}}
+              onPress={_ => this.routeTo({item})}>
+              <View padding-15 centerH>
+                <Image source={item.image} style={{height: 40, width: 40, marginBottom: 10}} />
+                <Text center text50 dark30>
+                  {item.name}
+                </Text>
+              </View>
+            </Card>
+          )}/>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
     backgroundColor: Colors.white,
   },
 });

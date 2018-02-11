@@ -12,6 +12,7 @@ import FeedbackScreen from './FeedbackScreen';
 import LoginScreen from '../admin/LoginScreen';
 import AdminScreen from '../admin/AdminScreen';
 import WorshipGuideComponent from '../components/WorshipGuideComponent';
+import { AdminStack } from '../admin/index';
 
 export const MoreInfoStack = StackNavigator({
     MoreList: {
@@ -39,7 +40,7 @@ export const MoreInfoStack = StackNavigator({
       screen: LoginScreen
     },
     Admin: {
-      screen: AdminScreen
+      screen: AdminStack
     },
     Guide: {
         screen: WorshipGuideComponent

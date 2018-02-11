@@ -14,7 +14,6 @@ export default class NotificationForm extends Component {
   render() {
     return (
       <View padding-12 bg-white flex-1 style={{height: 250}}>
-        <Text centerH center black text50 marginB-10>Send Notification</Text>
         <TextInput text50 dark10 
           placeholder="Notification Title" 
           onChangeText={this.props.onChangeTitle}
