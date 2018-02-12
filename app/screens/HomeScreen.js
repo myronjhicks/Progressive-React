@@ -105,6 +105,9 @@ class HomeScreen extends Component {
           }
         var latestVideo = this.props.videos.filter(a => a.key == this.props.livestream)
         if(latestVideo.length) { latestVideo = latestVideo[0] }
+        this.props.videos.sort(function(a,b){
+            return new Date(b.date) - new Date(a.date);
+        });
         return (
             <View style={{flex: 1}}>
                 <ImageBackground
