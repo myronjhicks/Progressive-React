@@ -21,7 +21,7 @@ export default class VideoDetail extends Component {
     }
 
     render() {
-        const { key, date, title, speaker, tags, id } = this.props.navigation.state.params;
+        const { key, date, title, speaker, id } = this.props.navigation.state.params;
         return(
             <View style={styles.container}>
                 <StatusBar barStyle='light-content'/>
@@ -31,7 +31,6 @@ export default class VideoDetail extends Component {
                     <Text style={styles.info}>{title}</Text>
                     <Text style={styles.infoSmall}>{speaker}</Text>
                     <Text style={styles.infoSmall}>{date}</Text>
-                    <Text style={styles.tags}>{tags.join(' ')}</Text>
                     <View style={styles.bottomContainer}>
 
                     </View>

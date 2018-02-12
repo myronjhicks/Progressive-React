@@ -14,8 +14,8 @@ function updateLivestream(id){
 export function listenToLivestream() {
   return (dispatch) => {
     database.ref('livestream').on('value', function(snap){
-      const { event } = snap.val();
-      dispatch(updateLivestream(event));
+      const { event, videoKey } = snap.val();
+      dispatch(updateLivestream(videoKey));
     })
   }
 }

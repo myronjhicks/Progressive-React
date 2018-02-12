@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import Expo from 'expo';
+import { StackNavigator } from "react-navigation";
 import MoreListView from "./MoreListView";
 import HistoryScreen from "./HistoryScreen";
 import ShareScreen from "./ShareScreen";
 import AboutScreen from "./AboutStreen";
 import BelieveScreen from './BelieveScreen';
-import GiveScreen from '../screens/GiveScreen';
 import FeedbackScreen from './FeedbackScreen';
 import LoginScreen from '../admin/LoginScreen';
-import AdminScreen from '../admin/AdminScreen';
 import WorshipGuideComponent from '../components/WorshipGuideComponent';
 import { AdminStack } from '../admin/index';
 
@@ -29,9 +25,6 @@ export const MoreInfoStack = StackNavigator({
     },
     Share: {
         screen: ShareScreen,
-    },
-    Give: {
-        screen: GiveScreen,
     },
     Feedback: {
         screen: FeedbackScreen,

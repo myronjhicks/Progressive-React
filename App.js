@@ -15,11 +15,9 @@ export default class App extends Component {
     super();
     this.state = { isReady: false };
   }
-
   componentWillMount() {
     this.loadFonts();
   }
-
   async loadFonts() {
     await Font.loadAsync({
             'Roboto': require('native-base/Fonts/Roboto.ttf'),
@@ -27,14 +25,10 @@ export default class App extends Component {
           });
     this.setState({ isReady: true });
   }
-
+  
   render() {
-    if (!this.state.isReady) {
-      return <AppLoading />;
-    }
     return (
       <View style={{flex: 1}}>
-        <StatusBar barStyle='light-content'/>
         <Provider store={store}>
             <Root></Root>
         </Provider>

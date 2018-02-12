@@ -18,11 +18,6 @@ export default class GiveScreen extends Component {
             headerStyle: {
                 backgroundColor: '#2e2e2e',
             },
-            headerLeft: (
-              <Button light transparent onPress={params.goBack}>
-                  <Icon name="arrow-back" size={24} />
-              </Button>
-          )
         }
       };
 

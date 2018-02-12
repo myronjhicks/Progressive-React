@@ -36,18 +36,18 @@ export const Tabs = TabNavigator({
             tabBarIcon: ({tintColor}) => <Icon name="book" size={24} color={tintColor} />
         }
     },
+    Give: {
+        screen: GiveScreen,
+        navigationOptions: {
+            tabBarLabel: ' ',
+            tabBarIcon: ({tintColor}) => <Icon name="credit" size={24} color={tintColor} />
+        }
+    },
     Connect: {
         screen: ConnectScreen,
         navigationOptions: {
             tabBarLabel: ' ',
             tabBarIcon: ({tintColor}) => <Icon name="share" size={24} color={tintColor} />
-        }
-    },
-    Videos: {
-        screen: VideoScreen,
-        navigationOptions: {
-            tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => <Icon name="tv" size={24} color={tintColor} />
         }
     },
     MoreInfo: {
