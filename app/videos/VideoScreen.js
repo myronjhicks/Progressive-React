@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
-import { StatusBar, View, FlatList, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
-import Image from 'react-native-scalable-image';
-import {
-    Icon,
-    Button,
-    Text,
-    Body,
-    Card,
-    CardItem
-} from 'native-base';
-import VideoCardComponent from '../components/VideoCardComponent';
+import { View, StyleSheet } from 'react-native';
+import VideoListComponent from './VideoListComponent';
 import { connect } from 'react-redux';
-const { width, height } = Dimensions.get('window');
-const equalWidth =  (width / 2 );
 
 class VideoScreen extends Component {
 
@@ -29,33 +18,17 @@ class VideoScreen extends Component {
 
     constructor(props){
         super(props);
+        this._showVideoDetail = this._showVideoDetail.bind(this);
     }
 
     _showVideoDetail = (video) => {
         this.props.navigation.navigate('VideoDetail', { ...video });
     }
 
-    _renderCard = ({item}) => {
-        return(
-            <TouchableOpacity onPress={_ => this._showVideoDetail(item)}>
-                <VideoCardComponent video={item} />
-            </TouchableOpacity>
-        );
-    }
-
     render() {
         const videos = this.props.videos.reverse();
         return(
-            <View style={styles.container}>
-                <StatusBar barStyle='light-content'/>
-                <FlatList
-                    automaticallyAdjustContentInsets={false}
-                    data={videos}
-                    keyExtractor = {item => item.key}
-                    renderItem={this._renderCard}
-                    numColumns={2}
-                />
-            </View>
+            <VideoListComponent videos={videos} onPress={_ => this._showVideoDetail} />
         );
     }
 }
@@ -67,14 +40,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(VideoScreen);
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-    },
-    videoCard: {
-        flex: 1,
-        flexDirection: 'column'
-    }
-});

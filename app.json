@@ -4,9 +4,9 @@
     "description": "Mobile App inteded for the members of Progressive Baptist Church.",
     "slug": "ProgressiveChicago",
     "privacy": "public",
-    "sdkVersion": "24.0.0",
+    "sdkVersion": "25.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/pbc_icon.png",
     "splash": {
