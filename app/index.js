@@ -41,7 +41,7 @@ export const Tabs = TabNavigator({
         screen: GiveScreen,
         navigationOptions: {
             tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => (<Text centerH centerV marginT-5 text80 dark20 style={{fontWeight: 'bold', width: 40}}>GIVE</Text>)// <Icon name="credit" size={24} color={tintColor} />,
+            tabBarIcon: ({tintColor}) => (<Text marginT-5 text90 dark20 style={{fontWeight: 'bold', width: 50, textAlign: 'left'}}>GIVE</Text>)// <Icon name="credit" size={24} color={tintColor} />,
         }
     },
     Connect: {

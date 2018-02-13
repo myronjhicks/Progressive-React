@@ -10,5 +10,6 @@ export default {
   events: [],
   livestream: '',
   prayers: [],
+  worshipGuide: '',
   videos: []
 };

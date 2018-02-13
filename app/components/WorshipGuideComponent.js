@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { View, StyleSheet, WebView } from 'react-native';
 import { Button, Icon } from 'native-base';
 import firebase from '../config/firebase';
+import { connect } from 'react-redux';
+import { listenToWorshipGuide } from '../redux/actions/worshipGuide';
 
-export default class WorshipGuideComponent extends Component {
+class WorshipGuideComponent extends Component {
 
     constructor(props){
         super(props);
@@ -28,13 +30,12 @@ export default class WorshipGuideComponent extends Component {
         }
       };
 
+
+    componentWillMount() {
+        this.props.subscribeToWorshipGuide();
+    }
     componentDidMount() {
         this.props.navigation.setParams({goBack: this._handleCancel});
-        firebase.storage().ref('guides').child('WorshipGuide.pdf').getDownloadURL().then(url => {
-            this.setState({
-                guideUrl: url
-            })
-        });
     }
 
     _handleCancel = () => {
@@ -44,10 +45,7 @@ export default class WorshipGuideComponent extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <WebView
-                    bounces={false}
-                    scrollEnabled={false} 
-                    source={{ uri: this.state.guideUrl }} />
+                <WebView source={{ uri: this.props.worshipGuide }} />
             </View>
         )
     }
@@ -58,3 +56,17 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
+
+const mapStateToProps = (state) => {
+    return {
+      worshipGuide: state.worshipGuide,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        subscribeToWorshipGuide: () => dispatch(listenToWorshipGuide()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WorshipGuideComponent);

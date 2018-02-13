@@ -62,7 +62,7 @@ class MoreListView extends Component {
             {id: 1, title: "About", route: 'About', icon: 'info-outline'},
             {id: 3, title: "What We Believe", route: 'Believe', icon: 'info-outline'},
             {id: 4, title: "Our History", route: 'History', icon: 'highlight'},
-            {id: 9, title: "Membership Guide", route: 'Guide', icon: 'content-copy' },
+            {id: 9, title: "Worship Guide", route: 'Guide', icon: 'content-copy' },
             {id: 6, title: "Update Membership Info", url: 'https://docs.google.com/forms/d/e/1FAIpQLSdMDkN5ETQRDEQ0xmdkSqbEBKmrYOiVPks6LZ8kA3S3yxSj2A/viewform', icon: 'info'},
             {id: 7, title: "Leave Feedback", route: 'Feedback', icon: 'thumb-up'},
         ];

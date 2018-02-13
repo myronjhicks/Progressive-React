@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View, Platform, Dimensions, ImageBackground, Image, TouchableOpacity } from 'react-native';
-import { AppLoading } from "expo";
 import { Button, Icon } from 'native-base';
-import { Permissions, Notifications }  from 'expo';
+import { Permissions, Notifications, Util, Font, AppLoading }  from 'expo';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
 import ProgressiveHeader from '../components/ProgressiveHeader';
 import { connect } from 'react-redux';
@@ -38,10 +37,30 @@ class HomeScreen extends Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            updateListener: null,
+        };
     }
 
     showNotifications = () => {
         this.props.navigation.navigate('Notifications');
+    }
+
+    componentWillMount() {
+        const updateListener = Util.addNewVersionListenerExperimental(() => {
+            Alert.alert(
+                'An Update is Available',
+                'Reload the app to take advantage of the latest improvements',
+                [
+                    {text: 'Don\'t reload right now', onPress: () => {}, style: 'cancel'},
+                    {text: 'Yes, reload and update', onPress: () => {Util.reload(); } },
+                ],
+                {cancelable: false },
+            );
+        });
+        this.setState({
+            updateListener
+        })
     }
 
     componentDidMount() {
@@ -55,6 +74,12 @@ class HomeScreen extends Component {
         this.props.navigation.setParams({showNotifications: this.showNotifications});
         this._showVideoDetail = this._showVideoDetail.bind(this);
         this._onPressPlayButton = this._onPressPlayButton.bind(this);
+    }
+
+    componentWillUnmount() {
+        if(this.state.updateListener){
+            this.state.updateListener.remove();
+        }
     }
 
     registerForPushNotificationsAsync = async () => {
@@ -88,7 +113,7 @@ class HomeScreen extends Component {
     }
 
     _showVideoDetail = (video) => {
-        this.props.navigation.navigate('VideoDetail', { ...video });
+        this.props.navigation.navigate('VideoDetail', { ...video }); 
     }
 
     _onPressPlayButton = (latestVideo) => {
@@ -105,11 +130,12 @@ class HomeScreen extends Component {
             return new Date(b.date) - new Date(a.date);
         });
         return (
-                <VideoListComponent 
-                    latestVideo={latestVideo} 
-                    videos={this.props.videos} 
-                    onPress={_ => this._showVideoDetail} 
-                    onPressPlay={this._onPressPlayButton} />
+            <VideoListComponent 
+                latestVideo={latestVideo} 
+                videos={this.props.videos} 
+                onPress={_ => this._showVideoDetail} 
+                onPressPlay={this._onPressPlayButton} 
+            />
            
         );
     }

@@ -8,6 +8,7 @@ import { events } from './events';
 import { prayers } from './prayers';
 import { videos } from './videos';
 import { blogPosts } from './blogPosts';
+import { worshipGuide } from './worshipGuide';
 import { auth } from './auth';
 
 export default combineReducers({
@@ -27,4 +28,5 @@ export default combineReducers({
     prayers,
     videos,
     blogPosts,
+    worshipGuide
 });
