@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
 import { TabNavigator, StackNavigator } from "react-navigation";
-import { Button, Text, Footer, FooterTab } from "native-base";
+import { Button, Footer, FooterTab } from "native-base";
 import { NavigationComponent } from 'react-native-material-bottom-navigation'
 import Expo from 'expo';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -20,6 +20,7 @@ import BlogScreen from './screens/BlogScreen';
 import { MoreInfoStack } from './more/moreRouter';
 
 import ChapterSelector from './bible/ChapterSelector';
+import { Text } from 'react-native-ui-lib';
 
 export const Tabs = TabNavigator({
     Home: {
@@ -40,7 +41,7 @@ export const Tabs = TabNavigator({
         screen: GiveScreen,
         navigationOptions: {
             tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => <Icon name="credit" size={24} color={tintColor} />
+            tabBarIcon: ({tintColor}) => (<Text centerH centerV marginT-5 text80 dark20 style={{fontWeight: 'bold', width: 40}}>GIVE</Text>)// <Icon name="credit" size={24} color={tintColor} />,
         }
     },
     Connect: {

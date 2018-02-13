@@ -16,9 +16,6 @@ import firebase from '../config/firebase';
 import VideoListComponent from '../videos/VideoListComponent';
 const { width, height } = Dimensions.get('window');
 
-const livestreamImageSource = require('../assets/current_livestream.png');
-const playButtonSource = require('../assets/icons/playIcon.png');
-
 import { Constants, Card, Colors, Typography, Text } from 'react-native-ui-lib';
 
 class HomeScreen extends Component {
@@ -41,7 +38,6 @@ class HomeScreen extends Component {
 
     constructor(props){
         super(props);
-        this.state = { latestVideo: {} };
     }
 
     showNotifications = () => {
@@ -102,25 +98,19 @@ class HomeScreen extends Component {
     render() {
         if (!this.props.videos.length) {
             return <AppLoading />;
-          }
+        }
         var latestVideo = this.props.videos.filter(a => a.key == this.props.livestream)
         if(latestVideo.length) { latestVideo = latestVideo[0] }
         this.props.videos.sort(function(a,b){
             return new Date(b.date) - new Date(a.date);
         });
         return (
-            <View style={{flex: 1}}>
-                <ImageBackground
-                    style={{flex: 0.75, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 20}}
-                    source={livestreamImageSource}>
-                    <TouchableOpacity onPress={_ => this._onPressPlayButton(latestVideo)}>
-                        <Image source={playButtonSource} style={{width: 80, height: 80, marginBottom: 10}} />
-                    </TouchableOpacity>
-                    <Text white text50>LATEST SERMON</Text>
-                    <Text white text30>{latestVideo.title}</Text>
-                </ImageBackground>
-                <VideoListComponent videos={this.props.videos} onPress={_ => this._showVideoDetail} />
-            </View>
+                <VideoListComponent 
+                    latestVideo={latestVideo} 
+                    videos={this.props.videos} 
+                    onPress={_ => this._showVideoDetail} 
+                    onPressPlay={this._onPressPlayButton} />
+           
         );
     }
 }
