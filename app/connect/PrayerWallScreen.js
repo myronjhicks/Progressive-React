@@ -7,6 +7,7 @@ import EmptyPrayerList from './EmptyPrayerList';
 import { connect } from 'react-redux';
 import { submitPrayer } from '../redux/actions/prayers';
 import ClapButton from '../components/ClapButton';
+import PrayerCard from '../components/PrayerCard';
 
 class PrayerWallScreen extends Component {
 
@@ -127,7 +128,7 @@ class PrayerWallScreen extends Component {
                 data={this.prayers}
                 ListHeaderComponent={this._renderHeader}
                 keyExtractor={this._keyExtractor}
-                renderItem={this._renderItem}
+                renderItem={({item}) => (<PrayerCard prayer={item} />)}
             />
         );
     }

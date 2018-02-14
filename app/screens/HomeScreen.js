@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { View, Platform, Dimensions, ImageBackground, Image, TouchableOpacity } from 'react-native';
-import { Button, Icon } from 'native-base';
-import { Permissions, Notifications, Util, Font, AppLoading }  from 'expo';
-import LiveStreamViewer from '../components/LiveStreamViewer.js';
-import ProgressiveHeader from '../components/ProgressiveHeader';
+import { Platform } from 'react-native';
+import { Permissions, Notifications, Util, AppLoading }  from 'expo';
 import { connect } from 'react-redux';
 import { listenToEvents } from '../redux/actions/events';
 import { listenToLivestream } from '../redux/actions/livestream';
@@ -13,14 +10,12 @@ import { listenToVideos } from '../redux/actions/videos';
 import { listenToBlogs } from '../redux/actions/blogPosts';
 import firebase from '../config/firebase';
 import VideoListComponent from '../videos/VideoListComponent';
-const { width, height } = Dimensions.get('window');
-
-import { Constants, Card, Colors, Typography, Text } from 'react-native-ui-lib';
+import NotificationButton from '../components/NotificationButton';
 
 class HomeScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state
+        const { params = {} } = navigation.state;
         return {
             title: 'Home',
             headerTintColor: 'white',
@@ -28,14 +23,13 @@ class HomeScreen extends Component {
                 backgroundColor: '#2e2e2e',
             },
             headerRight: (
-                <Button light transparent onPress={params.showNotifications}>
-                    <Icon name="notifications" size={24} />
-                </Button>
+                <NotificationButton onPress={params.showNotifications} />
             )
-        }
-      };
+        };
+    };
 
-    constructor(props){
+    
+    constructor(props) {
         super(props);
         this.state = {
             updateListener: null,
@@ -55,12 +49,12 @@ class HomeScreen extends Component {
                     {text: 'Don\'t reload right now', onPress: () => {}, style: 'cancel'},
                     {text: 'Yes, reload and update', onPress: () => {Util.reload(); } },
                 ],
-                {cancelable: false },
+                { cancelable: false },
             );
         });
         this.setState({
             updateListener
-        })
+        });
     }
 
     componentDidMount() {

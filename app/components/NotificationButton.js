@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Colors } from 'react-native-ui-lib';
 
-const backIcon = require('../assets/icons/chevron_back.png');
+const bellIcon = require('../assets/icons/bell.png');
 
 export default class NotificationButton extends Component {
 
@@ -11,7 +11,7 @@ export default class NotificationButton extends Component {
 
     render() {
         return (
-            <Button onPress={this.props.onPress} link linkColor={Colors.white} iconStyle={{marginLeft: 8, width: 20, height: 20}} iconSource={backIcon} />
+            <Button onPress={this.props.onPress} link linkColor={Colors.white} iconStyle={{marginRight: 8, width: 20, height: 20}} iconSource={bellIcon} />
         )
     }
 }
