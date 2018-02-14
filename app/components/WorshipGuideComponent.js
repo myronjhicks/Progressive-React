@@ -17,7 +17,7 @@ class WorshipGuideComponent extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state
         return {
-            title: 'Membership Guide',
+            title: 'Worship Guide',
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#2e2e2e',

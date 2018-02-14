@@ -40,14 +40,14 @@ class HomeScreen extends Component {
         this.props.navigation.navigate('Notifications');
     }
 
-    componentWillMount() {
+    listenForUpdates() {
         const updateListener = Util.addNewVersionListenerExperimental(() => {
             Alert.alert(
                 'An Update is Available',
                 'Reload the app to take advantage of the latest improvements',
                 [
                     {text: 'Don\'t reload right now', onPress: () => {}, style: 'cancel'},
-                    {text: 'Yes, reload and update', onPress: () => {Util.reload(); } },
+                    {text: 'Yes, reload and update', onPress: () => { Util.reload(); } },
                 ],
                 { cancelable: false },
             );
@@ -58,6 +58,7 @@ class HomeScreen extends Component {
     }
 
     componentDidMount() {
+        this.listenForUpdates()
         this.registerForPushNotificationsAsync();
         this.props.subscribeToEvents();
         this.props.subscribeToLivestream();
