@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Colors } from 'react-native-ui-lib';
 
-const backIcon = require('../assets/icons/chevron_back.png');
+const backIcon = require('../../assets/icons/chevron_back.png');
 
 export default class BackButton extends Component {
 

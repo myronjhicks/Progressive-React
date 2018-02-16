@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { ScrollView, StyleSheet, FlatList, Image } from 'react-native';
 import { View, TextInput, Text, Colors, Toast, Card, Button } from 'react-native-ui-lib';
 import { connect } from 'react-redux';
-import BackButton from '../components/BackButton';
 import EventCard from '../components/EventCard';
-import AddButton from '../components/AddButton';
+import BackButton from '../components/buttons/BackButton';
+import AddButton from '../components/buttons/AddButton';
 
 class CalendarScreen extends Component {
 

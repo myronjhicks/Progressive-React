@@ -246,12 +246,3 @@ const styles = StyleSheet.create({
     marginLeft: 12
   }
 });
-
-/**
- * <MapView
-            style={{ flex: 1, height: 150}}
-            provider={PROVIDER_GOOGLE}
-            region={this.region}>  
-            <MapView.Marker coordinate={this.region} />
-          </MapView>
- */

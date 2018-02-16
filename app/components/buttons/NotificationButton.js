@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Colors } from 'react-native-ui-lib';
 
-const bellIcon = require('../assets/icons/bell.png');
+const bellIcon = require('../../assets/icons/bell.png');
 
 export default class NotificationButton extends Component {
 

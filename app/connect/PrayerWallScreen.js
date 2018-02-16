@@ -6,7 +6,6 @@ import Image from 'react-native-scalable-image';
 import EmptyPrayerList from './EmptyPrayerList';
 import { connect } from 'react-redux';
 import { submitPrayer } from '../redux/actions/prayers';
-import ClapButton from '../components/ClapButton';
 import PrayerCard from '../components/PrayerCard';
 
 class PrayerWallScreen extends Component {
@@ -88,28 +87,6 @@ class PrayerWallScreen extends Component {
             </View>
         );
     };
-
-    _renderItem = ({item}) => {
-        return (
-            <Card>
-                <View>
-                  <CardItem>
-                      <Body>
-                          <Text>{item.content}</Text>
-                      </Body>
-                  </CardItem>
-                  <CardItem footer>
-                      <Left><Text>{item.name}</Text></Left>
-                      <Body><Text>{moment(item.date).format('ll')}</Text></Body>
-                      <Right>
-                        <Body><Text style={{textAlign: 'right'}}>{item.claps}</Text></Body>
-                      </Right>
-                  </CardItem>
-                  <ClapButton count={item.claps ? item.claps : 0} postKey={item.key}/>
-                </View>
-            </Card>
-        );
-    }
 
     render() {
         if(this.props.prayers.length == 0) {

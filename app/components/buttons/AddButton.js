@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Colors } from 'react-native-ui-lib';
 
-const plusIcon = require('../assets/icons/plus.png');
+const plusIcon = require('../../assets/icons/plus.png');
 
 export default class AddButton extends Component {
 

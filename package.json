@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@shoutem/ui": "^0.23.4",
+    "antd-mobile": "^2.1.6",
     "expo": "^24.0.0",
     "firebase": "^4.8.1",
     "lodash": "^4.17.4",
@@ -32,6 +33,7 @@
     "react-native-datepicker": "^1.6.0",
     "react-native-elements": "^0.18.5",
     "react-native-htmlview": "^0.12.1",
+    "react-native-keyboard-aware-scrollview": "^2.0.0",
     "react-native-maps": "^0.19.0",
     "react-native-material-bottom-navigation": "^0.8.1",
     "react-native-pdf-view": "^0.3.2",

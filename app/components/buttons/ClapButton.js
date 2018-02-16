@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
-import { updateClaps } from '../redux/actions/prayers';
+import { updateClaps } from '../../redux/actions/prayers';
+
+const prayIconSource = require('../../assets/icons/pray.png');
+const prayedIconSource = require('../../assets/icons/prayed.png');
 
 export default class ClapButton extends Component {
 
@@ -47,11 +50,11 @@ export default class ClapButton extends Component {
   getClapIcon(){
     if(this.state.count < 1){
       return (
-        <Image style={styles.clapIcon}  source={require('../assets/pray.png')} />
+        <Image style={styles.clapIcon}  source={prayIconSource} />
       );
     }else{
       return (
-        <Image style={styles.clapIcon}  source={require('../assets/prayed.png')} />
+        <Image style={styles.clapIcon}  source={prayedIconSource} />
       );
     }
   }

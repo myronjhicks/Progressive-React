@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, ImageBackground, TouchableOpacity, Image } from 'react-native';
-import VideoCardComponent from '../components/VideoCardComponent';
+import VideoCard from '../components/VideoCard';
 import { Text } from 'react-native-ui-lib';
 const livestreamImageSource = require('../assets/current_livestream.png');
 const playButtonSource = require('../assets/icons/playIcon.png');
@@ -13,7 +13,7 @@ export default class VideoListComponent extends Component {
 
     _renderCard = ({item}) => {
         return(
-            <VideoCardComponent video={item} onPress={this.props.onPress(item)} />
+            <VideoCard video={item} onPress={this.props.onPress(item)} />
         );
     }
 

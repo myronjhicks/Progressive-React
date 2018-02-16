@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 const equalWidth =  (width - 20) / 2 ;
 const videoImageSource = require('../assets/video_image.jpg'); 
 
-export default class VideoCardComponent extends Component {
+export default class VideoCard extends Component {
     render() {
         return (
             <Card key={this.props.video.key} 

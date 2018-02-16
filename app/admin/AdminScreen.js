@@ -4,15 +4,12 @@ import { View, TextInput, Text, Colors, Toast, Card, Button } from 'react-native
 import { logout } from '../redux/actions/authentication';
 import { ScrollView, StyleSheet, Alert, FlatList, Dimensions, Image } from 'react-native';
 import firebase from '../config/firebase';
-import { Icon } from 'native-base';
 import { NavigationActions } from 'react-navigation';
-import BackButton from '../components/BackButton';
+import BackButton from '../components/buttons/BackButton';
 
 const { height, width } = Dimensions.get('window');
 const itemWidth = (width - 60) / 2;
 const itemHeight = (height) / 6;
-
-const backIcon = require('../assets/icons/chevron_back.png');
 
 const actions = [
   {

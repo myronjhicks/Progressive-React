@@ -7,39 +7,12 @@ import {
     Right, Icon, Button, Text,
     Content, Body, Card, CardItem
 } from 'native-base';
-import { connect } from 'react-redux';
-import { fetchDiscipleshipHourCourses } from '../redux/actions/courses';
-import EventCard from '../components/EventCard';
 
-class ConnectScreen extends Component {
-
-    static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state
-        return {
-            title: 'Connect',
-            headerTintColor: 'white',
-            headerStyle: {
-                backgroundColor: '#2e2e2e',
-            },
-        }
-      };
+export default class ConnectScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.events = [];
     }
-
-    componentDidMount() {
-        this.props.fetchCourses();
-    }
-
-    _showAnnouncements = () => {
-        this.props.navigation.navigate('Blog');
-    };
-
-    _showPrayerWall = () => {
-        this.props.navigation.navigate('PrayerWall');
-    };
 
     _renderItem = ({item}) => {
         return (
@@ -51,9 +24,6 @@ class ConnectScreen extends Component {
     };
 
     render() {
-        this.events = this.props.events.sort(function(a,b){
-          return new Date(a.date) - new Date(b.date);
-        });
         return (
             <Container>
                 <Content>
@@ -64,7 +34,7 @@ class ConnectScreen extends Component {
                         flexDirection: 'row'
                     }}>
                             <Card style={{backgroundColor: '#29575f'}}>
-                                <TouchableOpacity onPress={_ => this._showPrayerWall()}>
+                                <TouchableOpacity onPress={this.props.showPrayerWall}>
                                     <CardItem>
                                         <Body>
                                             <Text>Prayer Wall</Text>
@@ -73,7 +43,7 @@ class ConnectScreen extends Component {
                                 </TouchableOpacity>
                             </Card>
                         <Card style={{backgroundColor: '#660000'}}>
-                            <TouchableOpacity onPress={_ => this._showAnnouncements()}>
+                            <TouchableOpacity onPress={this.props.showPastorsBlog}>
                                 <CardItem>
                                     <Body>
                                         <Text>{"Pastor's Desk"}</Text>
@@ -109,21 +79,6 @@ class ConnectScreen extends Component {
                             </View>
                         </View>
                     </View>
-
-                    <View>
-                        <View style={{flex: 1, justifyContent: 'center', backgroundColor: '#2e2e2e', height: 40}}>
-                            <Text style={{color: 'white', fontSize: 18, textAlign: 'center'}}>UPCOMING EVENTS</Text>
-                        </View>
-                        <View>
-                            <FlatList
-                                automaticallyAdjustContentInsets={false}
-                                data={this.events}
-                                keyExtractor = {item => item.key}
-                                renderItem={({item}) => <EventCard event={item} />}
-                            />
-                        </View>
-                    </View>
-
                 </Content>
             </Container>
         );
@@ -139,20 +94,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-})
-
-
-const mapStateToProps = (state) => {
-    return {
-        courses: state.courses,
-        events: state.events,
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchCourses: () => dispatch(fetchDiscipleshipHourCourses()),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectScreen);
+});

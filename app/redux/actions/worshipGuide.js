@@ -13,7 +13,7 @@ function updateWorshipGuide(link){
 export function listenToWorshipGuide() {
   return (dispatch) => {
     database.ref('worship_guide').on('value', function(snap){
-      const { link } = snap.val();
+      const { link, html } = snap.val();
       dispatch(updateWorshipGuide(link));
     })
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { View, Assets, Constants, Card, Button, Colors, Typography, Text } from 'react-native-ui-lib';
 import moment from 'moment';
-import ClapButton from '../components/ClapButton';
+import ClapButton from '../components/buttons/ClapButton';
 
 export default class PrayerCard extends Component {
     render() {

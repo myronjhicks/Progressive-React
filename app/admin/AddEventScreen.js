@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { ScrollView, StyleSheet, Platform, DatePickerIOS } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import BackButton from '../components/BackButton';
+import BackButton from '../components/buttons/BackButton';
+import SendButton from '../components/buttons/SendButton';
+import { View, TextInput, Text, Button, Colors, Toast, Typography } from 'react-native-ui-lib';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
+import FormInput from '../components/inputs/FormInput';
+import FormSwitch from '../components/inputs/FormSwitch';
+import { submitEvent } from '../redux/actions/events';
 
 export default class AddEventScreen extends Component {
 
@@ -16,47 +22,67 @@ export default class AddEventScreen extends Component {
           headerLeft: (
             <BackButton onPress={params.goBack} />
           ),
+          headerRight: (
+            <SendButton onPress={params.saveEvent} />
+          )
         }
     };
 
     constructor(props){
         super(props)
-        this.state = { date: new Date() }
+        this.state = { 
+            title: undefined,
+            subTitle: undefined,
+            chosenDate: new Date(),
+            location: undefined,
+            isFeatured: false
+        };
     }
 
     componentDidMount(){
-        this.props.navigation.setParams({goBack: this.goBack});
+        this.props.navigation.setParams({goBack: this.goBack, saveEvent: this.saveEvent});
     }
 
     goBack = () => {
         this.props.navigation.goBack();
     }
 
+    saveEvent = () => {
+        if(this.state.title && this.state.location && this.state.chosenDate){
+            var subtitle = this.state.subTitle ? this.state.subTitle : '';
+            const event = {
+                title: this.state.title,
+                subtitle: subtitle,
+                location: this.state.location,
+                timestamp: this.state.chosenDate.getTime()
+            };
+            submitEvent(event);
+        }
+    }
+
+
+    setDate = (newDate) => {
+        // newDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+        this.setState({chosenDate: newDate});
+    }
+
     render() {
         return (
-            <DatePicker
-                style={{width: 200}}
-                date={this.state.date}
-                mode="datetime"
-                placeholder="select date"
-                format="MMMM Do YYYY, h:mm a"
-                minDate="2018-01-01"
-                maxDate="2019-12-31"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                },
-                dateInput: {
-                    marginLeft: 0
-                }
-                }}
-                onDateChange={(date) => {this.setState({date: date})}}
-            />
+            <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+                <FormInput placeholder="Title" value={this.state.title} onChangeText={(text) => this.setState({title: text})}/>
+                <FormInput placeholder="Sub Title" value={this.state.subTitle} onChangeText={(text) => this.setState({subTitle: text})} />
+                <DatePickerIOS date={this.state.chosenDate} onDateChange={this.setDate} minuteInterval={5} />
+                <FormInput placeholder="Location" value={this.state.location} onChangeText={(text) => this.setState({location: text})} />
+                <FormSwitch header="Feature" toggle={this.state.isFeatured} onValueChange={(value) => this.setState({isFeatured: value})} />
+            </KeyboardAwareScrollView>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        padding: 25,
+    }
+})

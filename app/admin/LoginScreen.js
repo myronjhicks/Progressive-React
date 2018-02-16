@@ -6,12 +6,11 @@ import { View, TextInput, Text, Button, Colors, Toast } from 'react-native-ui-li
 const { width, height } = Dimensions.get('window');
 import { singInWithEmailAndPass } from '../redux/actions/authentication';
 import firebase from '../config/firebase';
+import BackButton from '../components/buttons/BackButton';
 
 Colors.loadColors({
   yellow: '#C6AC71',
 });
-
-const backIcon = require('../assets/icons/chevron_back.png');
 
 class LoginScreen extends Component {
 
@@ -32,7 +31,7 @@ class LoginScreen extends Component {
         backgroundColor: '#2e2e2e',
       },
       headerLeft: (
-        <Button onPress={params.goBack} link linkColor={Colors.white} iconStyle={{marginLeft: 8, width: 20, height: 20}} iconSource={backIcon} />
+        <BackButton onPress={params.goBack} />
       ),
     }
   };

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, WebView } from 'react-native';
-import { Button, Icon } from 'native-base';
-import firebase from '../config/firebase';
 import { connect } from 'react-redux';
+import BackButton from '../components/buttons/BackButton';
 import { listenToWorshipGuide } from '../redux/actions/worshipGuide';
 
 class WorshipGuideComponent extends Component {
@@ -23,10 +22,8 @@ class WorshipGuideComponent extends Component {
                 backgroundColor: '#2e2e2e',
             },
             headerLeft: (
-              <Button light transparent onPress={params.goBack}>
-                  <Icon name="arrow-back" size={24} />
-              </Button>
-          )
+                <BackButton onPress={params.goBack} />
+            )
         }
       };
 

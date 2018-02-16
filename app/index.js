@@ -10,10 +10,9 @@ import HomeScreen from './screens/HomeScreen';
 import GiveScreen from './screens/GiveScreen';
 import BibleScreen from './bible/BibleScreen';
 import AnnouncementsScreen from './connect/AnnouncementsScreen';
-import ConnectScreen from './connect/ConnectScreen';
 import PrayerWallScreen from './connect/PrayerWallScreen';
-import VideoScreen from './videos/VideoScreen';
 import VideoDetail from './videos/VideoDetail';
+import ConnectTab from './connect/ConnectTab';
 
 import BlogScreen from './screens/BlogScreen';
 
@@ -45,7 +44,7 @@ export const Tabs = TabNavigator({
         }
     },
     Connect: {
-        screen: ConnectScreen,
+        screen: ConnectTab,
         navigationOptions: {
             tabBarLabel: ' ',
             tabBarIcon: ({tintColor}) => <Icon name="share" size={24} color={tintColor} />

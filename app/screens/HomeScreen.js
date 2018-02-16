@@ -10,7 +10,7 @@ import { listenToVideos } from '../redux/actions/videos';
 import { listenToBlogs } from '../redux/actions/blogPosts';
 import firebase from '../config/firebase';
 import VideoListComponent from '../videos/VideoListComponent';
-import NotificationButton from '../components/NotificationButton';
+import NotificationButton from '../components/buttons/NotificationButton';
 
 class HomeScreen extends Component {
 
@@ -31,35 +31,22 @@ class HomeScreen extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            updateListener: null,
-        };
     }
 
     showNotifications = () => {
         this.props.navigation.navigate('Notifications');
     }
 
-    listenForUpdates() {
-        const updateListener = Util.addNewVersionListenerExperimental(() => {
-            Alert.alert(
-                'An Update is Available',
-                'Reload the app to take advantage of the latest improvements',
-                [
-                    {text: 'Don\'t reload right now', onPress: () => {}, style: 'cancel'},
-                    {text: 'Yes, reload and update', onPress: () => { Util.reload(); } },
-                ],
-                { cancelable: false },
-            );
-        });
-        this.setState({
-            updateListener
-        });
+    componentWillMount() {
+        this.registerForPushNotificationsAsync();
+        this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    }
+
+    _handleNotification = (notification) => {
+        this.showNotifications();
     }
 
     componentDidMount() {
-        this.listenForUpdates()
-        this.registerForPushNotificationsAsync();
         this.props.subscribeToEvents();
         this.props.subscribeToLivestream();
         this.props.subscribeToAnnouncements();
@@ -99,6 +86,7 @@ class HomeScreen extends Component {
 
           // Get the token that uniquely identifies this device
           let token = await Notifications.getExpoPushTokenAsync();
+          console.log(token);
           var update = {}
           update["/expoToken"] = token;
           update["/platform"] = Platform.OS;

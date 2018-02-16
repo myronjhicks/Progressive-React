@@ -24,33 +24,41 @@ function updateAnnouncement(event) {
   };
 }
 
+export function submitEvent(event) {
+  const { title, subtitle, location, timestamp }  = event;
+  ref.push({
+      title: title,
+      subtitle: subtitle,
+      timestamp: timestamp,
+      location: location
+  });
+}
+
 export function listenToEvents() {
     return (dispatch) => {
         ref.on('child_added', function(snap){
-          const { date, time, title, location } = snap.val();
-          var momentDate = new Date(date);
+          const { title, subtitle, location, timestamp } = snap.val();
           const event = {
             key: snap.key,
-            date: momentDate,
-            time: time,
-            location: location,
-            title: title
-          }
+            title: title,
+            timestamp: timestamp,
+            subtitle: subtitle,
+            location: location
+          };
           dispatch(addEvent(event));
         });
         ref.on('child_removed', function(snap){
           dispatch(removeEvent(snap.key));
         });
         ref.on('child_changed', function(snap){
-          const { date, time, title, location } = snap.val();
-          var momentDate = new Date(date);
+          const { title, subtitle, location, timestamp } = snap.val();
           const event = {
             key: snap.key,
-            date: momentDate,
-            time: time,
-            location: location,
-            title: title
-          }
+            title: title,
+            timestamp: timestamp,
+            subtitle: subtitle,
+            location: location
+          };
           dispatch(updateEvent(event));
         });
     };
