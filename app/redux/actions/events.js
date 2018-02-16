@@ -17,7 +17,7 @@ function removeEvent(id){
   }
 }
 
-function updateAnnouncement(event) {
+function updateEvent(event) {
   return {
     type: types.EVENT_UPDATED,
     event
