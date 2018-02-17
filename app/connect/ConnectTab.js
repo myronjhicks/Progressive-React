@@ -45,9 +45,6 @@ class ConnectTab extends Component {
     };
 
     render() {
-        this.events = this.props.events.sort(function(a,b){
-            return new Date(a.date) - new Date(b.date);
-        });
         return (
             <Tabs tabs={tabs} initialPage={1}
                 tabBarUnderlineStyle={{backgroundColor: lightGray}}
@@ -58,7 +55,7 @@ class ConnectTab extends Component {
                     courses={this.props.courses} 
                     showPrayerWall={this._showPrayerWall} 
                     showPastorsBlog={this._showPastorsBlog} />
-                <EventListComponent events={this.events} />
+                <EventListComponent events={this.props.events} />
             </Tabs>
         );
     }

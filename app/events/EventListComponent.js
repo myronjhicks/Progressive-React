@@ -43,10 +43,16 @@ export default class EventListComponent extends Component {
     }
 
     render() {
+        this.events = [];
+        if(this.props.events.length) {
+            this.events = this.props.events.sort(function(a,b){
+                return new Date(a.timestamp) - new Date(b.timestamp);
+            });
+        }
         return (
             <FlatList
                 automaticallyAdjustContentInsets={false}
-                data={this.props.events}
+                data={this.events}
                 keyExtractor = {item => item.key}
                 ListHeaderComponent={this.state.url && this._renderHeader}
                 renderItem={({item}) => <EventCard event={item} />}
