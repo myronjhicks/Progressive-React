@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { Permissions, Notifications, Util, AppLoading }  from 'expo';
 import { connect } from 'react-redux';
 import { listenToEvents } from '../redux/actions/events';
@@ -43,7 +43,15 @@ class HomeScreen extends Component {
     }
 
     _handleNotification = (notification) => {
-        this.showNotifications();
+        const { title, body } = notification.data;
+        Alert.alert(`${title}`, `${body}`, [
+            {text: 'Show', onPress: () => {
+                this.showNotifications();
+            }},
+            {text: 'Close'}
+          ],
+          { cancelable: false }
+          );
     }
 
     componentDidMount() {
@@ -86,7 +94,6 @@ class HomeScreen extends Component {
 
           // Get the token that uniquely identifies this device
           let token = await Notifications.getExpoPushTokenAsync();
-          console.log(token);
           var update = {}
           update["/expoToken"] = token;
           update["/platform"] = Platform.OS;
