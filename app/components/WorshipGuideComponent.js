@@ -4,7 +4,9 @@ import { View, Text } from 'react-native-ui-lib';
 import { connect } from 'react-redux';
 import BackButton from '../components/buttons/BackButton';
 import { listenToWorshipGuide } from '../redux/actions/worshipGuide';
-import { Tabs, Accordion, List } from 'antd-mobile';
+import Tabs from 'antd-mobile/lib/tabs';
+import Accordion from 'antd-mobile/lib/accordion';
+import List from 'antd-mobile/lib/list';
 import _ from 'lodash';
 
 const tabs = [
