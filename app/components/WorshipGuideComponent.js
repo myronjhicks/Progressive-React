@@ -219,6 +219,15 @@ const FastGuideComponent = () => {
                     );
                 })}
             </Accordion>
+            <View style={styles.container}>
+                <Text marginB-12 style={{color: '#660000', fontSize: 20, fontWeight: 'bold'}}>Dietary Restrictions (give up a little to get more of God)</Text>
+                <Text text90 marginB-12>
+                    We are refraining from: All meat (except fish and seafood), Sugar (and items with added sugar), Dairy, Alcohol, Bread.{'\n\n'}
+                    We are eating much of: Fish, Seafood, Honey, Whole Grains, Lentils, Rice, Quinoa, Fruit, Vegetables.{'\n\n'}
+                    Whatever is not listed, please use your prayerful discretion.{'\n\n'}
+                    <Text style={styles.subHeader}>Every Tuesday and Thursday we are consuming no meat at all.</Text>
+                </Text>
+            </View>
         </ScrollView>
     );
 }
