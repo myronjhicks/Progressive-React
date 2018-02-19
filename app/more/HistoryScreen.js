@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { FlatList, View, WebView } from 'react-native';
+import { FlatList, WebView } from 'react-native';
 import {
     Container, Header, Title, Left,
-    Right, Icon, Button, Text,
+    Right, Icon, Button,
     Content, Body, Card, CardItem 
 } from 'native-base';
+import { View, Text } from 'react-native-ui-lib';
+import BackButton from '../components/buttons/BackButton';
 
 const urls = [
     {
@@ -34,10 +36,8 @@ export default class HistoryScreen extends Component {
                 backgroundColor: '#2e2e2e',
             },
             headerLeft: (
-              <Button light transparent onPress={params.goBack}>
-                  <Icon name="arrow-back" size={24} />
-              </Button>
-          )
+                <BackButton onPress={params.goBack} />
+            )
         }
       };
 

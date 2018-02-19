@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableHighlight, TextInput } from 'react-native';
-import { Button, Text, Input, Item, Icon } from 'native-base';
+import { StyleSheet, TouchableHighlight } from 'react-native';
+import { Button, Input, Item, Icon } from 'native-base';
+import { View, TextInput, Text } from 'react-native-ui-lib';
 import firebase from '../config/firebase';
+import BackButton from '../components/buttons/BackButton';
 
 
 export default class FeedbackScreen extends Component {
@@ -15,9 +17,7 @@ export default class FeedbackScreen extends Component {
                 backgroundColor: '#2e2e2e',
             },
             headerLeft: (
-              <Button light transparent onPress={params.goBack}>
-                  <Icon name="arrow-back" size={24} />
-              </Button>
+                <BackButton onPress={params.goBack} />
           )
         }
       };

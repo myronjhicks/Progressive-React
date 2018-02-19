@@ -110,7 +110,6 @@ class BibleScreen extends Component {
         if( !chapter.text ) { return <View><Text>Loading...</Text></View>; }
             return(
                 <Container style={styles.container}>
-                <StatusBar barStyle='light-content'/>
                 <Content ref={c => this._content = c}>
                     <HTMLView
                         value={chapter.text}

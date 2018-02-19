@@ -2,28 +2,23 @@ import React, { Component } from "react";
 import {
   StatusBar,
   StyleSheet,
-  View,
   Dimensions,
   SafeAreaView,
   ImageBackground
 } from "react-native";
 import Image from "react-native-scalable-image";
 import {
-  Container,
-  Header,
-  Title,
-  Left,
-  Right,
-  Icon,
   Button,
-  Text,
+  Container,
   Content,
   Body,
   Card,
   CardItem,
   Segment
 } from "native-base";
+import { View, Text } from 'react-native-ui-lib';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import BackButton from '../components/buttons/BackButton';
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / 150;
@@ -43,10 +38,8 @@ export default class AboutScreen extends Component {
             backgroundColor: '#2e2e2e',
         },
         headerLeft: (
-          <Button light transparent onPress={params.goBack}>
-              <Icon name="arrow-back" size={24} />
-          </Button>
-      )
+          <BackButton onPress={params.goBack} />
+        ),
     }
   };
 

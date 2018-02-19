@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, ImageBackground } from 'react-native';
+import { StyleSheet, FlatList, ImageBackground } from 'react-native';
 import Image from 'react-native-scalable-image';
-import {
-    Container, Header, Title, Left,
-    Right, Icon, Button, Text,
-    Content, Body, Card, CardItem 
-} from 'native-base';
+import { Container, Content } from 'native-base';
+import { View, Text } from 'react-native-ui-lib';
 import { List, ListItem } from 'react-native-elements';
+import BackButton from '../components/buttons/BackButton';
 
 
 export default class BelieveScreen extends Component {
@@ -20,9 +18,7 @@ export default class BelieveScreen extends Component {
                 backgroundColor: '#2e2e2e',
             },
             headerLeft: (
-              <Button light transparent onPress={params.goBack}>
-                  <Icon name="arrow-back" size={24} />
-              </Button>
+                <BackButton onPress={params.goBack} />
           )
         }
       };

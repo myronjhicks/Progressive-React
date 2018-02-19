@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { View, Text } from 'react-native-ui-lib';
 import Image from 'react-native-scalable-image';
 
 

@@ -1,8 +1,7 @@
 import * as moment from 'moment';
 import React, { Component } from 'react';
-import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, FlatList, Dimensions } from 'react-native';
 import {
-    Text,
     Body,
     Card,
     Container,
@@ -11,6 +10,7 @@ import {
 } from 'native-base';
 import Image from 'react-native-scalable-image';
 import { connect } from 'react-redux';
+import { View, Text } from 'react-native-ui-lib';
 const { width, height } = Dimensions.get('window');
 
 const Announcement = ({announcement}) => {
@@ -82,7 +82,7 @@ class AnnouncementsScreen extends Component {
         return(
           <FlatList
             automaticallyAdjustContentInsets={false}
-            data={this.props.announcements}
+            data={this.announcements}
             keyExtractor = {item => item.key}
             renderItem={({item}) => <Announcement announcement={item} /> }
           />

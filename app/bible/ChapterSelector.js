@@ -1,18 +1,19 @@
-import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Platform, TouchableOpacity, FlatList, Dimensions } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
-import {
-    Container, Header, Title, Left,
-    Right, Icon, Button, Text,
-    Content, Body, Card, CardItem, Segment
-} from 'native-base';
+import React, { Component } from 'react';
+import { StyleSheet, Dimensions } from 'react-native';
+import Tabs from 'antd-mobile/lib/tabs';
 import { connect } from 'react-redux';
 import { chapterFetchData } from '../redux/actions/chapter';
+import BooksList from './BooksList';
+import ChapterNumberGrid from './ChapterNumberGrid';
+import DownButton from '../components/buttons/DownButton';
 
-const numColumns = 5;
-const size = Dimensions.get('window').width/numColumns;
-const { width, height } = Dimensions.get('window');
-const equalWidth =  (width / 5 );
+const tabs = [
+    { title: 'Book' },
+    { title: 'Chapter' }
+];
+
+const lightGray = '#ccc';
+const black = 'black';
 
 class ChapterSelector extends Component {
 
@@ -25,9 +26,7 @@ class ChapterSelector extends Component {
                 backgroundColor: '#2e2e2e',
             },
             headerLeft: (
-                <Button light transparent onPress={params.goBack}>
-                    <Icon name="arrow-down" size={24} />
-                </Button>
+                <DownButton onPress={params.goBack} />
             )
         }
       };
@@ -35,10 +34,12 @@ class ChapterSelector extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedSegmentIndex: 1,
+            selectedTabIndex: 0,
             navigationTitle: 'Book',
             selectedBook: this.props.books[0]
         };
+        this._onChapterPress = this._onChapterPress.bind(this);
+        this._selectChapterAndDismiss = this._selectChapterAndDismiss.bind(this);
     };
 
     componentDidMount() {
@@ -49,111 +50,41 @@ class ChapterSelector extends Component {
         this.props.navigation.goBack();
     };
 
-    _onChapterPress = (item) => {
+    _onChapterPress = ({item}) => {
         var newState = {
-            selectedSegmentIndex: 2,
+            selectedTabIndex: 1,
             navigationTitle: item.name,
             selectedBook: item
         };
         this.setState(newState);
     };
 
-    _selectChapterAndDismiss = (item) => {
+    _selectChapterAndDismiss = ({item}) => {
         this.props.fetchChapter(item.id);
         this.props.navigation.goBack();
     };
 
-    _onSegmentPress = (index) => {
-        var title = index === 1 ? 'Book' : this.state.selectedBook.name;
-        var newState = {
-            selectedSegmentIndex: index,
-            navigationTitle: title,
-            selectedBook: this.state.selectedBook
-        };
-        this.setState(newState);
-    };
-
-    renderListView = () => {
-        if(this.state.selectedSegmentIndex === 1){
-            return this.renderBooksListView();
+    _onTabClick = (tab) => {
+        if(tab.title === "Chapter") {
+            this.setState({selectedTabIndex: 1});
         }else{
-            return this.renderChapterListView();
+            this.setState({selectedTabIndex: 0});
         }
-    };
-
-    _renderChapterView = ({item}) => {
-        return (
-            <TouchableOpacity onPress={_ => this._selectChapterAndDismiss(item)}>
-                <View style={{height: equalWidth, width: equalWidth, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'lightgray', borderRightWidth: StyleSheet.hairlineWidth, borderRightColor: 'lightgray'}}>
-                    <Text>{item.chapter}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    };
-
-    _renderBookName = ({item}) => {
-        return (
-            <TouchableOpacity onPress={_ => this._onChapterPress(item)}>
-                <View style={{height: 45, paddingLeft: 12, justifyContent: 'center', backgroundColor: 'white', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'lightgray'}}>
-                    <Text>{item.name}</Text>
-                </View>
-            </TouchableOpacity>
-        )
     }
-
-    renderChapterListView = () => {
-        if(this.state.selectedSegmentIndex === 2){
-            return (
-                <FlatList
-                    key={2}
-                    automaticallyAdjustContentInsets={false}
-                    data={this.state.selectedBook.chapters}
-                    keyExtractor = {item => item.chapter}
-                    numColumns={5}
-                    renderItem={this._renderChapterView}
-                />
-            );
-        }
-    };
-
-    renderBooksListView = () => {
-        if(this.state.selectedSegmentIndex === 1) {
-            return (
-                <FlatList
-                    key={1}
-                    automaticallyAdjustContentInsets={false}
-                    data={this.props.books}
-                    keyExtractor = {item => item.ord}
-                    renderItem={this._renderBookName}
-                />
-            );
-        }
-    };
 
     render() {
         return (
-            <Container>
-
-                <Content>
-                    <Segment>
-                        <Button
-                            first
-                            style={{borderColor: 'black', backgroundColor: 'lightgray'}}
-                            onPress={_ => this._onSegmentPress(1)}
-                            active={this.state.selectedSegmentIndex === 1 ? true : false}>
-                            <Text style={{color: 'black'}}>Book</Text>
-                        </Button>
-                        <Button
-                            style={{borderColor: 'black', backgroundColor: 'lightgray'}}
-                            last
-                            onPress={_ => this._onSegmentPress(2)}
-                            active={this.state.selectedSegmentIndex === 2 ? true : false}>
-                            <Text style={{color: 'black'}}>Chapter</Text>
-                        </Button>
-                    </Segment>
-                    {this.renderListView()}
-                </Content>
-            </Container>
+            <Tabs tabs={tabs} 
+                initialPage={0} 
+                page={this.state.selectedTabIndex}
+                onTabClick={this._onTabClick}
+                tabBarUnderlineStyle={{backgroundColor: lightGray}}
+                tabBarActiveTextColor={black}
+                tabBarInactiveTextColor={lightGray}
+                animated={false} useOfPan={false}>
+                <BooksList books={this.props.books} onBookSelected={this._onChapterPress} />
+                <ChapterNumberGrid chapters={this.state.selectedBook.chapters} onChapterSelected={this._selectChapterAndDismiss} />
+            </Tabs>
         );
     };
 };

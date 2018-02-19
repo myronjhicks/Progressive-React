@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, View, Dimensions, SafeAreaView, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Image from 'react-native-scalable-image';
 import { List, ListItem } from 'react-native-elements';
-import {
-    Container, Header, Title, Left,
-    Right, Icon, Button, Text,
-    Content, Body, Card, CardItem
-} from 'native-base';
-
+import { Container, Button, Content, Body, Card, CardItem } from 'native-base';
+import { View, Text } from 'react-native-ui-lib';
 export default class ConnectScreen extends Component {
 
     constructor(props) {
