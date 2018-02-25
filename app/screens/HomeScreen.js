@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 import { Platform, Alert } from 'react-native';
 import { Permissions, Notifications, Util, AppLoading }  from 'expo';
 import { connect } from 'react-redux';
-import { listenToEvents } from '../redux/actions/events';
-import { listenToLivestream } from '../redux/actions/livestream';
-import { listenToAnnouncements } from '../redux/actions/announcements';
-import { listenToPrayers } from '../redux/actions/prayers';
-import { listenToVideos } from '../redux/actions/videos';
-import { listenToBlogs } from '../redux/actions/blogPosts';
 import firebase from '../config/firebase';
 import VideoListComponent from '../videos/VideoListComponent';
 import NotificationButton from '../components/buttons/NotificationButton';
@@ -55,12 +49,6 @@ class HomeScreen extends Component {
     }
 
     componentDidMount() {
-        this.props.subscribeToEvents();
-        this.props.subscribeToLivestream();
-        this.props.subscribeToAnnouncements();
-        this.props.subscribeToPrayers();
-        this.props.subscribeToVideos();
-        this.props.subscribeToBlogs();
         this.props.navigation.setParams({showNotifications: this.showNotifications});
         this._showVideoDetail = this._showVideoDetail.bind(this);
         this._onPressPlayButton = this._onPressPlayButton.bind(this);
@@ -114,14 +102,12 @@ class HomeScreen extends Component {
         if (!this.props.videos.length) {
             return <AppLoading />;
         }
-        var latestVideo = this.props.videos.filter(a => a.key == this.props.livestream)
-        if(latestVideo.length) { latestVideo = latestVideo[0] }
         this.props.videos.sort(function(a,b){
             return new Date(b.date) - new Date(a.date);
         });
         return (
             <VideoListComponent 
-                latestVideo={latestVideo} 
+                livestream={this.props.livestream} 
                 videos={this.props.videos} 
                 onPress={_ => this._showVideoDetail} 
                 onPressPlay={this._onPressPlayButton} 
@@ -138,15 +124,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        subscribeToEvents: () => dispatch(listenToEvents()),
-        subscribeToLivestream: () => dispatch(listenToLivestream()),
-        subscribeToAnnouncements: () => dispatch(listenToAnnouncements()),
-        subscribeToPrayers: () => dispatch(listenToPrayers()),
-        subscribeToVideos: () => dispatch(listenToVideos()),
-        subscribeToBlogs: () => dispatch(listenToBlogs()),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps)(HomeScreen);

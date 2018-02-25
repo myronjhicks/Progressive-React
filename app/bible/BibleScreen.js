@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Platform, StatusBar } from 'react-native';
 import {
     Container, Header, Title, Left,
-    Right, Button, Text, Icon,
+    Right, Button, Icon,
     Content, Body, Card, CardItem, Footer, FooterTab
 } from 'native-base';
+import { View, Text } from 'react-native-ui-lib';
 import { connect } from 'react-redux';
 import { chapterFetchData } from '../redux/actions/chapter';
 import { fetchBooks } from '../redux/actions/books';
@@ -28,20 +29,11 @@ class BibleScreen extends Component {
         super();
     }
 
-    componentWillMount() {
-        this.props.fetchBooks();
-        this.props.fetchChapter('eng-NASB_Gen.1');
-    }
-
-    componentWillReceiveProps(nextProps){
-        if(nextProps.chapter.parent){
-            var headerTitle = `${nextProps.chapter.parent.book.name } ${nextProps.chapter.chapter}`
-            setTimeout(() => {
-                this.props.navigation.setParams({
-                    headerTitle: headerTitle,
-                });
-              }, 1000);
-        }
+    setTitle(chapter){
+        var headerTitle = `${chapter.parent.book.name } ${chapter.chapter}`
+        setTimeout(() => {
+            this.props.navigation.setParams({ headerTitle: headerTitle });
+        }, 500);
     }
 
     _nextChapter = () => {
@@ -100,14 +92,11 @@ class BibleScreen extends Component {
         );
     };
 
-    _onRefresh = () => {
-        console.log('handle refresh');
-    }
-
     render() {
         const { chapter, hasErrored, isLoading } = this.props;
         if( hasErrored ) { return <NetworkErrorComponent onRefresh={this._onRefresh} /> }
         if( !chapter.text ) { return <View><Text>Loading...</Text></View>; }
+        this.setTitle(chapter);
             return(
                 <Container style={styles.container}>
                 <Content ref={c => this._content = c}>

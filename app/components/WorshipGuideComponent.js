@@ -120,7 +120,7 @@ const fastCycles = [
     }
 ];
 
-const PrayerComponent = ({}) => {
+const PrayerComponent = () => {
     return (
         <ScrollView style={styles.container}>
             <Text text70 marginB-12>

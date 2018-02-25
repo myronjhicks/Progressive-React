@@ -92,8 +92,6 @@ class ChapterSelector extends Component {
 const mapStateToProps = (state) => {
     return {
         books: state.books,
-        hasErrored: state.booksHasErrored,
-        isLoading: state.booksIsLoading,
     };
 };
 

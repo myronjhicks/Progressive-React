@@ -18,7 +18,8 @@ export default class VideoListComponent extends Component {
     }
 
     _renderHeader = () => {
-        var latestVideo = this.props.latestVideo;
+        var latestVideo = this.props.videos.filter(a => a.key == this.props.livestream);
+        if ( latestVideo.length ) { latestVideo = latestVideo[0] }
         return(
             <ImageBackground
                 style={{height: 275, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 20}}
@@ -33,10 +34,11 @@ export default class VideoListComponent extends Component {
     }
 
     render() {
+        var filteredVideos = this.props.videos.filter(vid => vid.key !== this.props.livestream);
         return (
             <FlatList
                 automaticallyAdjustContentInsets={false}
-                data={this.props.videos}
+                data={filteredVideos}
                 keyExtractor = {item => item.key}
                 renderItem={this._renderCard}
                 ListHeaderComponent={this._renderHeader}
