@@ -63,3 +63,9 @@ export function listenToEvents() {
         });
     };
 };
+
+export function deleteEventById(id) {
+    ref.child(id).remove().then(() => {
+      console.log('removed successfully');
+    })
+}
