@@ -30,9 +30,9 @@ export default class AddEventScreen extends Component {
 
     constructor(props){
         super(props)
-        this.state = { 
+        this.state = {
             title: undefined,
-            subTitle: undefined,
+            subtitle: undefined,
             chosenDate: new Date(),
             location: undefined,
             isFeatured: false
@@ -41,6 +41,16 @@ export default class AddEventScreen extends Component {
 
     componentDidMount(){
         this.props.navigation.setParams({goBack: this.goBack, saveEvent: this.saveEvent});
+        let params = this.props.navigation.state.params;
+        if(params && params.event){
+          this.setState({
+            title: params.event.title,
+            subtitle: params.event.subtitle,
+            chosenDate: new Date(params.event.timestamp),
+            location: params.event.location,
+            isFeatured: false
+          });
+        }
     }
 
     goBack = () => {
@@ -62,7 +72,6 @@ export default class AddEventScreen extends Component {
 
 
     setDate = (newDate) => {
-        // newDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
         this.setState({chosenDate: newDate});
     }
 
@@ -70,7 +79,7 @@ export default class AddEventScreen extends Component {
         return (
             <KeyboardAwareScrollView contentContainerStyle={styles.container}>
                 <FormInput placeholder="Title" value={this.state.title} onChangeText={(text) => this.setState({title: text})}/>
-                <FormInput placeholder="Sub Title" value={this.state.subTitle} onChangeText={(text) => this.setState({subTitle: text})} />
+                <FormInput placeholder="Sub Title" value={this.state.subtitle} onChangeText={(text) => this.setState({subtitle: text})} />
                 <DatePickerIOS date={this.state.chosenDate} onDateChange={this.setDate} minuteInterval={5} />
                 <FormInput placeholder="Location" value={this.state.location} onChangeText={(text) => this.setState({location: text})} />
                 <FormSwitch header="Feature" toggle={this.state.isFeatured} onValueChange={(value) => this.setState({isFeatured: value})} />

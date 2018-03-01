@@ -46,6 +46,10 @@ class CalendarScreen extends Component {
         this.props.navigation.navigate('AddEventScreen');
     }
 
+    editEvent(event){
+        this.props.navigation.navigate('AddEventScreen', {event: event})
+    }
+
     renderItem(info, activeRow){
         const swipeSettings = {
             autoClose: true,
@@ -60,7 +64,7 @@ class CalendarScreen extends Component {
         }
         return (
             <Swipeout { ...swipeSettings }  >
-                <TouchableOpacity onPress={_ => this.onSelectItem(info.item)}> 
+                <TouchableOpacity onPress={_ => this.onSelectItem(info.item)}>
                     <EventCard event={info.item} />
                 </TouchableOpacity>
             </Swipeout>
@@ -68,7 +72,7 @@ class CalendarScreen extends Component {
     }
 
     onSelectItem(item) {
-        console.log(`handle press on ${item.key}`);
+        this.editEvent(item);
     }
 
     onDeleteItem(item) {

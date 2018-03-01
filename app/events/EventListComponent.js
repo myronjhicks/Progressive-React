@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, ImageBackground, TouchableOpacity, Image, Dimensions } from 'react-native';
-import EventCard from '../components/EventCard'; 
+import EventCard from '../components/EventCard';
 import { Text, View, Card, Colors } from 'react-native-ui-lib';
 import firebase from '../config/firebase';
 const { width, height } = Dimensions.get('window');
@@ -18,10 +18,10 @@ export default class EventListComponent extends Component {
     _renderHeader = () => {
         return (
             <Card height={350} containerStyle={{margin: 20}}>
-                <Card.Image 
+                <Card.Image
                     height={'75%'}
                     resizeMode="cover"
-                    imageSource={{uri: this.state.url}} 
+                    imageSource={{uri: this.state.url}}
                 />
                 <Card.Section>
                     <View padding-12>
@@ -54,10 +54,9 @@ export default class EventListComponent extends Component {
                 automaticallyAdjustContentInsets={false}
                 data={this.events}
                 keyExtractor = {item => item.key}
-                ListHeaderComponent={this.state.url && this._renderHeader}
+                ListHeaderComponent={false && this.state.url && this._renderHeader}
                 renderItem={({item}) => <EventCard event={item} />}
             />
         )
     }
 }
-
