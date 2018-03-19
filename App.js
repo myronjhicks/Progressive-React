@@ -25,21 +25,29 @@ store.dispatch(listenToPrayers());
 store.dispatch(listenToVideos());
 store.dispatch(listenToBlogs());
 
+function cacheFonts(fonts){
+  return fonts.map(font => Font.loadAsync(font));
+}
+
+
 export default class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      loading: true
+      isReady: false
     }
   }
 
-  async componentWillMount() {
-    await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
-    });
-    this.setState({ loading: false });
+  async _loadAssetsAsync() {
+    const fontAssets = cacheFonts([
+      {RobotoBold: require('./app/assets/fonts/Roboto-Bold.ttf')},
+      {RobotoMedium: require('./app/assets/fonts/Roboto-Medium.ttf')},
+      {RobotoRegular: require('./app/assets/fonts/Roboto-Regular.ttf')},
+      {RobotoLight: require('./app/assets/fonts/Roboto-Light.ttf')}
+    ]);
+
+    await Promise.all([...fontAssets]);
   }
 
   componentDidMount() {
@@ -55,12 +63,15 @@ export default class App extends Component {
       );
     });
   }
-  
+
   render() {
-    if (this.state.loading) {
+    if(!this.state.isReady){
       return (
-          <AppLoading />
-      );
+        <AppLoading
+          startAsync={this._loadAssetsAsync}
+          onFinish={() => this.setState({isReady: true})}
+          onError={console.warn} />
+      )
     }
     return (
       <View style={{flex: 1}}>

@@ -1,25 +1,19 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { TabNavigator, StackNavigator } from "react-navigation";
-import { Button, Footer, FooterTab } from "native-base";
-import { NavigationComponent } from 'react-native-material-bottom-navigation'
-import Expo from 'expo';
+import { TabNavigator, StackNavigator, TabBarBottom } from "react-navigation";
+import { Text } from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import HomeScreen from './screens/HomeScreen';
-import GiveScreen from './screens/GiveScreen';
-import BibleScreen from './bible/BibleScreen';
 import AnnouncementsScreen from './connect/AnnouncementsScreen';
+import BibleScreen from './bible/BibleScreen';
+import BlogScreen from './screens/BlogScreen';
+import ChapterSelector from './bible/ChapterSelector';
+import ConnectTab from './connect/ConnectTab';
+import GiveScreen from './screens/GiveScreen';
+import HomeScreen from './screens/HomeScreen';
+import { MoreInfoStack } from './more/moreRouter';
 import PrayerWallScreen from './connect/PrayerWallScreen';
 import VideoDetail from './videos/VideoDetail';
-import ConnectTab from './connect/ConnectTab';
-
-import BlogScreen from './screens/BlogScreen';
-
-import { MoreInfoStack } from './more/moreRouter';
-
-import ChapterSelector from './bible/ChapterSelector';
-import { Text } from 'react-native-ui-lib';
 
 export const Tabs = TabNavigator({
     Home: {
@@ -40,7 +34,7 @@ export const Tabs = TabNavigator({
         screen: GiveScreen,
         navigationOptions: {
             tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => (<Text marginT-5 text90 dark20 style={{fontWeight: 'bold', width: 50, textAlign: 'left'}}>GIVE</Text>)// <Icon name="credit" size={24} color={tintColor} />,
+            tabBarIcon: ({tintColor}) => (<Text marginT-5 text90 dark20 style={{fontWeight: 'bold', width: 50, textAlign: 'left'}}>GIVE</Text>)
         }
     },
     Connect: {
@@ -54,19 +48,18 @@ export const Tabs = TabNavigator({
         screen: MoreInfoStack,
         navigationOptions: {
             tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) =>
-                <Icon name="dots-three-horizontal" size={24} color={tintColor} />
+            tabBarIcon: ({tintColor}) => <Icon name="dots-three-horizontal" size={24} color={tintColor} />
         }
     }
 },{
-    tabBarComponent: NavigationComponent,
+    tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
-       bottomNavigationOptions: {
-           labelColor: 'white',
-           rippleColor: 'white',
-           shifting: false,
-       }
+        activeTintColor: 'black',
+        inactiveTintColor: 'gray',
+        style: {
+            padding: 8,
+        },
    },
 });
 

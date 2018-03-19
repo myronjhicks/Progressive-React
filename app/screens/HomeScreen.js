@@ -22,7 +22,7 @@ class HomeScreen extends Component {
         };
     };
 
-    
+
     constructor(props) {
         super(props);
     }
@@ -90,29 +90,26 @@ class HomeScreen extends Component {
           firebase.database().ref('deviceTokens').child(deviceID).update(update);
     }
 
-    _showVideoDetail = (video) => {
-        this.props.navigation.navigate('VideoDetail', { ...video }); 
+    _showVideoDetail(video){
+      this.props.navigation.navigate('VideoDetail', { ...video });
     }
 
-    _onPressPlayButton = (latestVideo) => {
-        this.props.navigation.navigate('VideoDetail', { ...latestVideo });
+    _onPressPlayButton(latestVideo){
+      this.props.navigation.navigate('VideoDetail', { ...latestVideo });
     }
 
     render() {
-        if (!this.props.videos.length) {
-            return <AppLoading />;
-        }
         this.props.videos.sort(function(a,b){
             return new Date(b.date) - new Date(a.date);
         });
         return (
-            <VideoListComponent 
-                livestream={this.props.livestream} 
-                videos={this.props.videos} 
-                onPress={_ => this._showVideoDetail} 
-                onPressPlay={this._onPressPlayButton} 
+            <VideoListComponent
+                livestream={this.props.livestream}
+                videos={this.props.videos}
+                onPress={_ => this._showVideoDetail}
+                onPressPlay={_ => this._onPressPlayButton}
             />
-           
+
         );
     }
 }

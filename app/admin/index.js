@@ -4,6 +4,7 @@ import AdminScreen from './AdminScreen';
 import NotificationScreen from './NotificationScreen';
 import CalendarScreen from './CalendarScreen';
 import AddEventScreen from './AddEventScreen';
+import LiveStreamVideoForm from './LiveStreamVideoForm';
 
 export const AdminStack = StackNavigator({
     AdminScreen: {
@@ -17,6 +18,9 @@ export const AdminStack = StackNavigator({
     },
     AddEventScreen: {
         screen: AddEventScreen
+    },
+    LiveStreamVideoForm: {
+      screen: LiveStreamVideoForm
     }
 },{
     mode: 'card',

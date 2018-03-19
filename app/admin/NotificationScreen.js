@@ -39,6 +39,7 @@ export default class NotificationScreen extends Component {
         }
       };
 
+    
     onChangeNotificationTitle = (title) => {
         this.setState({notificationTitle: title});
     }
@@ -71,6 +72,7 @@ export default class NotificationScreen extends Component {
                   showToast: true,
                   toastMessage: "Notification sent successfully"
                 });
+                this.goBack();
               });
             }},
             {text: 'Cancel'}
@@ -80,6 +82,7 @@ export default class NotificationScreen extends Component {
         }
       }
 
+    
     render() {
         return (
             <View flex-1>

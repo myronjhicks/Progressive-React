@@ -1,23 +1,36 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Platform, StatusBar, ScrollView, TouchableOpacity, Image } from 'react-native';
 import {
     Container, Header, Title, Left,
-    Right, Button, Icon,
+    Right, Icon,
     Content, Body, Card, CardItem, Footer, FooterTab
 } from 'native-base';
-import { View, Text } from 'react-native-ui-lib';
+import { View, Text, Button, Colors } from 'react-native-ui-lib';
 import { connect } from 'react-redux';
 import { chapterFetchData } from '../redux/actions/chapter';
 import { fetchBooks } from '../redux/actions/books';
 import HTMLView from 'react-native-htmlview';
 import NetworkErrorComponent from '../components/NetworkErrorComponent';
+const cheerio = require('react-native-cheerio');
+import { fontSize, fontFamily, normalize  } from '../styles/theme';
+
+const forwardIcon = require('../assets/icons/forward_button.png');
+const backIcon = require('../assets/icons/back_button.png');
+
+class HeaderTitle extends React.Component {
+    render() {
+      return (
+        <Text key={'headerTitle'} style={styles.headerTitle} onPress={this.props.onPress}>{this.props.title}</Text>
+      );
+    }
+}
 
 class BibleScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state
         return {
-            title: `${params.headerTitle ? params.headerTitle : ''}`,
+            headerTitle: <HeaderTitle title={params.headerTitle} onPress={params.showSelector}/>,
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#2e2e2e',
@@ -27,13 +40,27 @@ class BibleScreen extends Component {
 
     constructor(){
         super();
+        this.setTitle = this.setTitle.bind(this);
     }
 
-    setTitle(chapter){
-        var headerTitle = `${chapter.parent.book.name } ${chapter.chapter}`
-        setTimeout(() => {
-            this.props.navigation.setParams({ headerTitle: headerTitle });
-        }, 500);
+    setTitle(){
+        var parent = this.props.chapter.parent;
+        var chapter = this.props.chapter;
+        var headerTitle = `${parent.book.name } ${chapter.chapter}`;
+        this.props.navigation.setParams({ headerTitle: headerTitle });
+    }
+
+    componentDidMount(){
+        this.setTitle();
+        this.props.navigation.setParams({ showSelector: this._showChapterSelector });
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        return (this.props.chapter.id !== nextProps.chapter.id);
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        this.setTitle();
     }
 
     _nextChapter = () => {
@@ -53,138 +80,130 @@ class BibleScreen extends Component {
     };
 
     _showChapterSelector = () => {
-        this.props.navigation.navigate('ChapterSelector');
+        this.props.navigation.navigate('ChapterSelector', {name: this.props.chapter.parent.book.name});
     };
 
     _scrollToTop = () => {
-        this._content._root.scrollToPosition(0,0,true);
+        this._scrollView.scrollTo({X: 0,y: 0, animated: true});
     };
 
-    _footerView = () => {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    marginLeft: 8,
-                    marginRight: 8
-                }}>
-                    <Button
-                        rounded={true}
-                        transparent
-                        onPress={this._previousChapter}
-                        dark>
-                        <Icon name='arrow-back' />
-                    </Button>
-                    <Button dark transparent rounded
-                            onPress={this._showChapterSelector}>
-                            <Icon name="bookmark" size={24} tintColor={'black'}/>
-                    </Button>
-                    <Button
-                        transparent
-                        onPress={this._nextChapter}
-                        dark>
-                        <Icon name='arrow-forward' />
-                    </Button>
-            </View>
-        );
-    };
+    renderChapter(chapter) {
+      const $ = cheerio.load(chapter.text);
+      var verses = 1;
+      var pCount = 1;
+      var hCount = 1;
+      return (
+        <View style={{flex: 1}}>
+          {
+            $('.chapter').children().map(function(i, elm) {
+              if($(elm).hasClass('s')) {
+                const headerText = $(elm).text();
+                return <Text style={styles.header} key={`h.${hCount++}`}>{headerText}{'\n'}</Text>
+              }else if($(elm).hasClass('p')){
+                var paragraph = $(elm).children().map(function(idx, span){
+                  const key = $(span).children('sup').attr('id');
+                  var pText = $(span).text();
 
-    render() {
-        const { chapter, hasErrored, isLoading } = this.props;
-        if( hasErrored ) { return <NetworkErrorComponent onRefresh={this._onRefresh} /> }
-        if( !chapter.text ) { return <View><Text>Loading...</Text></View>; }
-        this.setTitle(chapter);
-            return(
-                <Container style={styles.container}>
-                <Content ref={c => this._content = c}>
-                    <HTMLView
-                        value={chapter.text}
-                        stylesheet={styles}
-                        addLineBreaks={false}
-                        renderNode={this._renderNode}
-                    />
-                    <View>
-                        <Text style={styles.copyright}>{chapter.copyright}</Text>
-                    </View>
-                </Content>
-                <Footer style={{height: 40, backgroundColor: 'transparent'}}>
-                    { this._footerView() }
-                </Footer>
-            </Container>
-            );
+                  if(verses > 99){
+                    pText = pText.slice(3);
+                  }else if(verses > 9){
+                    pText = pText.slice(2);
+                  }else{
+                    pText = pText.slice(1);
+                  }
+
+                  return <Text style={styles.p} key={key}>{verses++} {pText}{'\n'}</Text>
+                }).get()
+
+                return <Text key={`p.${pCount++}`}>{paragraph}</Text>
+              }
+            }).get()
+          }
+        </View>
+      )
     }
 
-    _renderNode = (node, index, siblings, parent, defaultRenderer) => {
-
-        if(node.name == 'p') {
-            return (
-                <Text key={index} style={node.attribs.style}>
-                    {'\t'}{defaultRenderer(node.children, parent)}
-                </Text>
-            );
-        }
-
-        if(Platform.OS === 'ios' && node.name == 'sup') {
-                return (
-                    <View key={index++} style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', width: 14, height: 8}}>
-                        <Text key={index} style={{fontSize: 10}}>
-                            {defaultRenderer(node.children, parent)}
-                        </Text>
-                    </View>
-                );
-        } else if(node.name == 'sup') {
-            return (
-                <Text key={index} style={{fontSize: 10}}>
-                    {defaultRenderer(node.children, parent)}
-                </Text>
-            )
-        }
-
-    };
+    render() {
+      const { chapter } = this.props;
+      return (
+        <View style={{flex: 1}}>
+            <ScrollView 
+                ref={ref => this._scrollView = ref} 
+                scrollsToTop
+                style={styles.container}>
+                { this.renderChapter(chapter) }
+            </ScrollView>
+            <TouchableOpacity 
+                activeOpacity={0.5} 
+                onPress={this._previousChapter} style={styles.leftOpacityStyle}>
+                <Image source={backIcon} style={styles.floatingButtonStyle} />
+            </TouchableOpacity>
+            <TouchableOpacity 
+                activeOpacity={0.5} 
+                onPress={this._nextChapter} style={styles.opacityStyle}>
+                <Image source={forwardIcon} style={styles.floatingButtonStyle} />
+            </TouchableOpacity>
+        </View>
+      )
+  }
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: 'white',
+        padding: 12,
+        marginBottom: 12,
+        paddingBottom: 30
     },
-    div: {
-        marginLeft: 12,
-        marginRight: 12,
+    headerTitle: {
+        fontSize: Platform.OS === 'ios' ? 17 : 20,
+        fontWeight: Platform.OS === 'ios' ? '600' : '500',
+        color: 'white',
+        textAlign: Platform.OS === 'ios' ? 'center' : 'left',
+        marginHorizontal: 16,
+        padding: 4,
+        borderWidth: 0.5,
+        borderColor: 'white'
     },
     header: {
-        backgroundColor: '#2e2e2e',
-    },
-    headerBody: {
-        ...Platform.select({
-            android: {
-                marginTop: 15
-            }
-        })
-    },
-    h3: {
-        fontWeight: 'bold',
-        fontSize: 16,
-        marginBottom: 8,
+        fontSize: fontSize.large + 1,
+        fontFamily: fontFamily.bold,
+        fontWeight: "600",
     },
     p: {
+        fontSize: fontSize.regular + 2,
+        fontFamily: fontFamily.regular,
         lineHeight: 24
     },
-    copyright: {
-        textAlign: 'center',
-        color: '#90a0ab',
-        fontSize: 10
-    }
-
+    opacityStyle: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 12,
+        bottom: 20
+    },
+    leftOpacityStyle: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        left: 12,
+        bottom: 20
+    },
+    floatingButtonStyle: {
+        resizeMode: 'contain',
+        width: 40,
+        height: 40,
+    },
 });
 
 const mapStateToProps = (state) => {
     return {
         chapter: state.chapter,
-        hasErrored: state.chapterHasErrored,
-        isLoading: state.chapterIsLoading,
     };
 };
 

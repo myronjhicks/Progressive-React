@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { FlatList, ImageBackground, TouchableOpacity, Image, View } from 'react-native';
 import VideoCard from '../components/VideoCard';
 import { Text } from 'react-native-ui-lib';
 const livestreamImageSource = require('../assets/current_livestream.png');
@@ -18,27 +18,29 @@ export default class VideoListComponent extends Component {
     }
 
     _renderHeader = () => {
-        var latestVideo = this.props.videos.filter(a => a.key == this.props.livestream);
-        if ( latestVideo.length ) { latestVideo = latestVideo[0] }
-        return(
-            <ImageBackground
-                style={{height: 275, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 20}}
-                source={livestreamImageSource}>
-                <TouchableOpacity onPress={_ => this.props.onPressPlay(latestVideo)}>
-                    <Image source={playButtonSource} style={{width: 80, height: 80, marginBottom: 10}} />
-                </TouchableOpacity>
-                <Text white text50>LATEST SERMON</Text>
-                <Text white text30>{latestVideo.title}</Text>
-            </ImageBackground>
-        );
+        if(this.props.videos.length){
+          var latestVideo = this.props.videos[0];
+          return(
+              <ImageBackground
+                  style={{height: 275, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 20}}
+                  source={livestreamImageSource}>
+                  <TouchableOpacity onPress={_ => this.props.onPressPlay(latestVideo)}>
+                      <Image source={playButtonSource} style={{width: 80, height: 80, marginBottom: 10}} />
+                  </TouchableOpacity>
+                  <Text white text50>LATEST SERMON</Text>
+                  <Text white text30 center>{latestVideo.title}</Text>
+              </ImageBackground>
+          );
+        }else{
+          return (<View></View>)
+        }
     }
 
     render() {
-        var filteredVideos = this.props.videos.filter(vid => vid.key !== this.props.livestream);
         return (
             <FlatList
                 automaticallyAdjustContentInsets={false}
-                data={filteredVideos}
+                data={this.props.videos}
                 keyExtractor = {item => item.key}
                 renderItem={this._renderCard}
                 ListHeaderComponent={this._renderHeader}

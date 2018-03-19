@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StatusBar, StyleSheet, View, Dimensions, WebView, SafeAreaView } from 'react-native';
 import { Text } from 'native-base';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
+import moment from 'moment';
 
 export default class VideoDetail extends Component {
 
@@ -21,16 +22,15 @@ export default class VideoDetail extends Component {
     }
 
     render() {
-        const { key, date, title, speaker, id } = this.props.navigation.state.params;
+        const { key, date, title, speaker, id, video_url, caption } = this.props.navigation.state.params;
         return(
             <View style={styles.container}>
-                <StatusBar barStyle='light-content'/>
-                <LiveStreamViewer videoID={id}></LiveStreamViewer>
+                <LiveStreamViewer url={video_url}></LiveStreamViewer>
                 <View style={styles.infoContainer}>
                     <Text style={styles.infoHeader}>Sermon</Text>
                     <Text style={styles.info}>{title}</Text>
                     <Text style={styles.infoSmall}>{speaker}</Text>
-                    <Text style={styles.infoSmall}>{date}</Text>
+                    <Text style={styles.infoSmall}>{moment(date).format('MMMM DD YYYY')}</Text>
                     <View style={styles.bottomContainer}>
 
                     </View>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         marginLeft: 12
     },
     bottomContainer: {
-        backgroundColor: '#353535', 
+        backgroundColor: '#353535',
         height: 40,
         marginTop: 20
     }

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { View, Assets, Constants, Card, Button, Colors, Typography, Text } from 'react-native-ui-lib';
+import moment from 'moment';
 
 const { width, height } = Dimensions.get('window');
 const equalWidth =  (width - 20) / 2 ;
-const videoImageSource = require('../assets/video_image.jpg'); 
+const videoImageSource = require('../assets/video_image.jpg');
 
 export default class VideoCard extends Component {
     render() {
         return (
-            <Card key={this.props.video.key} 
+            <Card key={this.props.video.key}
                 onPress={_ => this.props.onPress(this.props.video)}
                 shadowType="white10" column height={200} width={equalWidth} containerStyle={{marginTop: 10, marginLeft: 5, marginRight: 5, marginBottom: 10}}>
                 <Card.Image height={100} imageSource={videoImageSource} />
@@ -26,7 +27,7 @@ export default class VideoCard extends Component {
                     </Card.Section>
                     <Card.Section footer>
                         <Text text100 dark50>
-                            {this.props.video.date}
+                            {moment(this.props.video.date).format('MMM DD YYYY')}
                         </Text>
                     </Card.Section>
                 </Card.Section>

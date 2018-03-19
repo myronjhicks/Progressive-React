@@ -28,7 +28,7 @@ const actions = [
     key: 3,
     name: 'Videos',
     image: require('../assets/icons/videos.png'),
-    path: 'Videos',
+    path: 'LiveStreamVideoForm',
   },
   {
     key: 4,
@@ -181,7 +181,7 @@ class AdminScreen extends Component {
     return (
       <View padding-15>
         <Text center text50 dark30>
-          
+
         </Text>
       </View>
     )
@@ -190,13 +190,13 @@ class AdminScreen extends Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <FlatList 
+        <FlatList
           data={this.state.actions}
           numColumns={2}
           ListHeaderComponent={this.renderStats}
           ListFooterComponent={this.renderFooter}
           renderItem={({item}) => (
-            <Card shadowType="white10" key={item.key} width={itemWidth} 
+            <Card shadowType="white10" key={item.key} width={itemWidth}
               height={itemHeight} containerStyle={{margin: 15}}
               onPress={_ => this.routeTo({item})}>
               <View padding-15 centerH>
