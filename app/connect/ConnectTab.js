@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Tabs from 'antd-mobile/lib/tabs';
+import Tabs from 'antd-mobile-rn/lib/tabs';
 import ConnectScreen from './ConnectScreen';
 import EventListComponent from '../events/EventListComponent';
 import { connect } from 'react-redux';

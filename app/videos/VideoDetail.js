@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, View, Dimensions, WebView, SafeAreaView } from 'react-native';
-import { Text } from 'native-base';
+import { StatusBar, StyleSheet, View, ScrollView, Dimensions, WebView, SafeAreaView } from 'react-native';
+import { Text, ListItem, Body } from 'native-base';
 import LiveStreamViewer from '../components/LiveStreamViewer.js';
 import moment from 'moment';
+import { Video } from 'expo';
+import VideoPlayer from '../components/VideoPlayer';
 
 export default class VideoDetail extends Component {
 
@@ -24,18 +26,44 @@ export default class VideoDetail extends Component {
     render() {
         const { key, date, title, speaker, id, video_url, caption } = this.props.navigation.state.params;
         return(
-            <View style={styles.container}>
-                <LiveStreamViewer url={video_url}></LiveStreamViewer>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.infoHeader}>Sermon</Text>
-                    <Text style={styles.info}>{title}</Text>
-                    <Text style={styles.infoSmall}>{speaker}</Text>
-                    <Text style={styles.infoSmall}>{moment(date).format('MMMM DD YYYY')}</Text>
-                    <View style={styles.bottomContainer}>
-
-                    </View>
-                </View>
-            </View>
+            <ScrollView style={styles.container}>
+                <VideoPlayer
+                    videoProps={{
+                      shouldPlay: true,
+                      resizeMode: Video.RESIZE_MODE_CONTAIN,
+                      source: {
+                        uri: video_url,
+                      },
+                      isMuted: false,
+                      ref: component => {
+                        this._playbackInstance = component;
+                      },
+                    }}
+                    showControlsOnLoad={true}
+                    isPortrait={false}
+                    switchToLandscape={null}
+                    switchToPortrait={null}
+                    playFromPositionMillis={0}
+                  />
+                <ListItem>
+                    <Body>
+                        <Text>{title}</Text>
+                        <Text note>{speaker}</Text>
+                    </Body>
+                </ListItem>
+                <ListItem>
+                    <Body>
+                        <Text note>Description</Text>
+                        <Text>If you'd like to know more about our ministry please visit us at https://progressivechicago.org. And if you have a testimony of the amazing things God is doing in your life through our ministry, please email it to info@progressivechicago.org. @progressivechicago | @charliedates | #progressivechicago</Text>
+                    </Body>
+                </ListItem>
+                <ListItem>
+                    <Body>
+                        <Text>Published</Text>
+                        <Text note>{moment(date).format('MMM DD, YYYY')}</Text>
+                    </Body>
+                </ListItem>
+            </ScrollView>
         );
     }
 }
@@ -43,40 +71,6 @@ export default class VideoDetail extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'black'
+        backgroundColor: 'white'
     },
-    infoContainer: {
-        flex: 2,
-        backgroundColor: 'black',
-    },
-    info: {
-        color: 'white',
-        fontSize: 18,
-        marginBottom: 10,
-        marginLeft: 12
-    },
-    infoSmall: {
-        fontSize: 14,
-        color: 'darkgrey',
-        marginBottom: 14,
-        marginLeft: 12
-    },
-    infoHeader: {
-        color: 'grey',
-        fontWeight: 'bold',
-        fontSize: 22,
-        marginBottom: 4,
-        marginLeft: 12,
-        marginTop: 12
-    },
-    tags: {
-        color: 'white',
-        fontSize: 14,
-        marginLeft: 12
-    },
-    bottomContainer: {
-        backgroundColor: '#353535',
-        height: 40,
-        marginTop: 20
-    }
 })

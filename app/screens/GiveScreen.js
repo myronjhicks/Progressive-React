@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
         margin: 10
     },
     giveButton: {
-        backgroundColor: '#c6ac71' //'#660000' //
+        backgroundColor: '#dea92c' //'#660000' //
     }
 });

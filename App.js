@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, StatusBar, Alert } from 'react-native';
-import { Permissions, Notifications, Util, Font, AppLoading }  from 'expo';
+import React from 'react';
+import { Text, View } from 'react-native';
+import { Updates, Font, AppLoading, Asset }  from 'expo';
 import { Provider } from 'react-redux';
-import { Root } from './app/index.js';
+import { RootStack } from './app/index.js';
 import configureStore from './app/redux/store/configureStore';
 import { subscribeToAuthState } from './app/redux/actions/authentication';
 import { listenToEvents } from './app/redux/actions/events';
@@ -25,43 +25,52 @@ store.dispatch(listenToPrayers());
 store.dispatch(listenToVideos());
 store.dispatch(listenToBlogs());
 
-function cacheFonts(fonts){
+function cacheImages(images) {
+  return images.map(image => {
+    if(typeof image === 'string') {
+      return Image.prefetch(image);
+    }else{
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
+
+function cacheFonts(fonts) {
   return fonts.map(font => Font.loadAsync(font));
 }
 
+export default class AppContainer extends React.Component {
 
-export default class App extends Component {
-
-  constructor() {
-    super();
-    this.state = {
-      isReady: false
-    }
-  }
+  state = {
+    isReady: false
+  };
 
   async _loadAssetsAsync() {
-    const fontAssets = cacheFonts([
-      {RobotoBold: require('./app/assets/fonts/Roboto-Bold.ttf')},
-      {RobotoMedium: require('./app/assets/fonts/Roboto-Medium.ttf')},
-      {RobotoRegular: require('./app/assets/fonts/Roboto-Regular.ttf')},
-      {RobotoLight: require('./app/assets/fonts/Roboto-Light.ttf')}
+    const imageAssets = cacheImages([
+      require('./app/assets/current_livestream.png'),
+      require('./app//assets/icons/playIcon.png'),
+      require('./app/assets/video_image.jpg'),
+      require('./assets/backdrop.jpg'),
+      require('./assets/give.jpg'),
+      require('./assets/dates_family.jpg'),
+      require('./app/assets/icons/instagram-icon.png'),
+      require('./app/assets/icons/facebook-icon.png'),
+      require('./app/assets/icons/youtube-icon.png'),
+      require('./assets/guide.jpg'),
+      require('./assets/outreach.jpg'),
+      require('./assets/welcome.jpg'),
+      require('./assets/kids.jpg'),
+      require('./assets/growth.jpg')
     ]);
 
-    await Promise.all([...fontAssets]);
-  }
+    const fontAssets = cacheFonts([
+      { RobotoBold: require('./app/assets/fonts/Roboto-Bold.ttf')},
+      { RobotoMedium: require('./app/assets/fonts/Roboto-Medium.ttf')},
+      { RobotoRegular: require('./app/assets/fonts/Roboto-Regular.ttf')},
+      { RobotoLight: require('./app/assets/fonts/Roboto-Light.ttf')}
+    ]);
 
-  componentDidMount() {
-    Util.addNewVersionListenerExperimental(() => {
-      Alert.alert(
-          'An Update is Available',
-          'Reload the app to take advantage of the latest improvements',
-          [
-              {text: 'Don\'t reload right now', onPress: () => {}, style: 'cancel'},
-              {text: 'Yes, reload and update', onPress: () => { Util.reload(); } },
-          ],
-          { cancelable: false },
-      );
-    });
+    await Promise.all([...fontAssets, ...imageAssets]);
   }
 
   render() {
@@ -76,7 +85,7 @@ export default class App extends Component {
     return (
       <View style={{flex: 1}}>
         <Provider store={store}>
-            <Root></Root>
+            <RootStack />
         </Provider>
       </View>
     );

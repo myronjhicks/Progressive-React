@@ -1,36 +1,29 @@
-import React, { Component } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
-import { View, Assets, Constants, Card, Button, Colors, Typography, Text } from 'react-native-ui-lib';
+import React from 'react';
+import { Dimensions } from 'react-native';
 import moment from 'moment';
-
+import { Container, Header, Content, List, ListItem, Thumbnail, Text, Left, Body, Right, Button, Card } from 'native-base';
 const { width, height } = Dimensions.get('window');
-const equalWidth =  (width - 20) / 2 ;
+const equalWidth =  width ;
 const videoImageSource = require('../assets/video_image.jpg');
 
-export default class VideoCard extends Component {
+export default class VideoCard extends React.Component {
     render() {
         return (
-            <Card key={this.props.video.key}
-                onPress={_ => this.props.onPress(this.props.video)}
-                shadowType="white10" column height={200} width={equalWidth} containerStyle={{marginTop: 10, marginLeft: 5, marginRight: 5, marginBottom: 10}}>
-                <Card.Image height={100} imageSource={videoImageSource} />
-                <Card.Section body>
-                    <Card.Section>
-                        <Text text80 dark10>
-                            {this.props.video.title}
-                        </Text>
-                    </Card.Section>
-                    <Card.Section>
-                        <Text text100 dark10>
-                            {this.props.video.speaker}
-                        </Text>
-                    </Card.Section>
-                    <Card.Section footer>
-                        <Text text100 dark50>
-                            {moment(this.props.video.date).format('MMM DD YYYY')}
-                        </Text>
-                    </Card.Section>
-                </Card.Section>
+            <Card>
+                <ListItem thumbnail>
+                    <Left>
+                        <Thumbnail square source={videoImageSource} />
+                    </Left>
+                    <Body>
+                        <Text text80 dark10>{this.props.video.title}</Text>
+                        <Text note numberOfLines={1}>{this.props.video.speaker}</Text>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={_ => this.props.onPress(this.props.video)}>
+                            <Text>Watch</Text>
+                        </Button>
+                    </Right>
+                </ListItem>
             </Card>
         );
     }

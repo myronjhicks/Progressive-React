@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AppLoading } from 'expo';
 import { FlatList, ImageBackground, TouchableOpacity, Image, View } from 'react-native';
 import VideoCard from '../components/VideoCard';
 import { Text } from 'react-native-ui-lib';
@@ -7,15 +8,7 @@ const playButtonSource = require('../assets/icons/playIcon.png');
 
 export default class VideoListComponent extends Component {
 
-    constructor(props){
-        super(props)
-    }
-
-    _renderCard = ({item}) => {
-        return(
-            <VideoCard video={item} onPress={this.props.onPress(item)} />
-        );
-    }
+    _renderCard = ({item}) =>  <VideoCard video={item} onPress={this.props.onPress(item)} />
 
     _renderHeader = () => {
         if(this.props.videos.length){
@@ -32,8 +25,12 @@ export default class VideoListComponent extends Component {
               </ImageBackground>
           );
         }else{
-          return (<View></View>)
+          return (<AppLoading />)
         }
+    }
+
+    renderHeader = () => {
+      return <Text style={{margin: 10}}>Stream Past Sermons</Text>
     }
 
     render() {
@@ -43,8 +40,7 @@ export default class VideoListComponent extends Component {
                 data={this.props.videos}
                 keyExtractor = {item => item.key}
                 renderItem={this._renderCard}
-                ListHeaderComponent={this._renderHeader}
-                numColumns={2}
+                ListHeaderComponent={this.renderHeader}
             />
         )
     }

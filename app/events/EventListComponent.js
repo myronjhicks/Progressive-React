@@ -34,7 +34,7 @@ export default class EventListComponent extends Component {
         );
     }
 
-    componentWillMount() {
+    componentDidMount() {
         firebase.storage()
             .ref('images/ybc.jpg')
             .getDownloadURL()

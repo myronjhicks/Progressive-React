@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Platform } from 'react-native';
-import { TabNavigator, StackNavigator, TabBarBottom } from "react-navigation";
+import { createStackNavigator, createTabNavigator, createBottomTabNavigator, createMaterialBottomTabNavigator } from "react-navigation";
 import { Text } from 'react-native-ui-lib';
-import Icon from 'react-native-vector-icons/Entypo';
+import { MaterialIcons, Entypo } from '@expo/vector-icons';
 
 import AnnouncementsScreen from './connect/AnnouncementsScreen';
 import BibleScreen from './bible/BibleScreen';
@@ -15,57 +15,78 @@ import { MoreInfoStack } from './more/moreRouter';
 import PrayerWallScreen from './connect/PrayerWallScreen';
 import VideoDetail from './videos/VideoDetail';
 
-export const Tabs = TabNavigator({
+const HomeStack = createStackNavigator({
     Home: {
-      screen: HomeScreen,
+        screen: HomeScreen,
+    },
+    VideoDetail: {
+        screen: VideoDetail
+    }
+}, {
+    headerMode: 'none'
+})
+
+export const TabNavigator = createBottomTabNavigator({
+    Home: {
+      screen: HomeStack,
       navigationOptions: {
-          tabBarLabel: ' ',
-          tabBarIcon: ({tintColor}) => <Icon name="home" size={24} color={tintColor} />
+          tabBarLabel: 'Home',
+          tabBarIcon: ({tintColor}) => <Entypo name="home" size={24} color={tintColor} />
       }
     },
     Bible: {
         screen: BibleScreen,
         navigationOptions: {
-            tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => <Icon name="book" size={24} color={tintColor} />
+            tabBarLabel: 'Bible',
+            tabBarIcon: ({tintColor}) => <Entypo name="book" size={24} color={tintColor} />
         }
     },
     Give: {
         screen: GiveScreen,
         navigationOptions: {
-            tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => (<Text marginT-5 text90 dark20 style={{fontWeight: 'bold', width: 50, textAlign: 'left'}}>GIVE</Text>)
+            tabBarLabel: 'Give',
+            tabBarIcon: ({tintColor}) => <MaterialIcons name="payment" size={24} color={tintColor} />
         }
     },
     Connect: {
         screen: ConnectTab,
         navigationOptions: {
-            tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => <Icon name="share" size={24} color={tintColor} />
+            tabBarLabel: 'Connect',
+            tabBarIcon: ({tintColor}) => <Entypo name="share" size={24} color={tintColor} />
         }
     },
     MoreInfo: {
         screen: MoreInfoStack,
         navigationOptions: {
-            tabBarLabel: ' ',
-            tabBarIcon: ({tintColor}) => <Icon name="dots-three-horizontal" size={24} color={tintColor} />
+            tabBarLabel: 'More',
+            tabBarIcon: ({tintColor}) => <Entypo name="dots-three-horizontal" size={24} color={tintColor} />
         }
     }
 },{
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
+    initialRouteName: 'Home',
     tabBarOptions: {
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
+        activeTintColor: '#dea92c',
         style: {
-            padding: 8,
-        },
-   },
+            backgroundColor: '#2e2e2e'
+        }
+    }
 });
 
-export const Root = StackNavigator({
+TabNavigator.navigationOptions = ({ navigation }) => {
+  const { routeName } = navigation.state.routes[navigation.state.index];
+
+  // You can do whatever you like here to pick the title based on the route name
+  const headerTitle = routeName;
+
+  return {
+    headerTitle,
+  };
+};
+
+
+export const RootStack = createStackNavigator({
     Tabs:{
-        screen: Tabs,
+        screen: TabNavigator,
     },
     ChapterSelector: {
         screen: ChapterSelector
@@ -76,13 +97,19 @@ export const Root = StackNavigator({
     PrayerWall: {
         screen: PrayerWallScreen,
     },
-    VideoDetail: {
-        screen: VideoDetail,
-    },
     Blog: {
       screen: BlogScreen,
     }
 }, {
-    mode: 'modal',
-    headerMode: 'screen',
+    initialRouteName: 'Tabs',
+    navigationOptions: {
+        headerTitleStyle: {
+            fontWeight: "bold",
+            color: "#fff"
+        },
+        headerTintColor: '#fff',
+        headerStyle: {
+            backgroundColor: '#2e2e2e',
+        },
+    }
 });

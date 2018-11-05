@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
-import Tabs from 'antd-mobile/lib/tabs';
+import Tabs from 'antd-mobile-rn/lib/tabs';
 import { connect } from 'react-redux';
 import { chapterFetchData } from '../redux/actions/chapter';
 import BooksList from './BooksList';

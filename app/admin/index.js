@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import AdminScreen from './AdminScreen';
 import NotificationScreen from './NotificationScreen';
 import CalendarScreen from './CalendarScreen';
 import AddEventScreen from './AddEventScreen';
 import LiveStreamVideoForm from './LiveStreamVideoForm';
 
-export const AdminStack = StackNavigator({
+export const AdminStack = createStackNavigator({
     AdminScreen: {
         screen: AdminScreen
     },

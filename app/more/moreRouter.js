@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StackNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation";
 import MoreListView from "./MoreListView";
 import HistoryScreen from "./HistoryScreen";
 import ShareScreen from "./ShareScreen";
@@ -10,7 +10,7 @@ import LoginScreen from '../admin/LoginScreen';
 import WorshipGuideComponent from '../components/WorshipGuideComponent';
 import { AdminStack } from '../admin/index';
 
-export const MoreInfoStack = StackNavigator({
+export const MoreInfoStack = createStackNavigator({
     MoreList: {
         screen: MoreListView,
     },
