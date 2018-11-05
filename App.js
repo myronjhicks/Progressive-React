@@ -47,8 +47,6 @@ export default class AppContainer extends React.Component {
 
   async _loadAssetsAsync() {
     const imageAssets = cacheImages([
-      require('./app/assets/current_livestream.png'),
-      require('./app//assets/icons/playIcon.png'),
       require('./app/assets/video_image.jpg'),
       require('./assets/backdrop.jpg'),
       require('./assets/give.jpg'),

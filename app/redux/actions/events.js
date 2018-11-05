@@ -36,7 +36,16 @@ export function submitEvent(event) {
 
 export function listenToEvents() {
     return (dispatch) => {
-        ref.on('child_added', function(snap){
+        firebase.firestore().collection('events').get().then((querySnapshot) => {
+          querySnapshot.forEach((snapshot) => {
+            const event = {
+              key: snapshot.id,
+              ...snapshot.data()
+            }
+            dispatch(addEvent(event));
+          })
+        })
+        /*ref.on('child_added', function(snap){
           const { title, subtitle, location, timestamp } = snap.val();
           const event = {
             key: snap.key,
@@ -60,7 +69,7 @@ export function listenToEvents() {
             location: location
           };
           dispatch(updateEvent(event));
-        });
+        });*/
     };
 };
 

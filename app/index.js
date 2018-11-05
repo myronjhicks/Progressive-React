@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
-import { createStackNavigator, createTabNavigator, createBottomTabNavigator, createMaterialBottomTabNavigator } from "react-navigation";
-import { Text } from 'react-native-ui-lib';
+import React from 'react';
+import { createStackNavigator, createBottomTabNavigator } from "react-navigation";
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 
 import AnnouncementsScreen from './connect/AnnouncementsScreen';
@@ -14,6 +12,7 @@ import HomeScreen from './screens/HomeScreen';
 import { MoreInfoStack } from './more/moreRouter';
 import PrayerWallScreen from './connect/PrayerWallScreen';
 import VideoDetail from './videos/VideoDetail';
+import VideosContainer from './videos/VideosContainer';
 
 const HomeStack = createStackNavigator({
     Home: {
@@ -21,6 +20,9 @@ const HomeStack = createStackNavigator({
     },
     VideoDetail: {
         screen: VideoDetail
+    },
+    VideosList: {
+        screen: VideosContainer
     }
 }, {
     headerMode: 'none'
@@ -99,7 +101,10 @@ export const RootStack = createStackNavigator({
     },
     Blog: {
       screen: BlogScreen,
-    }
+    },
+    VideoDetail: {
+        screen: VideoDetail
+    },
 }, {
     initialRouteName: 'Tabs',
     navigationOptions: {

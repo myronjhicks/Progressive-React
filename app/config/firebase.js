@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import 'firebase/firestore';
 import {
     FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_DATABASE_URL,
     FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID
@@ -14,8 +15,9 @@ var config = {
     storageBucket: FIREBASE_STORAGE_BUCKET,
     messagingSenderId: FIREBASE_MESSAGING_SENDER_ID
 };
-
 firebase.initializeApp(config);
+const settings = {timestampsInSnapshots: true};
+firebase.firestore().settings(settings);
 
 export default firebase;
 

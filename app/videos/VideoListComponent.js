@@ -10,25 +10,6 @@ export default class VideoListComponent extends Component {
 
     _renderCard = ({item}) =>  <VideoCard video={item} onPress={this.props.onPress(item)} />
 
-    _renderHeader = () => {
-        if(this.props.videos.length){
-          var latestVideo = this.props.videos[0];
-          return(
-              <ImageBackground
-                  style={{height: 275, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 20}}
-                  source={livestreamImageSource}>
-                  <TouchableOpacity onPress={_ => this.props.onPressPlay(latestVideo)}>
-                      <Image source={playButtonSource} style={{width: 80, height: 80, marginBottom: 10}} />
-                  </TouchableOpacity>
-                  <Text white text50>LATEST SERMON</Text>
-                  <Text white text30 center>{latestVideo.title}</Text>
-              </ImageBackground>
-          );
-        }else{
-          return (<AppLoading />)
-        }
-    }
-
     renderHeader = () => {
       return <Text style={{margin: 10}}>Stream Past Sermons</Text>
     }

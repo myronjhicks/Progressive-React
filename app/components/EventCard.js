@@ -35,6 +35,7 @@ export default class EventCard extends Component {
   render() {
     const event = this.props.event;
     const date = new Date(event.timestamp);
+    console.log(date);
     return (
           <Card>
               <CardItem>

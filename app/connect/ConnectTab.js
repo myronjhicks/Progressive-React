@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import Tabs from 'antd-mobile-rn/lib/tabs';
-import ConnectScreen from './ConnectScreen';
 import EventListComponent from '../events/EventListComponent';
 import { connect } from 'react-redux';
 import { fetchDiscipleshipHourCourses } from '../redux/actions/courses';
+import VideosContainer from '../videos/VideosContainer';
 
 const tabs = [
-    { title: 'Community' },
-    { title: 'Events' }
+    { title: 'Events' },
+    { title: 'Sermons' }
 ];
 
 const lightGray = '#ccc';
@@ -51,11 +51,8 @@ class ConnectTab extends Component {
                 tabBarActiveTextColor={black}
                 tabBarInactiveTextColor={lightGray}
                 animated={false} useOfPan={false}>
-                <ConnectScreen 
-                    courses={this.props.courses} 
-                    showPrayerWall={this._showPrayerWall} 
-                    showPastorsBlog={this._showPastorsBlog} />
                 <EventListComponent events={this.props.events} />
+                <VideosContainer />
             </Tabs>
         );
     }

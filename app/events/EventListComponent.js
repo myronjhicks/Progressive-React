@@ -1,60 +1,36 @@
-import React, { Component } from 'react';
-import { FlatList, ImageBackground, TouchableOpacity, Image, Dimensions } from 'react-native';
+import React from 'react';
+import { FlatList } from 'react-native';
 import EventCard from '../components/EventCard';
-import { Text, View, Card, Colors } from 'react-native-ui-lib';
 import firebase from '../config/firebase';
-const { width, height } = Dimensions.get('window');
-const half = width / 2;
 
-export default class EventListComponent extends Component {
+export default class EventListComponent extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            url: undefined
+            events: []
         }
-    }
-
-    _renderHeader = () => {
-        return (
-            <Card height={350} containerStyle={{margin: 20}}>
-                <Card.Image
-                    height={'75%'}
-                    resizeMode="cover"
-                    imageSource={{uri: this.state.url}}
-                />
-                <Card.Section>
-                    <View padding-12>
-                        <Text text50 marginB-4 color={Colors.black}>Young Black & Christian</Text>
-                        <Text text70 marginB-4 color={Colors.dark20}>February 27, 2018</Text>
-                        <Text text90 color={Colors.dark20}>7:00pm</Text>
-                    </View>
-                </Card.Section>
-            </Card>
-        );
     }
 
     componentDidMount() {
-        firebase.storage()
-            .ref('images/ybc.jpg')
-            .getDownloadURL()
-            .then(function(url){ return url })
-            .then(url => this.setState({url}));
+        var events = [];
+        firebase.firestore().collection('events').get().then((querySnap) => {
+            querySnap.forEach((snap) => {
+                events.push({
+                    key: snap.id,
+                    ...snap.data()
+                })
+            })
+            this.setState(() => this.state.events = events);
+        })
     }
 
     render() {
-        this.events = [];
-        if(this.props.events.length) {
-            this.events = this.props.events.sort(function(a,b){
-                return new Date(a.timestamp) - new Date(b.timestamp);
-            });
-        }
         return (
             <FlatList
                 automaticallyAdjustContentInsets={false}
-                data={this.events}
+                data={this.state.events}
                 keyExtractor = {item => item.key}
-                ListHeaderComponent={false && this.state.url && this._renderHeader}
                 renderItem={({item}) => <EventCard event={item} />}
             />
         )
