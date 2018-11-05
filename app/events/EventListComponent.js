@@ -1,38 +1,26 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import EventCard from '../components/EventCard';
-import firebase from '../config/firebase';
+import { connect } from 'react-redux';
 
-export default class EventListComponent extends React.Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            events: []
-        }
-    }
-
-    componentDidMount() {
-        var events = [];
-        firebase.firestore().collection('events').get().then((querySnap) => {
-            querySnap.forEach((snap) => {
-                events.push({
-                    key: snap.id,
-                    ...snap.data()
-                })
-            })
-            this.setState(() => this.state.events = events);
-        })
-    }
+class EventListComponent extends React.Component {
 
     render() {
         return (
             <FlatList
                 automaticallyAdjustContentInsets={false}
-                data={this.state.events}
+                data={this.props.events}
                 keyExtractor = {item => item.key}
                 renderItem={({item}) => <EventCard event={item} />}
             />
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+      events: state.events
+    };
+};
+
+export default connect(mapStateToProps)(EventListComponent);

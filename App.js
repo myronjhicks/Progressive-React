@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { Updates, Font, AppLoading, Asset }  from 'expo';
+import { View } from 'react-native';
+import { Font, AppLoading, Asset }  from 'expo';
 import { Provider } from 'react-redux';
 import { RootStack } from './app/index.js';
 import configureStore from './app/redux/store/configureStore';

@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-import { StatusBar, StyleSheet, View, Dimensions, SafeAreaView, ImageBackground } from 'react-native';
-import Image from 'react-native-scalable-image';
-import {
-    Container, Header, Title, Left,
-    Right, Icon, Button, Text,
-    Content, Body, Card, CardItem
-} from 'native-base';
+import { StyleSheet, View, Dimensions, ImageBackground } from 'react-native';
+import { Button, Text } from 'native-base';
 import { maybeOpenURL } from "react-native-app-link";
 
 export default class GiveScreen extends Component {
 
-    static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state
+    static navigationOptions = () => {
         return {
             title: 'Give',
             headerTintColor: 'white',
@@ -52,7 +46,7 @@ export default class GiveScreen extends Component {
         );
     }
 }
-const { deviceWidth, deviceHeight } = Dimensions.get('window');
+const { deviceWidth } = Dimensions.get('window');
 const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,

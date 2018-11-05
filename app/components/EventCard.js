@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-    Icon,
-    Button,
     Text,
     Body,
     Card,
     CardItem
 } from 'native-base';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const WEEKDAYS = {
     0: "SUN",
@@ -34,8 +32,7 @@ export default class EventCard extends Component {
 
   render() {
     const event = this.props.event;
-    const date = new Date(event.timestamp);
-    console.log(date);
+    const date = new Date(moment.unix(event.date.seconds));
     return (
           <Card>
               <CardItem>
@@ -47,7 +44,7 @@ export default class EventCard extends Component {
                               <Text style={{fontSize: 14, marginTop: 2, marginBottom: 2, textAlign: 'center'}}>{WEEKDAYS[moment(date).day()]}</Text>
                           </View>
                           <View style={{flexGrow: 1}}>
-                              <Text style={{fontWeight: 'bold', margin: 2, fontSize: 20}}>{event.title}</Text>
+                              <Text style={{fontWeight: 'bold', margin: 2, fontSize: 20}}>{event.name}</Text>
                               <Text style={{color: '#404040', marginBottom: 10, marginLeft: 2, fontSize: 14}}>{event.location}</Text>
                               <Text style={{marginLeft: 2, fontSize: 14, color: '#404040'}}>{date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</Text>
                           </View>
