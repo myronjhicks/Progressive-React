@@ -8,7 +8,7 @@ const playButtonSource = require('../assets/icons/playIcon.png');
 
 export default class VideoListComponent extends Component {
 
-    _renderCard = ({item}) =>  <VideoCard video={item} onPress={this.props.onPress(item)} />
+    _renderCard = ({item}) =>  <VideoCard video={item} onPress={() => this.props.onPress(item)} />
 
     renderHeader = () => {
       return <Text style={{margin: 10}}>Stream Past Sermons</Text>

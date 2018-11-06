@@ -36,7 +36,9 @@ export function submitEvent(event) {
 
 export function listenToEvents() {
     return (dispatch) => {
-        firebase.firestore().collection('events').get().then((querySnapshot) => {
+        firebase.firestore().collection('events')
+          .orderBy('date', 'asc')
+          .get().then((querySnapshot) => {
           querySnapshot.forEach((snapshot) => {
             const event = {
               key: snapshot.id,

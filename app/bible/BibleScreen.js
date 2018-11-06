@@ -1,18 +1,13 @@
-import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Platform, StatusBar, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Platform, ScrollView, TouchableOpacity, Image, View } from 'react-native';
 import {
-    Container, Header, Title, Left,
-    Right, Icon,
-    Content, Body, Card, CardItem, Footer, FooterTab
+    Button, Text
 } from 'native-base';
-import { View, Text, Button, Colors } from 'react-native-ui-lib';
 import { connect } from 'react-redux';
 import { chapterFetchData } from '../redux/actions/chapter';
 import { fetchBooks } from '../redux/actions/books';
-import HTMLView from 'react-native-htmlview';
-import NetworkErrorComponent from '../components/NetworkErrorComponent';
 const cheerio = require('react-native-cheerio');
-import { fontSize, fontFamily, normalize  } from '../styles/theme';
+import { fontSize, fontFamily  } from '../styles/theme';
 
 const forwardIcon = require('../assets/icons/forward_button.png');
 const backIcon = require('../assets/icons/back_button.png');
@@ -20,7 +15,7 @@ const backIcon = require('../assets/icons/back_button.png');
 class HeaderTitle extends React.Component {
     render() {
       return (
-        <Text key={'headerTitle'} style={styles.headerTitle} onPress={this.props.onPress}>{this.props.title}</Text>
+          <Button light small block onPress={this.props.onPress}><Text>{this.props.title}</Text></Button>
       );
     }
 }
@@ -31,12 +26,12 @@ class BibleScreen extends Component {
         const { params = {} } = navigation.state
         return {
             headerTitle: <HeaderTitle title={params.headerTitle} onPress={params.showSelector}/>,
-            headerTintColor: 'white',
+            headerTintColor: 'black',
             headerStyle: {
                 backgroundColor: '#2e2e2e',
             },
         }
-      };
+    };
 
     constructor(){
         super();

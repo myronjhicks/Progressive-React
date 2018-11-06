@@ -2,33 +2,61 @@ import React from 'react';
 import { createStackNavigator, createBottomTabNavigator } from "react-navigation";
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 
-import AnnouncementsScreen from './connect/AnnouncementsScreen';
 import BibleScreen from './bible/BibleScreen';
-import BlogScreen from './screens/BlogScreen';
 import ChapterSelector from './bible/ChapterSelector';
 import ConnectTab from './connect/ConnectTab';
 import GiveScreen from './screens/GiveScreen';
 import HomeScreen from './screens/HomeScreen';
 import { MoreInfoStack } from './more/moreRouter';
-import PrayerWallScreen from './connect/PrayerWallScreen';
 import VideoDetail from './videos/VideoDetail';
 import VideosContainer from './videos/VideosContainer';
+import EventDetail from './events/EventDetail';
 
 const HomeStack = createStackNavigator({
     Home: {
         screen: HomeScreen,
+        navigationOptions: {
+            title: 'Home',
+        },
     },
-    VideoDetail: {
-        screen: VideoDetail
+    VideoDetail: VideoDetail,
+    VideosList: VideosContainer
+},{
+    navigationOptions: {
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: '#2e2e2e',
+        },
     },
-    VideosList: {
-        screen: VideosContainer
-    }
+});
+
+const connectStack = createStackNavigator({
+    Connect: ConnectTab,
+    EventDetail: EventDetail,
+    VideoDetail: VideoDetail
 }, {
-    headerMode: 'none'
+    navigationOptions: {
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: '#2e2e2e',
+        },
+    },
+  });
+
+const BibleStack = createStackNavigator({
+    Bible: BibleScreen,
+    ChapterSelector: ChapterSelector
+}, {
+    navigationOptions: {
+        headerTintColor: 'black',
+        headerStyle: {
+            backgroundColor: '#2e2e2e',
+        },
+    },
+    mode: 'modal'
 })
 
-export const TabNavigator = createBottomTabNavigator({
+export const RootStack = createBottomTabNavigator({
     Home: {
       screen: HomeStack,
       navigationOptions: {
@@ -37,7 +65,7 @@ export const TabNavigator = createBottomTabNavigator({
       }
     },
     Bible: {
-        screen: BibleScreen,
+        screen: BibleStack,
         navigationOptions: {
             tabBarLabel: 'Bible',
             tabBarIcon: ({tintColor}) => <Entypo name="book" size={24} color={tintColor} />
@@ -51,7 +79,7 @@ export const TabNavigator = createBottomTabNavigator({
         }
     },
     Connect: {
-        screen: ConnectTab,
+        screen: connectStack,
         navigationOptions: {
             tabBarLabel: 'Connect',
             tabBarIcon: ({tintColor}) => <Entypo name="share" size={24} color={tintColor} />
@@ -74,19 +102,8 @@ export const TabNavigator = createBottomTabNavigator({
     }
 });
 
-TabNavigator.navigationOptions = ({ navigation }) => {
-  const { routeName } = navigation.state.routes[navigation.state.index];
 
-  // You can do whatever you like here to pick the title based on the route name
-  const headerTitle = routeName;
-
-  return {
-    headerTitle,
-  };
-};
-
-
-export const RootStack = createStackNavigator({
+/*export const RootStack = createStackNavigator({
     Tabs:{
         screen: TabNavigator,
     },
@@ -102,19 +119,6 @@ export const RootStack = createStackNavigator({
     Blog: {
       screen: BlogScreen,
     },
-    VideoDetail: {
-        screen: VideoDetail
-    },
 }, {
     initialRouteName: 'Tabs',
-    navigationOptions: {
-        headerTitleStyle: {
-            fontWeight: "bold",
-            color: "#fff"
-        },
-        headerTintColor: '#fff',
-        headerStyle: {
-            backgroundColor: '#2e2e2e',
-        },
-    }
-});
+});*/

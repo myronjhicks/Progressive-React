@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import { Font, AppLoading, Asset }  from 'expo';
 import { Provider } from 'react-redux';
 import { RootStack } from './app/index.js';
@@ -45,6 +45,10 @@ export default class AppContainer extends React.Component {
     isReady: false
   };
 
+  componentDidMount() {
+    StatusBar.setBarStyle('light-content');
+  }
+
   async _loadAssetsAsync() {
     const imageAssets = cacheImages([
       require('./app/assets/video_image.jpg'),
@@ -53,6 +57,7 @@ export default class AppContainer extends React.Component {
       require('./assets/dates_family.jpg'),
       require('./app/assets/icons/instagram-icon.png'),
       require('./app/assets/icons/facebook-icon.png'),
+      require('./app/assets/icons/twitter.png'),
       require('./app/assets/icons/youtube-icon.png'),
       require('./assets/guide.jpg'),
       require('./assets/outreach.jpg'),

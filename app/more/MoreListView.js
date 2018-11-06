@@ -32,7 +32,7 @@ class MoreListView extends Component {
     }
 
     login = () => {
-      this.props.navigation.navigate('Login');
+      this.props.navigation.push('Login');
     }
 
     logout = () => {
@@ -45,7 +45,7 @@ class MoreListView extends Component {
 
     routeTo = ({item}) => {
         if(item.route) {
-            this.props.navigation.navigate(item.route)
+            this.props.navigation.push(item.route)
         }else{
             Linking.canOpenURL(item.url)
                 .then((supported) => {

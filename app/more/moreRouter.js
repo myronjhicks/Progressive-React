@@ -39,6 +39,4 @@ export const MoreInfoStack = createStackNavigator({
         screen: WorshipGuideComponent
     }
 }, {
-    mode: 'card',
-    headerMode: 'none',
 });

@@ -5,13 +5,17 @@ import { connect } from 'react-redux';
 
 class EventListComponent extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <FlatList
                 automaticallyAdjustContentInsets={false}
                 data={this.props.events}
                 keyExtractor = {item => item.key}
-                renderItem={({item}) => <EventCard event={item} />}
+                renderItem={({item}) => <EventCard event={item}  onPress={() => this.props.onShowEvent(item)} />}
             />
         )
     }

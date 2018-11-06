@@ -25,34 +25,19 @@ function updateVideo(video) {
 
 export function listenToVideos() {
     return (dispatch) => {
-        ref.on('child_added', function(snap){
-          const data = snap.val();
-          const video = {
-              key: snap.key,
-              date: data.created_at,
-              title: data.title,
-              speaker: data.speaker,
-              video_url: data.video_url,
-              caption: data.caption,
-              tags: []
-          };
-          dispatch(addVideo(video));
-        });
-        ref.on('child_removed', function(snap){
-          dispatch(removeVideo(snap.key));
-        });
-        ref.on('child_changed', function(snap){
-          const data = snap.val();
-          const video = {
-              key: snap.key,
-              date: data.created_at,
-              title: data.title,
-              speaker: data.speaker,
-              video_url: data.video_url,
-              tags: []
-          };
-          dispatch(updateVideo(video));
-        });
+      firebase.firestore().collection('videos')
+          .orderBy('date', 'asc')
+          .onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach(function(change) {
+              if (change.type === "added") {
+                const video = {
+                  key: change.doc.id,
+                  ...change.doc.data()
+                }
+                dispatch(addVideo(video));
+            }
+          })
+        })
     };
 };
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Tabs from 'antd-mobile-rn/lib/tabs';
 import EventListComponent from '../events/EventListComponent';
 import { connect } from 'react-redux';
-import { fetchDiscipleshipHourCourses } from '../redux/actions/courses';
 import VideosContainer from '../videos/VideosContainer';
 
 const tabs = [
@@ -28,21 +27,17 @@ class ConnectTab extends Component {
 
     constructor(props){
         super(props);
-        this._showPastorsBlog = this._showPastorsBlog.bind(this);
-        this._showPrayerWall = this._showPrayerWall.bind(this);
+        this._showEventDetail = this._showEventDetail.bind(this);
+        this._showVideoDetail = this._showVideoDetail.bind(this);
     }
 
-    componentDidMount() {
-        this.props.fetchCourses();
+    _showEventDetail(event) {
+        this.props.navigation.push('EventDetail', { ...event });
     }
 
-    _showPastorsBlog = () => {
-        this.props.navigation.navigate('Blog');
-    };
-
-    _showPrayerWall = () => {
-        this.props.navigation.navigate('PrayerWall');
-    };
+    _showVideoDetail(video) {
+        this.props.navigation.push('VideoDetail', { ...video });
+    }
 
     render() {
         return (
@@ -51,8 +46,8 @@ class ConnectTab extends Component {
                 tabBarActiveTextColor={black}
                 tabBarInactiveTextColor={lightGray}
                 animated={false} useOfPan={false}>
-                <EventListComponent events={this.props.events} />
-                <VideosContainer />
+                <EventListComponent events={this.props.events} onShowEvent={this._showEventDetail} />
+                <VideosContainer showHeaderImage={true} onShowVideo={this._showVideoDetail}/>
             </Tabs>
         );
     }
@@ -60,15 +55,9 @@ class ConnectTab extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        courses: state.courses,
         events: state.events,
+        videos: state.videos
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchCourses: () => dispatch(fetchDiscipleshipHourCourses()),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ConnectTab);
+export default connect(mapStateToProps)(ConnectTab);

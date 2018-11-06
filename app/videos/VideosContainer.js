@@ -11,12 +11,10 @@ class VideosContainer extends React.Component {
 
     render() {
         return (
-            <View>
-                <VideoListComponent
+            <VideoListComponent
                   videos={this.props.videos}
-                  onPress={_ => this._showVideoDetail}
+                  onPress={this.props.onShowVideo}
               />
-            </View>
         )
     }
 }
