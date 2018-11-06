@@ -9,24 +9,10 @@ function addVideo(video){
   };
 }
 
-function removeVideo(id){
-  return {
-    type: types.VIDEO_REMOVED,
-    id
-  }
-}
-
-function updateVideo(video) {
-  return {
-    type: types.VIDEO_UPDATED,
-    video
-  };
-}
-
 export function listenToVideos() {
     return (dispatch) => {
       firebase.firestore().collection('videos')
-          .orderBy('date', 'asc')
+          .orderBy('date', 'desc')
           .onSnapshot((snapshot) => {
             snapshot.docChanges().forEach(function(change) {
               if (change.type === "added") {

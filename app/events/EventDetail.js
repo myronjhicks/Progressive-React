@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar, StyleSheet, View, ScrollView, Dimensions, WebView, SafeAreaView } from 'react-native';
 import { Text, ListItem, Body, Button } from 'native-base';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 export default class EventDetail extends React.Component {
     static navigationOptions = {
@@ -25,7 +25,7 @@ export default class EventDetail extends React.Component {
                 <ListItem>
                     <Body>
                         <Text>{name}</Text>
-                        <Text note>{moment(date).format('MMM DD, YYYY')}</Text>
+                        <Text note>{moment(date.seconds * 1000).tz('America/Chicago').format('MMM DD, YYYY')}</Text>
                     </Body>
                 </ListItem>
                 <ListItem>
@@ -37,7 +37,7 @@ export default class EventDetail extends React.Component {
                 <ListItem>
                     <Body>
                         <Text>Published</Text>
-                        <Text note>{moment(date).format('MMM DD, YYYY')}</Text>
+                        <Text note>{moment(date.seconds * 1000).tz('America/Chicago').format('MMM DD, YYYY')}</Text>
                     </Body>
                 </ListItem>
             </ScrollView>
